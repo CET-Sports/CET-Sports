@@ -80,7 +80,7 @@ function Cricket({ route }) {
             <TextInput placeholder="Dept" onChangeText={(value) => { setDept(value) }} />
             <TextInput placeholder="Year" onChangeText={(value) => { setYear(value) }} />
             <TextInput placeholder="Gender" onChangeText={(value) => { setGender(value) }} />
-            <TouchableOpacity style={{ backgroundColor: 'grey', padding: 20, margin: 10, alignItems: 'center', justifyContent: 'center' }}
+            <TouchableOpacity style={{ backgroundColor: '#CCCCCC', padding: 20, margin: 10, alignItems: 'center', justifyContent: 'center' }}
                 onPress={() => { sendData() }}
             >
                 <Text style={{ color: '#000000', fontSize: 24 }}>Invite</Text>
