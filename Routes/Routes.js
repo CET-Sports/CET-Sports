@@ -23,6 +23,7 @@ import Invite from '../Screens/Admin/Invite/Invite';
 import Cricket from '../Screens/Admin/InviteForm/cricket';
 import Apply from '../Screens/User/Apply/Apply';
 import Feed from '../Screens/User/Feed/Feed';
+import addTournament from '../Screens/Admin/Tournament/AddTournament/addTournament';
 
 const Drawer = createDrawerNavigator();
 const Tabs = createMaterialBottomTabNavigator();
@@ -34,6 +35,7 @@ const BookingStack = createStackNavigator();
 const HomeStack = createStackNavigator();
 const LiveStack = createStackNavigator();
 const LiveUserStack = createStackNavigator();
+const TournamentStack = createStackNavigator();
 
 const InviteStack = createStackNavigator();
 
@@ -212,6 +214,32 @@ const LiveStackScreen = ({ navigation }) => (
     </LiveStack.Navigator>
 )
 
+const TournamentStackScreen = ({ navigation }) => (
+    <TournamentStack.Navigator
+        screenOptions={{
+            headerStyle: {
+                elevation: 0,
+                backgroundColor: colors.primaryColor
+            },
+            headerLeft: () => (
+                <TouchableOpacity onPress={() => { navigation.openDrawer() }} style={{ alignItems: 'center', justifyContent: 'center' }}>
+                    <AntDesign name="menuunfold" size={23} color={'#fff'} style={{ marginLeft: 10 }} />
+                </TouchableOpacity>
+            )
+        }}
+
+    >
+        <TournamentStack.Screen
+            name="Tournaments"
+            component={addTournament}
+            options={{
+                headerStatusBarHeight: 0,
+                headerTintColor: '#fff'
+            }}
+        />
+    </TournamentStack.Navigator>
+)
+
 const TabScreenAdmin = () => (
     <Tabs.Navigator
         initialRouteName='Home'
@@ -231,6 +259,15 @@ const TabScreenAdmin = () => (
             }}
         />
         <Tabs.Screen
+            name="Tournament"
+            component={TournamentStackScreen}
+            options={{
+                tabBarIcon: ({ color }) => (
+                    <Ionicons name='ios-add-circle-outline' color={color} size={26} style={{}} />
+                )
+            }}
+        />
+        <Tabs.Screen
             name="Live"
             component={LiveStackScreen}
             options={{
@@ -239,6 +276,7 @@ const TabScreenAdmin = () => (
                 )
             }}
         />
+        
         {/* <Tabs.Screen
             name="Invite"
             component={InviteStackScreen}
