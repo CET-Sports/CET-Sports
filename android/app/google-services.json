@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "205731919482",
+    "firebase_url": "https://cet-sports.firebaseio.com",
+    "project_id": "cet-sports",
+    "storage_bucket": "cet-sports.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:205731919482:android:1078eaf5df5cff2c5fedc3",
+        "android_client_info": {
+          "package_name": "com.cet_sports"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "205731919482-sf3ouhrfmeh4ipmp3e2ckr8dattu1qis.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCLaRL2trYXoApiDUsBWTRN0X6_C6_egiY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "205731919482-sf3ouhrfmeh4ipmp3e2ckr8dattu1qis.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
