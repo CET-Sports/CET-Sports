@@ -64,8 +64,11 @@ function addTournament(props) {
         }
 
         setModalVisible(true);
-    }
 
+        setTimeout(() => {
+            setModalVisible(false);
+        }, 1000);
+    }
 
 
     return (
@@ -157,14 +160,14 @@ function addTournament(props) {
                         onRequestClose={() => { setModalVisible(false) }}
                     >
 
-                        <TouchableOpacity style={styles.modalContainer} onPress={() => { setModalVisible(false) }}>
+                        <View style={styles.modalContainer}>
                             <View style={styles.modalView}>
                                 <View style={{ flexDirection: 'column', alignItems: 'center', width: 100, margin: 10 }}>
                                     <Icon name="check-circle" size={60} color='#2ed573' />
                                     <Text style={styles.modalText}>Done</Text>
                                 </View>
                             </View>
-                        </TouchableOpacity>
+                        </View>
 
                     </Modal>
 

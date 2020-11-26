@@ -4,7 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-import { TouchableOpacity } from  'react-native';
+import { TouchableOpacity } from 'react-native';
 import DrawerContent from '../Screens/User/Drawer/DrawerContent';
 import DrawerContentAdmin from '../Screens/Admin/Drawer/DrawerContentAdmin';
 import { authContext } from '../Context/context';
@@ -24,6 +24,8 @@ import Cricket from '../Screens/Admin/InviteForm/cricket';
 import Apply from '../Screens/User/Apply/Apply';
 import Feed from '../Screens/User/Feed/Feed';
 import addTournament from '../Screens/Admin/Tournament/AddTournament/addTournament';
+import Club_Main from '../Screens/User/Club/Club_Main';
+import Club_Regis from '../Screens/Admin/Club/Club_Regis';
 
 const Drawer = createDrawerNavigator();
 const Tabs = createMaterialBottomTabNavigator();
@@ -276,7 +278,7 @@ const TabScreenAdmin = () => (
                 )
             }}
         />
-        
+
         {/* <Tabs.Screen
             name="Invite"
             component={InviteStackScreen}
@@ -292,7 +294,7 @@ const TabScreenAdmin = () => (
 
 function Routes(props) {
 
-    
+
 
     const [userToken, setUserToken] = useState(null);
     const [isAdmin, setIsAdmin] = useState(null);
@@ -369,10 +371,16 @@ function Routes(props) {
                                         component={TabScreen}
                                     />
 
-                                  <Drawer.Screen
-                                  
+                                    <Drawer.Screen
+
                                         name="Apply"
                                         component={Apply}
+                                    />
+
+                                    <Drawer.Screen
+
+                                        name="Club_Main"
+                                        component={Club_Main}
                                     />
                                 </Drawer.Navigator>
 
@@ -386,6 +394,10 @@ function Routes(props) {
                                     <Drawer.Screen
                                         name="Invite"
                                         component={InviteStackScreen}
+                                    />
+                                    <Drawer.Screen
+                                        name="Club_Regis"
+                                        component={Club_Regis}
                                     />
                                     {/* <Drawer.Screen
                                         name="Cricket"

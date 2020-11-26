@@ -111,6 +111,13 @@ function DrawerContent({ navigation }) {
                 </Text>
             </TouchableOpacity>
 
+            <TouchableOpacity style={{ }} onPress={() => { navigation.navigate('Club_Main') }}>
+                <AntDesign name='home' color='#000' size={23} style={styles.icon} />
+                <Text style={styles.drawerText}>
+                    Club
+                </Text>
+            </TouchableOpacity>
+
 
 
             <View style={{ flex: 1, alignItems: 'flex-end', marginBottom: 25, flexDirection: 'row' }}>
