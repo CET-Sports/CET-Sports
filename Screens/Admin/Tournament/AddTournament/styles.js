@@ -5,7 +5,7 @@ import { colors } from '../../../../Colors/colors';
 const styles = StyleSheet.create({
     container:{
         backgroundColor:'#fff',
-        flex:1
+        flexGrow:1
     },  
     pickerBox:{
         justifyContent: 'center',
