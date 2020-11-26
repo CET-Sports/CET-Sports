@@ -29,6 +29,7 @@ function DrawerContent({ navigation }) {
 
     useEffect(() => {
         getData('userData')
+        
             .then(response => {
                 console.log('response');
                 console.log(response);
@@ -60,6 +61,7 @@ function DrawerContent({ navigation }) {
         try {
             const jsonValue = JSON.stringify(value)
             await AsyncStorage.setItem(key, jsonValue)
+            
         } catch (e) {
             // saving error
         }
