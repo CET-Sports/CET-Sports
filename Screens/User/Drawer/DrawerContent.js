@@ -85,7 +85,7 @@ function DrawerContent({ navigation }) {
     return (
         <ScrollView contentContainerStyle={styles.parent}>
             <View style={styles.dpContainer}>
-                <Image source={{uri:dp}} style={styles.avatar} />
+                <Image source={{ uri: dp }} style={styles.avatar} />
                 <Text style={styles.name}>{name}</Text>
             </View>
             <TouchableOpacity style={{ ...styles.button, marginTop: 20 }} onPress={() => { navigation.navigate('Feed') }}>
@@ -102,13 +102,13 @@ function DrawerContent({ navigation }) {
             </TouchableOpacity>
 
 
-            <TouchableOpacity style={{ }} onPress={() => { navigation.navigate('Apply') }}>
+            <TouchableOpacity style={{}} onPress={() => { navigation.navigate('Apply') }}>
                 <AntDesign name='home' color='#000' size={23} style={styles.icon} />
                 <Text style={styles.drawerText}>
                     Apply
                 </Text>
             </TouchableOpacity>
-            
+
 
 
             <View style={{ flex: 1, alignItems: 'flex-end', marginBottom: 25, flexDirection: 'row' }}>
@@ -116,7 +116,7 @@ function DrawerContent({ navigation }) {
                     <Icon name='location-exit' color='#000' size={25} style={{ ...styles.icon, opacity: 0.8 }} />
                     <Text style={{ ...styles.drawerText, marginBottom: 3 }}>
                         Logout
-                </Text>
+                    </Text>
                 </TouchableOpacity>
             </View>
         </ScrollView>
