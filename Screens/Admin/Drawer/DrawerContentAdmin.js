@@ -16,6 +16,9 @@ function DrawerContent({ navigation }) {
     const [initializing, setInitializing] = useState(true);
     const [user, setUser] = useState();
     const [dp, setDp] = useState();
+    const [dataSource, setDataSource] = useState([]);
+    const [phone, setPhone] = useState('');
+    const [name, setName] = useState('');
 
     // Handle user state changes
     function onAuthStateChanged(user) {
@@ -51,10 +54,6 @@ function DrawerContent({ navigation }) {
         return subscriber; // unsubscribe on unmount
 
     }, [])
-
-    const [dataSource, setDataSource] = useState([]);
-    const [phone, setPhone] = useState('');
-    const [name, setName] = useState('');
 
 
     const storeData = async (key, value) => {
