@@ -17,7 +17,8 @@ export default function Apply() {
   const [dept, setDept] = useState();
   const [gender, setGender] = useState();
   const [phone, setPhone] = useState('');
-  const [event,setEvent]=useState('')
+  const [event,setEvent]=useState('');
+  const [trp,setTrp]=useState('false');
 
 
 
@@ -94,7 +95,7 @@ export default function Apply() {
       phone:phone
     })
 
-
+   setTrp('True');
 
   }
 
@@ -102,11 +103,20 @@ export default function Apply() {
     return (
 
 
+      
       <View>
+        
         <Text>{data.item}</Text>
+      {
+        trp?
+        <Text>Applied</Text>
 
+         :
         <TouchableOpacity onPress={()=>{push(data.item)}}><Text>Apply</Text></TouchableOpacity>
-      </View>
+      
+      }
+        </View>
+       
 
 
     )
