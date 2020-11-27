@@ -6,6 +6,8 @@ import { authContext } from '../../../Context/context';
 import auth from '@react-native-firebase/auth';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import Entypo from 'react-native-vector-icons/Entypo';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { firebase } from '@react-native-firebase/app';
 import firestore from '@react-native-firebase/firestore';
 
@@ -96,7 +98,7 @@ function DrawerContent({ navigation }) {
                     Home
                 </Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity style={styles.button} onPress={() => { navigation.navigate('Profile') }}>
                 <Icon name='account-outline' color='#000' size={25} style={{ ...styles.icon, opacity: 0.8 }} />
                 <Text style={styles.drawerText}>
                     Profile
@@ -104,17 +106,17 @@ function DrawerContent({ navigation }) {
             </TouchableOpacity>
 
 
-            <TouchableOpacity style={{}} onPress={() => { navigation.navigate('Apply') }}>
-                <AntDesign name='home' color='#000' size={23} style={styles.icon} />
+            <TouchableOpacity style={styles.button} onPress={() => { navigation.navigate('Apply') }}>
+                <Entypo name='new-message' color='#000' size={23} style={styles.icon} />
                 <Text style={styles.drawerText}>
                     Apply
                 </Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={{ }} onPress={() => { navigation.navigate('Club_Main') }}>
-                <AntDesign name='home' color='#000' size={23} style={styles.icon} />
+            <TouchableOpacity style={styles.button} onPress={() => { navigation.navigate('Club_Main') }}>
+                <Icon name='select-group' color='#000' size={23} style={styles.icon} />
                 <Text style={styles.drawerText}>
-                    Club
+                    Clubs
                 </Text>
             </TouchableOpacity>
 

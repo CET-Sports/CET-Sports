@@ -26,6 +26,7 @@ import Feed from '../Screens/User/Feed/Feed';
 import addTournament from '../Screens/Admin/Tournament/AddTournament/addTournament';
 import Club_Main from '../Screens/User/Club/Club_Main';
 import Club_Regis from '../Screens/Admin/Club/Club_Regis';
+import Profile from '../Screens/User/Profile/Profile';
 
 const Drawer = createDrawerNavigator();
 const Tabs = createMaterialBottomTabNavigator();
@@ -381,6 +382,10 @@ function Routes(props) {
 
                                         name="Club_Main"
                                         component={Club_Main}
+                                    />
+                                    <Drawer.Screen
+                                        name="Profile"
+                                        component={Profile}
                                     />
                                 </Drawer.Navigator>
 

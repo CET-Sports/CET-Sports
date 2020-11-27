@@ -27,7 +27,8 @@ function Register({ route, navigation }) {
     const [dept, setDept] = useState('');
     const [year, setYear] = useState('');
     const [gender, setGender] = useState('');
-
+    const [email, setEmail] = useState('');
+    const [sem, setSem] = useState('');
     const options = {
         storageOptions: {
             skipBackup: true,
@@ -72,10 +73,12 @@ function Register({ route, navigation }) {
             set({
                 name: fname + " " + lname,
                 phone: phone,
+                email: email,
                 dpUrl: dp,
-                dept:dept,
-                gender:gender,
-                year:year
+                dept: dept,
+                sem: sem,
+                gender: gender,
+                year: year
             })
 
         // storeData('userData', { phone:phone,name:fname+" "+lname,blood:selectedValue });
@@ -112,9 +115,19 @@ function Register({ route, navigation }) {
                     onChangeText={(value) => setlName(value)}
                 ></TextInput>
                 <TextInput
+                    placeholder="Email"
+                    style={styles.TextInput}
+                    onChangeText={(value) => setEmail(value)}
+                ></TextInput>
+                <TextInput
                     placeholder="Department"
                     style={styles.TextInput}
                     onChangeText={(value) => setDept(value)}
+                ></TextInput>
+                <TextInput
+                    placeholder="Semester"
+                    style={styles.TextInput}
+                    onChangeText={(value) => setSem(value)}
                 ></TextInput>
                 <TextInput
                     placeholder="Year of completion"
