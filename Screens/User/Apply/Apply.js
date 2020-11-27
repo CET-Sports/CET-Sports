@@ -18,7 +18,8 @@ export default function Apply() {
   const [gender, setGender] = useState();
   const [phone, setPhone] = useState('');
   const [event,setEvent]=useState('');
-  const [trp,setTrp]=useState('false');
+  const [trp,setTrp]=useState(false);
+  const [size,setSize] = useState(1);
 
 
 
@@ -28,6 +29,8 @@ export default function Apply() {
 
 
   useEffect(() => {
+
+   
     
      getData('userData')
         
@@ -59,16 +62,20 @@ export default function Apply() {
       onSnapshot(querySnapShot => {
         const array = [];
         if (querySnapShot != null) {
+          console.log(querySnapShot.size);
+          setSize(querySnapShot.size);
           querySnapShot.forEach(documentSnapShot => {
             array.push({
               ...documentSnapShot.data()
             });
             setDatasource(array);
+          
             // getChampImage(yr);
 
           });
         }
       })
+
 
   }, [])
 
@@ -95,7 +102,7 @@ export default function Apply() {
       phone:phone
     })
 
-   setTrp('True');
+   setTrp(true);
 
   }
 
@@ -123,13 +130,22 @@ export default function Apply() {
   }
 
   return (
-    <View style={{ flexDirection: "row" }}>
-
-      <FlatList
+    <View>
+      {
+        size > 0 ?
+        <FlatList
         data={dataSource}
         renderItem={({ item }) => <Item data={item} />}
         keyExtractor={(item, index) => index.toString()}
       />
+      :
+      <Text>No Invitaions</Text>
+      }
+
+
+    
+
+      
 
     </View>
   )
