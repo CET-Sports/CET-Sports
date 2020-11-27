@@ -39,6 +39,7 @@ const HomeStack = createStackNavigator();
 const LiveStack = createStackNavigator();
 const LiveUserStack = createStackNavigator();
 const TournamentStack = createStackNavigator();
+const ProfileStack = createStackNavigator();
 
 const InviteStack = createStackNavigator();
 
@@ -127,6 +128,31 @@ const InviteStackScreen = ({ navigation }) => (
             }}
         />
     </InviteStack.Navigator>
+)
+const ProfileStackScreen = ({ navigation }) => (
+    <ProfileStack.Navigator
+        screenOptions={{
+            headerStyle: {
+                elevation: 0,
+                backgroundColor: '#fff'
+            },
+            headerLeft: () => (
+                <TouchableOpacity onPress={() => { navigation.openDrawer() }} style={{ alignItems: 'center', justifyContent: 'center' }}>
+                    <AntDesign name="menuunfold" size={23} color={'#576574'} style={{ marginLeft: 10 }} />
+                </TouchableOpacity>
+            )
+        }}
+
+    >
+        <ProfileStack.Screen
+            name="Profile"
+            component={Profile}
+            options={{
+                headerStatusBarHeight: 0,
+                headerTintColor: '#fff'
+            }}
+        />
+    </ProfileStack.Navigator>
 )
 
 
@@ -385,7 +411,7 @@ function Routes(props) {
                                     />
                                     <Drawer.Screen
                                         name="Profile"
-                                        component={Profile}
+                                        component={ProfileStackScreen}
                                     />
                                 </Drawer.Navigator>
 

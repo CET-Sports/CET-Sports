@@ -31,7 +31,7 @@ function DrawerContent({ navigation }) {
 
     useEffect(() => {
         getData('userData')
-        
+
             .then(response => {
                 console.log('response');
                 console.log(response);
@@ -63,7 +63,7 @@ function DrawerContent({ navigation }) {
         try {
             const jsonValue = JSON.stringify(value)
             await AsyncStorage.setItem(key, jsonValue)
-            
+
         } catch (e) {
             // saving error
         }
@@ -88,10 +88,12 @@ function DrawerContent({ navigation }) {
 
     return (
         <ScrollView contentContainerStyle={styles.parent}>
-            <View style={styles.dpContainer}>
-                <Image source={{ uri: dp }} style={styles.avatar} />
-                <Text style={styles.name}>{name}</Text>
-            </View>
+            <TouchableOpacity onPress={() => { navigation.navigate('Profile') }}>
+                <View style={styles.dpContainer}>
+                    <Image source={{ uri: dp }} style={styles.avatar} />
+                    <Text style={styles.name}>{name}</Text>
+                </View>
+            </TouchableOpacity>
             <TouchableOpacity style={{ ...styles.button, marginTop: 20 }} onPress={() => { navigation.navigate('Feed') }}>
                 <AntDesign name='home' color='#000' size={23} style={styles.icon} />
                 <Text style={styles.drawerText}>

@@ -1,13 +1,11 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, StyleSheet, Image, Modal, TouchableOpacity, TextInput, StatusBar, ActivityIndicator } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, Image, Modal, TouchableOpacity, TextInput, StatusBar, ActivityIndicator } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import Foundation from 'react-native-vector-icons/Foundation';
 import AsyncStorage from '@react-native-community/async-storage';
-import { AuthContext } from '../../../Context/context';
 import { colors } from '../../../Colors/colors';
 import { ScrollView } from 'react-native-gesture-handler';
-import AntDesign from 'react-native-vector-icons/AntDesign';
 import { validateAll } from 'indicative/validator';
+import { validations } from 'indicative/validator'
 import { firebase } from '@react-native-firebase/app';
 import firestore from '@react-native-firebase/firestore';
 import styles from './styles';
@@ -18,36 +16,36 @@ function Profile({ navigation }) {
 
     const [modalVisibleName, setModalVisibleName] = useState(false);
     const [modalVisibleEmail, setModalVisibleEmail] = useState(false);
-    const [modalVisiblePhone, setModalVisiblePhone] = useState(false);
     const [modalVisibleLoading, setModalVisibleLoading] = useState(false);
     const [loading, setLoading] = useState(false);
-    const [status, _setStatus] = useState('');
     const [username, setUsername] = useState('');
     const [dp, setDp] = useState('');
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
-    const [id, setId] = useState('');
 
-    const [newemail, setNewemail] = useState(email);
-    const [newname, setNewname] = useState(username);
-    const [newphone, setNewphone] = useState(phone);
+    const [newemail, setNewemail] = useState();
+    const [newname, setNewname] = useState();
 
     const [nameError, setNameError] = useState('');
     const [emailError, setEmailError] = useState('');
-    const [phoneError, setPhoneError] = useState('');
 
     const rules = {
-        name: 'required|alpha|min:3',
-        email: 'required|email',
-        phone: 'required|number'
+        name: [
+            validations.regex([new RegExp('^[a-zA-Z_ ]*$')]),
+            validations.required(),
+            validations.min([3])
+        ],
+        email: [
+            validations.regex([new RegExp('^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$')]),
+            validations.required(),
+            validations.min([5])
+        ],
     }
 
 
     const data = {
         name: newname,
-        email: newemail,
-        phone: newphone
-
+        email: newemail
     }
 
     // LOGOUT
@@ -76,13 +74,13 @@ function Profile({ navigation }) {
     // LOGOUT END
 
     useEffect(() => {
+        console.log('here');
+        console.log(phone)
         getData('userData')
-        
             .then(response => {
                 console.log('response');
                 console.log(response);
                 setPhone(response.phone)
-
                 firebase.firestore().
                     collection('Users').
                     doc(response.phone).
@@ -90,8 +88,10 @@ function Profile({ navigation }) {
                         if (documentSnapshot != null) {
                             console.log(documentSnapshot.data())
                             setUsername(documentSnapshot.data().name)
-                            setDp(documentSnapshot.data().dpUrl)
                             setEmail(documentSnapshot.data().email)
+                            setNewname(documentSnapshot.data().name)
+                            setNewemail(documentSnapshot.data().email)
+                            setDp(documentSnapshot.data().dpUrl)
                         }
                     })
             })
@@ -102,29 +102,31 @@ function Profile({ navigation }) {
     }, [])
 
 
-    editName = () => {
+    const editName = () => {
         setNameError(false);
         setModalVisibleName(true);
     }
 
-    editEmail = () => {
+    const editEmail = () => {
         setEmailError(false);
         setModalVisibleEmail(true);
     }
 
-    editPhone = () => {
-        setPhoneError(false);
-        setModalVisiblePhone(true);
-    }
+    // const editPhone = () => {
+    //     setPhoneError(false);
+    //     setModalVisiblePhone(true);
+    // }
 
-    Validate = () => {
+    const Validate = () => {
+
+
+
         validateAll(data, rules)
             .then(() => {
                 console.log('success');
                 setNameError(false);
                 setEmailError(false);
-                setPhoneError(false);
-
+                // setPhoneError(false);
                 update();
             })
             .catch((errorJson) => {
@@ -134,30 +136,34 @@ function Profile({ navigation }) {
                 console.log(Errors)
                 Errors.name ? setNameError(true) : setNameError(false)
                 Errors.email ? setEmailError(true) : setEmailError(false)
-                Errors.phone ? setPhoneError(true) : setPhoneError
-                    (false)
+                // Errors.phone ? setPhoneError(true) : setPhoneError(false)
             })
     }
 
-    update = () => {
-        _setStatus('');
+    const update = () => {
         setLoading(true);
         setModalVisibleName(false);
         setModalVisibleEmail(false);
-        setModalVisiblePhone(false);
         setModalVisibleLoading(true);
-        let obj = {
-            id: id,
-            username: newname,
-            email: newemail,
-            phone: newphone
-        }
+
+        firebase.firestore().collection('Users').doc(phone).update({
+            name: newname,
+            email: newemail
+        })
+
+        setTimeout(() => {
+            setLoading(false);
+        }, 1000);
+        setTimeout(() => {
+            setModalVisibleLoading(false);
+        }, 2000);
     }
 
 
 
     return (
         <ScrollView contentContainerStyle={{ flex: 1 }}>
+            <StatusBar barStyle="dark-content" backgroundColor='#fff' />
             <View style={styles.parent} >
                 <StatusBar backgroundColor={'#fff'} barStyle="dark-content" />
 
@@ -231,41 +237,6 @@ function Profile({ navigation }) {
                     </View>
                 </Modal>
 
-                <Modal
-                    animationType="slide"
-                    transparent={true}
-                    visible={modalVisiblePhone}
-                    onRequestClose={() => { setModalVisiblePhone(false) }}
-                >
-                    <View style={styles.modalContainer}>
-                        <View style={styles.modalView}>
-                            <View style={styles.headerContainer}>
-                                <Text style={styles.nameText}>Enter your Phone Number</Text>
-                            </View>
-
-                            <TextInput
-                                keyboardType="decimal-pad"
-                                placeholder="phone"
-                                defaultValue={phone}
-                                autoFocus={true}
-                                placeholderTextColor='#8395a7'
-                                onChangeText={(value) => setNewphone(value)}
-                                style={styles.textInput} />
-                            {
-                                phoneError === true ? <Text style={styles.errorText}>* Enter a valid phone number</Text> : null
-                            }
-
-                            <View style={styles.buttonsContainer}>
-                                <TouchableOpacity onPress={() => setModalVisiblePhone(false)} style={styles.Button}>
-                                    <Text style={styles.btnText}>CANCEL</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity onPress={() => Validate()} style={styles.Button}>
-                                    <Text style={styles.btnText}>SAVE</Text>
-                                </TouchableOpacity>
-                            </View>
-                        </View>
-                    </View>
-                </Modal>
 
                 <Modal
                     animationType="fade"
@@ -284,18 +255,12 @@ function Profile({ navigation }) {
                                     </>
                                     :
                                     <>
-                                        {
-                                            status === 'success' ?
-                                                <View style={{ flexDirection: 'column', alignItems: 'center', width: 100, margin: 10 }}>
-                                                    <Icon name="check-circle" size={60} color='#2ed573' />
-                                                    <Text style={styles.modalText}>Done</Text>
-                                                </View>
-                                                :
-                                                <View style={{ flexDirection: 'column', alignItems: 'center', width: 100, margin: 10 }}>
-                                                    <AntDesign name="warning" size={60} color='red' />
-                                                    <Text style={{ ...styles.modalText, color: 'red' }}>Error !!</Text>
-                                                </View>
-                                        }
+
+                                        <View style={{ flexDirection: 'column', alignItems: 'center', width: 100, margin: 10 }}>
+                                            <Icon name="check-circle" size={60} color='#2ed573' />
+                                            <Text style={styles.modalText}>Done</Text>
+                                        </View>
+
                                     </>
 
                             }
@@ -374,18 +339,13 @@ function Profile({ navigation }) {
                                 </View>
                             </View>
                         </View>
-                        <View style={styles.editContainer}>
-                            <TouchableOpacity onPress={() => { editPhone() }}>
-                                <Icon name="pencil" size={20} color="grey" />
-                            </TouchableOpacity>
-                        </View>
                     </View>
                 </View>
 
-                
 
 
-               
+
+
 
             </View>
         </ScrollView>
