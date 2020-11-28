@@ -27,6 +27,8 @@ import addTournament from '../Screens/Admin/Tournament/AddTournament/addTourname
 import Club_Main from '../Screens/User/Club/Club_Main';
 import Club_Regis from '../Screens/Admin/Club/Club_Regis';
 import Profile from '../Screens/User/Profile/Profile';
+import Tournaments from '../Screens/Admin/Tournament/Tournaments/Tournaments';
+import Update from '../Screens/Admin/Tournament/UpdateTournament/Update';
 
 const Drawer = createDrawerNavigator();
 const Tabs = createMaterialBottomTabNavigator();
@@ -260,12 +262,29 @@ const TournamentStackScreen = ({ navigation }) => (
     >
         <TournamentStack.Screen
             name="Tournaments"
+            component={Tournaments}
+            options={{
+                headerStatusBarHeight: 0,
+                headerTintColor: '#fff'
+            }}
+        />
+        <TournamentStack.Screen
+            name="AddTournaments"
             component={addTournament}
             options={{
                 headerStatusBarHeight: 0,
                 headerTintColor: '#fff'
             }}
         />
+        <TournamentStack.Screen
+            name="Update"
+            component={Update}
+            options={{
+                headerStatusBarHeight: 0,
+                headerTintColor: '#fff'
+            }}
+        />
+
     </TournamentStack.Navigator>
 )
 
@@ -292,7 +311,7 @@ const TabScreenAdmin = () => (
             component={TournamentStackScreen}
             options={{
                 tabBarIcon: ({ color }) => (
-                    <Ionicons name='ios-add-circle-outline' color={color} size={26} style={{}} />
+                    <Ionicons name='ios-trophy-outline' color={color} size={26} style={{}} />
                 )
             }}
         />

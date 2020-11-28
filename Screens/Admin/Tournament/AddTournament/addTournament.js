@@ -10,7 +10,7 @@ import styles from './styles';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
-function addTournament(props) {
+function addTournament({navigation}) {
 
     const [toggleCheckBox, setToggleCheckBox] = useState(false);
     const [toggleCheckBox1, setToggleCheckBox1] = useState(false);
@@ -21,6 +21,7 @@ function addTournament(props) {
     const [name, setName] = useState('');
     const [dept, setDept] = useState('');
     const [modalVisible, setModalVisible] = useState(false);
+    const _date = new Date();
     // const [Cricket, setCricket] = useState('');
     // const [Football, setFootball] = useState('');
 
@@ -49,7 +50,8 @@ function addTournament(props) {
             dew: date,
             type: selectedValue,
             status: 'Pending',
-            dept: dept
+            dept: dept,
+            createdAt:_date
         })
 
         if (toggleCheckBox == true) {
@@ -67,6 +69,7 @@ function addTournament(props) {
 
         setTimeout(() => {
             setModalVisible(false);
+            navigation.navigate('Tournaments');
         }, 1000);
     }
 
