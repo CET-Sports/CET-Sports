@@ -16,7 +16,10 @@ export default function Apply() {
   const [dept, setDept] = useState();
   const [gender, setGender] = useState();
   const [phone, setPhone] = useState('');
-  const [event,setEvent]=useState();
+  const [event,setEvent]=useState('');
+
+
+  
   const [trp,setTrp]=useState(false);
   const [size,setSize] = useState(1);
 
@@ -28,7 +31,7 @@ export default function Apply() {
 
 
   useEffect(() => {
-    
+
    
     
      getData('userData')
@@ -92,11 +95,10 @@ export default function Apply() {
 
   function push(data)
   {
+    console.log(data)
+    setEvent(data);
     
-   
-   
- 
-    firebase.firestore().collection('Apply').doc(data).collection('Student').doc().set({
+    firebase.firestore().collection('Apply').doc(event).collection('Student').doc().set({
       name:name,
       dp:dp,
       dept:dept,
