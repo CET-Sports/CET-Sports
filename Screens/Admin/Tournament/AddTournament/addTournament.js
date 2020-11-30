@@ -55,12 +55,12 @@ function addTournament({navigation}) {
         })
 
         if (toggleCheckBox == true) {
-            firebase.firestore().collection('Tournaments').doc(name).collection('Games').doc().set({
+            firebase.firestore().collection('Tournaments').doc(name).collection('Games').doc('Cricket').set({
                 name: 'Cricket'
             })
         }
         if (toggleCheckBox1 == true) {
-            firebase.firestore().collection('Tournaments').doc(name).collection('Games').doc().set({
+            firebase.firestore().collection('Tournaments').doc(name).collection('Games').doc('Football').set({
                 name: 'Football'
             })
         }

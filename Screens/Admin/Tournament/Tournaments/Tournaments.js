@@ -30,7 +30,8 @@ function Tournaments({ navigation }) {
     function Item({ data }) {
         return (
             <TouchableOpacity style={styles.gameBtn} onPress={()=>{navigation.navigate('Update',{
-                Tname:data.name
+                Tname:data.name,
+                _status:data.status
             })}}>
                 <Text style={styles.gameBtntext}>{data.name}</Text>
                 {

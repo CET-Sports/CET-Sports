@@ -29,6 +29,9 @@ import Club_Regis from '../Screens/Admin/Club/Club_Regis';
 import Profile from '../Screens/User/Profile/Profile';
 import Tournaments from '../Screens/Admin/Tournament/Tournaments/Tournaments';
 import Update from '../Screens/Admin/Tournament/UpdateTournament/Update';
+import _Cricket from '../Screens/Admin/Games/Cricket/Cricket';
+import addCricket from '../Screens/Admin/Games/Cricket/addCricket';
+import updateCricket from '../Screens/Admin/Games/Cricket/updateCricket';
 
 const Drawer = createDrawerNavigator();
 const Tabs = createMaterialBottomTabNavigator();
@@ -279,6 +282,30 @@ const TournamentStackScreen = ({ navigation }) => (
         <TournamentStack.Screen
             name="Update"
             component={Update}
+            options={{
+                headerStatusBarHeight: 0,
+                headerTintColor: '#fff'
+            }}
+        />
+        <TournamentStack.Screen
+            name="Cricket"
+            component={_Cricket}
+            options={{
+                headerStatusBarHeight: 0,
+                headerTintColor: '#fff'
+            }}
+        />
+        <TournamentStack.Screen
+            name="addCricket"
+            component={addCricket}
+            options={{
+                headerStatusBarHeight: 0,
+                headerTintColor: '#fff'
+            }}
+        />
+        <TournamentStack.Screen
+            name="updateCricket"
+            component={updateCricket}
             options={{
                 headerStatusBarHeight: 0,
                 headerTintColor: '#fff'
