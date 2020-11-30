@@ -1,16 +1,15 @@
 import { useEffect, useState } from 'react';
 import React from 'react'
-import { View, Text, TouchableOpacity, FlatList } from 'react-native'
+import { View, Text, TouchableOpacity, FlatList ,Modal} from 'react-native'
 import { firebase } from '@react-native-firebase/app';
 import firestore from '@react-native-firebase/firestore';
 import AsyncStorage from '@react-native-community/async-storage';
+import styles from './styles';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default function Apply() {
-
-  const [Sports, setSports] = useState('');
-
+  const [sports, setSports] = useState(false);
   const [dataSource, setDatasource] = useState([]);
-
   const [name, setName] = useState('');
   const [dp, setDp] = useState();
   const [dept, setDept] = useState();
@@ -19,26 +18,17 @@ export default function Apply() {
   const [event,setEvent]=useState();
   const [trp,setTrp]=useState(false);
   const [size,setSize] = useState(1);
-
-
-
-
+  const [user,setUser]=useState('');
+  const [modalVisible, setModalVisible] = useState(false);
 
   // const { game } = route.params;
-
-
   useEffect(() => {
-    
-   
-    
-     getData('userData')
-        
-            .then(response => {
+       getData('userData')
+                .then(response => {
                 console.log('response');
                 console.log(response);
                 setPhone(response.phone)
-
-                firebase.firestore().
+                    firebase.firestore().
                     collection('Users').
                     doc(response.phone).
                     onSnapshot(documentSnapshot => {
@@ -49,14 +39,11 @@ export default function Apply() {
                             setDept( documentSnapshot.data().dept)
                             setGender(documentSnapshot.data().gender)
                             setPhone(documentSnapshot.data().phone)
-
-
                         }
                     })
             })
     const date = new Date();
-
-    firebase.firestore().
+      firebase.firestore().
       collection('Sports').where('due', '>=', date).
       onSnapshot(querySnapShot => {
         const array = [];
@@ -68,14 +55,10 @@ export default function Apply() {
               ...documentSnapShot.data()    
             });
             setDatasource(array);
-          
             // getChampImage(yr);
-
-          });
+            });
         }
       })
-
-
   }, [])
 
 
@@ -90,50 +73,104 @@ export default function Apply() {
   }
 
 
-  function push(data)
+  function push(data1)
   {
     
-   
-   
- 
-    firebase.firestore().collection('Apply').doc(data).collection('Student').doc().set({
+    console.log("")
+   console.log("block 1")
+    firebase.
+     firestore()
+    .collection('Apply').doc(data1).collection('Student')
+     .
+     where('sprt','==',data1) 
+    .get()
+    .then(querySnapshot => {
+      querySnapshot.forEach(documentSnapshot => {
+        console.log("block2");
+        setSports(true);
+
+      });
+    });
+    
+    console.log(sports);
+    
+
+   if(sports==false)
+   {
+    firebase.firestore().collection('Apply').doc(data1).collection('Student').doc().set({
       name:name,
       dp:dp,
       dept:dept,
       gender:gender,
-      phone:phone
+      phone:phone,
+      sprt:data1
     })
+  }
+  else
+  {
+   
+    setTrp(true);
+  }
+   setSports('');
+   console.log(sports)
 
-   setTrp(true);
+
+   setModalVisible(true);
+
+   setTimeout(() => {
+       setModalVisible(false);
+       
+   }, 1000);
 
   }
 
   function Item({ data }) {
+    
+    
     return (
+    <View>
+        <View>
+           </View>
 
-
-      
-      <View>
-        
-        <Text>{data.item}</Text>
-      {
-        trp?
-        <Text>Applied</Text>
-
-         :
+        <Text>{data.item}</Text>       
         <TouchableOpacity onPress={()=>{push(data.item)}}><Text>Apply</Text></TouchableOpacity>
-      
-      }
-        </View>
-       
 
+        
 
+{
+  modalVisible ?
+
+      <Modal
+          animationType="fade"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => { setModalVisible(false) }}
+      >
+
+          <View style={styles.modalContainer}>
+              <View style={styles.modalView}>
+                  <View style={{ flexDirection: 'column', alignItems: 'center', width: 100, margin: 10 }}>
+                      <Icon name="check-circle" size={60} color='#2ed573' />
+                      <Text style={styles.modalText}>Applied</Text>
+                  </View>
+              </View>
+          </View>
+
+      </Modal>
+
+      :
+
+      null
+
+}
+</View>
     )
   }
 
   return (
     <View>
       {
+        
         size > 0 ?
         <FlatList
         data={dataSource}
@@ -143,12 +180,6 @@ export default function Apply() {
       :
       <Text>No Invitaions</Text>
       }
-
-
-    
-
-      
-
     </View>
   )
 }
