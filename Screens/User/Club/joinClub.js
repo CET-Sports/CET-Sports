@@ -7,11 +7,13 @@ import {
 
 } from 'react-native';
 import { firebase } from '@react-native-firebase/auth';
+import { getPixelSizeForLayoutSize } from 'react-native/Libraries/Utilities/PixelRatio';
 
 function joinClub(props) {
 
     //const [clubName,setClubName]=useState('');
     const [dataSource,setDataSource]=useState([]);
+    const [size,setSize]=useState(1);
 
     useEffect(() => {
 
@@ -20,12 +22,17 @@ function joinClub(props) {
         firebase.firestore().collection('Club').onSnapshot(querySnapshot => {
             querySnapshot.forEach(documentSnapshot => {
 
+                setSize(querySnapshot.size);
+
                 array.push(...documentSnapshot.data().ClubName)
 
-                console.log(documentSnapshot.data())
+                //console.log(documentSnapshot.data())
             });
 
             setDataSource(array)
+
+            //console.log(dataSource)
+            //console.log(size)
 
         })
 
@@ -43,12 +50,32 @@ function joinClub(props) {
         </View>
         <View style={styles.containerJoin}>
             <TouchableOpacity style={styles.button}>
-                <Text>Cycling Club</Text>
+                <Text>{data.item}</Text>
             </TouchableOpacity>
         </View>
         </>
         
     );
+
+    function Item({ data }) {
+
+        return (
+            <View>
+            {
+            
+                size > 0 ?
+                <FlatList
+                data={dataSource}
+                renderItem={({ item }) => <Item data={item} />}
+                keyExtractor={(item, index) => index.toString()}
+            />
+            :
+            <Text>No Invitaions</Text>
+             }
+            </View>
+        );
+     
+    }
 }
 
 export default joinClub;
