@@ -75,19 +75,21 @@ export default function Apply() {
 
   function push(data1)
   {
-    
+    console.log("Hello"+name)
     console.log("")
    console.log("block 1")
-    firebase.
-     firestore()
+  
+    firebase.firestore()
     .collection('Apply').doc(data1).collection('Student')
      .
-     where('sprt','==',data1) 
+     where('sprt','==',data1).
+     where('phone','==',phone)
     .get()
     .then(querySnapshot => {
       querySnapshot.forEach(documentSnapshot => {
         console.log("block2");
         setSports(true);
+      
 
       });
     });
@@ -108,10 +110,10 @@ export default function Apply() {
   }
   else
   {
-   
-    setTrp(true);
+   console.log("Sorry")
+
   }
-   setSports('');
+   
    console.log(sports)
 
 
