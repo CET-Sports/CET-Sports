@@ -87,7 +87,7 @@ function addTournament({navigation}) {
                 <Text style={{ marginLeft: 20, marginTop: 20 }}>Select games</Text>
                 <View style={{ flexDirection: 'row' }}>
                     <View style={{ flexDirection: 'row', alignItems: 'center', margin: 20 }}>
-                        <Text>Football</Text>
+                        <Text>Cricket</Text>
                         <CheckBox
                             disabled={false}
                             value={toggleCheckBox}
@@ -95,7 +95,7 @@ function addTournament({navigation}) {
                         />
                     </View>
                     <View style={{ flexDirection: 'row', alignItems: 'center', margin: 20 }}>
-                        <Text>Cricket</Text>
+                        <Text>Football</Text>
                         <CheckBox
                             disabled={false}
                             value={toggleCheckBox1}

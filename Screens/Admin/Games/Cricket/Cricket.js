@@ -17,7 +17,7 @@ function _Cricket({ route, navigation }) {
         console.log(Tname);
         firebase.firestore().collection('Tournaments').
             doc(Tname).collection('Games').doc('Cricket')
-            .collection('Scores')
+            .collection('Scores').orderBy('createdAt', 'desc')
             .onSnapshot(querySnapShot => {
                 const array = [];
                 if (querySnapShot != null) {
@@ -35,9 +35,13 @@ function _Cricket({ route, navigation }) {
         return (
             <TouchableOpacity style={styles.gameBtn} onPress={()=>{navigation.navigate('updateCricket',{
                 mName:data.Match_name,
+                lName:data.Match_level,
+                tone:data.Team1,
+                ttwo:data.Team2,
                 Tname: Tname
             })}}>
                 <Text style={styles.gameBtntext}>{data.Match_name}</Text>
+                <Text style={styles.levelText}>{data.Match_level}</Text>
             </TouchableOpacity>
         )
     }

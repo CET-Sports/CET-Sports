@@ -12,16 +12,19 @@ function addCricket({route}) {
     const[teamTwo,setTeamTwo] = useState('');
     const[overs,setOvers] = useState('');
 
+    const date = new Date(); 
+
     const {Tname} = route.params
 
     const sendData = ()=>{
         firebase.firestore().collection('Tournaments').doc(Tname).collection('Games').doc('Cricket')
-        .collection('Scores').doc(name).set({
+        .collection('Scores').doc(name+" "+level).set({
             Match_name:name,
             Match_level:level,
             Overs:overs,
             Team1:teamOne,
             Team2:teamTwo,
+            createdAt:date
         })
     }
 

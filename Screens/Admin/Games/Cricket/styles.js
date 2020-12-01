@@ -37,6 +37,12 @@ const styles = StyleSheet.create({
         fontFamily:'OpenSans-Bold',
         fontSize:18
     },
+    levelText:{
+        letterSpacing:2,
+        color:'#CCCCCC',
+        fontSize:16,
+        marginTop:10
+    },
     pending:{
         color:'#ff3838',
         fontFamily:'OpenSans-SemiBold',
@@ -46,6 +52,54 @@ const styles = StyleSheet.create({
         color:'#32ff7e',
         fontFamily:'OpenSans-SemiBold',
         marginTop:10
+    },
+    header:{
+        backgroundColor:'#fff',
+        padding:30,
+        alignItems:'center',
+        justifyContent:'center'
+    },
+    headerText:{
+        color:colors.primaryColor,
+        fontFamily:'OpenSans-SemiBold',
+        fontSize:16
+    },
+    scoreBoard:{
+        padding:10,
+        backgroundColor:'#1e3799',
+        borderRadius:100,
+        marginHorizontal:25,
+        flexDirection:'row'
+    },
+    teamName:{
+        color:'#fff',
+        fontSize:18,
+        fontFamily:'OpenSans-SemiBold',
+        margin:20
+    },
+    nameCntnr:{
+        flexDirection:'row',
+        alignItems:'center'
+    },
+    gmeMsg:{
+        alignSelf:'center',
+        margin:10,
+        fontFamily:'OpenSans-SemiBold',
+        color:colors.primaryColor,
+        fontSize:12
+    },
+    scoreCalc:{
+        flexDirection:'row',
+        marginTop:20,
+        flex:1,
+        borderTopWidth:0.9,
+        borderColor:'grey',
+        justifyContent:'center'
+    },
+    score:{
+        height:50,
+        width:50,
+        margin:10
     }
 })
 
