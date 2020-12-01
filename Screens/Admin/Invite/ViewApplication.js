@@ -6,8 +6,53 @@ import firestore from '@react-native-firebase/firestore';
 import AsyncStorage from '@react-native-community/async-storage';
 
 export default function ViewApplication() {
+  const [dataSource, setDatasource] = useState([]);
+  const [size,setSize] = useState(1);
+  const [phone, setPhone] = useState('');
+
 
   useEffect(() => {
+
+   
+
+
+
+    getData('userData')
+                .then(response => {
+                console.log('response');
+                console.log(response);
+                setPhone(response.phone);
+                })
+
+
+                firebase.firestore().
+      collection('Sports').
+      onSnapshot(querySnapShot => {
+        const array = [];
+        if (querySnapShot != null) {
+          console.log(querySnapShot.size);
+          setSize(querySnapShot.size);
+          querySnapShot.forEach(documentSnapShot => {
+            array.push({
+              ...documentSnapShot.data().item    
+            });
+            setDatasource(array);
+            // getChampImage(yr);
+            });
+        }
+      })
+
+      console.log(dataSource[1])
+
+
+
+
+
+
+
+
+
+
     
   }, [])
 
@@ -23,37 +68,20 @@ export default function ViewApplication() {
   }
 
 
-  function Item({ data }) {
+  function Item() {
     return (
       
       <View>
-        
-        <Text>{data.item}</Text>
-      {
-        trp?
-        <Text>Applied</Text>
+        <Text>Hello</Text>
 
-         :
-        <TouchableOpacity onPress={()=>{push(data.item)}}><Text>Apply</Text></TouchableOpacity>
-      
-      }
-        </View>
+      </View>
 
     )
   }
 
   return (
     <View>
-      {
-        size > 0 ?
-        <FlatList
-        data={dataSource}
-        renderItem={({ item }) => <Item data={item} />}
-        keyExtractor={(item, index) => index.toString()}
-      />
-      :
-      <Text>No Invitaions</Text>
-      }
+      <Text>HELLO</Text>
     </View>
   )
 }

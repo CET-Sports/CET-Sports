@@ -32,6 +32,7 @@ import Update from '../Screens/Admin/Tournament/UpdateTournament/Update';
 import _Cricket from '../Screens/Admin/Games/Cricket/Cricket';
 import addCricket from '../Screens/Admin/Games/Cricket/addCricket';
 import updateCricket from '../Screens/Admin/Games/Cricket/updateCricket';
+import ViewApplication from '../Screens/Admin/Invite/ViewApplication';
 
 const Drawer = createDrawerNavigator();
 const Tabs = createMaterialBottomTabNavigator();
@@ -471,6 +472,10 @@ function Routes(props) {
                                     <Drawer.Screen
                                         name="Invite"
                                         component={InviteStackScreen}
+                                    />
+                                     <Drawer.Screen
+                                        name="ViewApplication"
+                                        component={ViewApplication}
                                     />
                                     <Drawer.Screen
                                         name="Club_Regis"

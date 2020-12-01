@@ -106,6 +106,12 @@ function DrawerContent({ navigation }) {
                     Team Invitation
                 </Text>
             </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={() => { navigation.navigate('ViewApplication') }}>
+                <Entypo name='sports-club' color='#000' size={25} style={{ ...styles.icon, opacity: 0.8 }} />
+                <Text style={styles.drawerText}>
+                    ViewApplication
+                </Text>
+            </TouchableOpacity>
             <TouchableOpacity style={styles.button} onPress={() => { navigation.navigate('Club_Regis') }}>
                 <Entypo name='sports-club' color='#000' size={25} style={{ ...styles.icon, opacity: 0.8 }} />
                 <Text style={styles.drawerText}>
