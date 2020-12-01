@@ -7,6 +7,28 @@ const styles=StyleSheet.create({
         alignItems: "center",
 
     },
+    containerJoin:{
+        //flexDirection:'row',
+        marginTop:20,
+       // marginLeft:30,
+        alignItems: "center",
+
+    },
+    joinHeader:{
+        backgroundColor:'#f003fc',
+        padding:10,
+
+    },
+    joinHeaderText:{
+        fontFamily:"Cochin",
+        fontSize:25,  
+    },
+    button:{
+      //  alignItems:'center',
+        padding:15,
+        backgroundColor:'#d8dde6',
+       // marginHorizontal:100
+    },
     button1:{
         
         width:200,
