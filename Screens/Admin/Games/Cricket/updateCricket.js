@@ -48,26 +48,43 @@ function updateCricket({ route }) {
             </View>
             <Text style={styles.gmeMsg}>CSK WON THE TOSS AND CHOSE TO FIELD</Text>
             <View style={styles.scoreCalc}>
-                <TouchableOpacity>
-                    <View>
-                        <Image source={require('../../../../Icons/one.png')} style={styles.score}/>
-                    </View>
+                <View style={{flexDirection:'row',justifyContent:'center'}}>
+                    <TouchableOpacity>
+                        <View>
+                            <Image source={require('../../../../Icons/one.png')} style={styles.score} />
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity>
+                        <View>
+                            <Image source={require('../../../../Icons/two.png')} style={styles.score} />
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity>
+                        <View>
+                            <Image source={require('../../../../Icons/four.png')} style={styles.score} />
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity>
+                        <View>
+                            <Image source={require('../../../../Icons/six.png')} style={styles.score} />
+                        </View>
+                    </TouchableOpacity>
+                </View>
+                <View style={{flexDirection:'row',justifyContent:'center',marginTop:20}}>
+                    <TouchableOpacity style={styles.plusBtn}>
+                        <Text>OUT +</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.plusBtn}>
+                        <Text>EXTRAS +</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.plusBtn}>
+                        <Text>BALL +</Text>
+                    </TouchableOpacity>
+                </View>
+                <TouchableOpacity style={styles.endBtn}>
+                    <Text style={{fontFamily:'OpenSans-SemiBold',color:'#fff'}}>End Match</Text>
                 </TouchableOpacity>
-                <TouchableOpacity>
-                    <View>
-                        <Image source={require('../../../../Icons/two.png')} style={styles.score}/>
-                    </View>
-                </TouchableOpacity>
-                <TouchableOpacity>
-                    <View>
-                        <Image source={require('../../../../Icons/four.png')} style={styles.score}/>
-                    </View>
-                </TouchableOpacity>
-                <TouchableOpacity>
-                    <View>
-                        <Image source={require('../../../../Icons/six.png')} style={styles.score}/>
-                    </View>
-                </TouchableOpacity>
+
             </View>
             {/* <View style={styles.teamTwo}>
                 <Text>{ttwo}</Text>

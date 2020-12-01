@@ -89,18 +89,32 @@ const styles = StyleSheet.create({
         fontSize:12
     },
     scoreCalc:{
-        flexDirection:'row',
         marginTop:20,
         flex:1,
         borderTopWidth:0.9,
         borderColor:'grey',
-        justifyContent:'center'
+        justifyContent:'center',
     },
     score:{
         height:50,
         width:50,
         margin:10
+    },
+    plusBtn:{
+        padding:15,
+        borderRadius:12,
+        borderColor:colors.primaryColor,
+        borderWidth:1.5,
+        alignItems:'center',
+        marginHorizontal:10
+    },
+    endBtn:{
+        padding:20,
+        alignItems:'center',
+        marginTop:40,
+        backgroundColor:'#ff3838',
+        marginHorizontal:40,
+        borderRadius:15
     }
 })
-
 export default styles;
