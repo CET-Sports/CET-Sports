@@ -1,9 +1,11 @@
 import React,{useState,useEffect} from 'react';
+
 import styles from './styles';
 import {
     View,
     Text,
     TouchableOpacity,
+    FlatList
 
 } from 'react-native';
 import { firebase } from '@react-native-firebase/auth';
@@ -40,14 +42,13 @@ function joinClub(props) {
 
     })
 
+
+    function Item({ data }) {
+        console.log(data);
+
     return (
         <>
-        <View style={styles.joinHeader}>
-            <Text style={styles.joinHeaderText}>
-            JoinAClub
-            </Text>
-
-        </View>
+        
         <View style={styles.containerJoin}>
             <TouchableOpacity style={styles.button}>
                 <Text>{data.item}</Text>
@@ -56,11 +57,19 @@ function joinClub(props) {
         </>
         
     );
+    }
 
-    function Item({ data }) {
+    
 
         return (
+
             <View>
+                <View style={styles.joinHeader}>
+            <Text style={styles.joinHeaderText}>
+            JoinAClub
+            </Text>
+
+        </View>
             {
             
                 size > 0 ?
@@ -74,8 +83,7 @@ function joinClub(props) {
              }
             </View>
         );
-     
-    }
+    
 }
 
 export default joinClub;
