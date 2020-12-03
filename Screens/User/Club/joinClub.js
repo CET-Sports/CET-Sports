@@ -9,7 +9,6 @@ import {
 
 } from 'react-native';
 import { firebase } from '@react-native-firebase/auth';
-import { getPixelSizeForLayoutSize } from 'react-native/Libraries/Utilities/PixelRatio';
 
 function joinClub(props) {
 
@@ -19,38 +18,51 @@ function joinClub(props) {
 
     useEffect(() => {
 
-        const array = [];
+        console.log(dataSource)
 
         firebase.firestore().collection('Club').onSnapshot(querySnapshot => {
+
+            const array = [];
+
             querySnapshot.forEach(documentSnapshot => {
+
+
+                console.log(documentSnapshot.data())
+
+                //console.log("Tesasdsafsf");
 
                 setSize(querySnapshot.size);
 
-               
-                //console.log(documentSnapshot.data())
+                 array.push({
+                     ...documentSnapshot.data()
+                 })
+
+                setDataSource(array)
+
+                
             });
 
-            setDataSource(array)
+            
 
-            //console.log(dataSource)
+            
             //console.log(size)
 
         })
 
 
 
-    })
+    },[])
 
 
     function Item({ data }) {
-        console.log(data);
+        
 
     return (
         <>
         
         <View style={styles.containerJoin}>
             <TouchableOpacity style={styles.button}>
-                <Text>{data.item}</Text>
+    <Text>{data.ClubName}</Text>
             </TouchableOpacity>
         </View>
         </>
