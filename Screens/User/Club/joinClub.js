@@ -26,8 +26,7 @@ function joinClub(props) {
 
                 setSize(querySnapshot.size);
 
-                array.push(...documentSnapshot.data().ClubName)
-
+               
                 //console.log(documentSnapshot.data())
             });
 

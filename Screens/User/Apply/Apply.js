@@ -86,36 +86,25 @@ export default function Apply() {
      where('phone','==',phone)
     .get()
     .then(querySnapshot => {
-      querySnapshot.forEach(documentSnapshot => {
-        console.log("block2");
-        setSports(true);
-      
+
+        if(!querySnapshot.empty)
+        {
+           console.log("Not Empty")
+        }
+        else
+        {
+          firebase.firestore().collection('Apply').doc(data1).collection('Student').doc().set({
+            name:name,
+            dp:dp,
+            dept:dept,
+            gender:gender,
+            phone:phone,
+            sprt:data1
+          })
+        }
+  
 
       });
-    });
-    
-    console.log(sports);
-    
-
-   if(sports==false)
-   {
-    firebase.firestore().collection('Apply').doc(data1).collection('Student').doc().set({
-      name:name,
-      dp:dp,
-      dept:dept,
-      gender:gender,
-      phone:phone,
-      sprt:data1
-    })
-  }
-  else
-  {
-   console.log("Sorry")
-
-  }
-   
-   console.log(sports)
-
 
    setModalVisible(true);
 
