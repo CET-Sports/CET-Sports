@@ -12,7 +12,7 @@ function _Cricket({ route, navigation }) {
 
     const [dataSource, setDataSource] = useState([]);
     const { Tname } = route.params
-
+    
     useEffect(() => {
         console.log(Tname);
         firebase.firestore().collection('Tournaments').

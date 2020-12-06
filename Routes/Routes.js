@@ -161,6 +161,40 @@ const ProfileStackScreen = ({ navigation }) => (
     </ProfileStack.Navigator>
 )
 
+const ClubStackScreen = ({ navigation }) => (
+    <ClubStack.Navigator
+        screenOptions={{
+            headerStyle: {
+                elevation: 0,
+                backgroundColor: colors.primaryColor
+            },
+            headerLeft: () => (
+                <TouchableOpacity onPress={() => { navigation.openDrawer() }} style={{ alignItems: 'center', justifyContent: 'center' }}>
+                    <AntDesign name="menuunfold" size={23} color={'#fff'} style={{ marginLeft: 10 }} />
+                </TouchableOpacity>
+            )
+        }}
+
+    >
+        <ClubStack.Screen
+            name="clubMain"
+            component={Club_Main}
+            options={{
+                headerStatusBarHeight: 0,
+                headerTintColor: '#fff'
+            }}
+        />
+        <ClubStack.Screen
+            name="joinClub"
+            component={joinClub}
+            options={{
+                headerStatusBarHeight: 0,
+                headerTintColor: '#fff'
+            }}
+        />
+    </ClubStack.Navigator>
+)
+
 
 const TabScreen = () => (
     <Tabs.Navigator
@@ -450,11 +484,9 @@ function Routes(props) {
                                         name="Apply"
                                         component={Apply}
                                     />
-
                                     <Drawer.Screen
-
                                         name="Club_Main"
-                                        component={Club_Main}
+                                        component={ClubStackScreen}
                                     />
                                     <Drawer.Screen
                                         name="Profile"
