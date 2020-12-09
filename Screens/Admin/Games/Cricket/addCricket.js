@@ -11,6 +11,7 @@ function addCricket({route}) {
     const[teamOne,setTeamOne] = useState('');
     const[teamTwo,setTeamTwo] = useState('');
     const[overs,setOvers] = useState('');
+    const[msg,setMsg] = useState('');
 
     const date = new Date(); 
 
@@ -19,12 +20,30 @@ function addCricket({route}) {
     const sendData = ()=>{
         firebase.firestore().collection('Tournaments').doc(Tname).collection('Games').doc('Cricket')
         .collection('Scores').doc(name+" "+level).set({
+            Message:msg,
             Match_name:name,
             Match_level:level,
             Overs:overs,
             Team1:teamOne,
             Team2:teamTwo,
             createdAt:date
+        })
+        firebase.firestore().collection('Tournaments').doc(Tname).collection('Games').doc('Cricket')
+        .collection('Scores').doc(name+" "+level).collection('Teams').doc('Team1').set({
+            name:teamOne,
+            Overs:0.0,
+            runs:0,
+            wickets:0,
+            status:'',
+            balls:0
+        })
+        firebase.firestore().collection('Tournaments').doc(Tname).collection('Games').doc('Cricket')
+        .collection('Scores').doc(name+" "+level).collection('Teams').doc('Team2').set({
+            name:teamTwo,
+            Overs:0.0,
+            runs:0,
+            wickets:0,
+            status:''
         })
     }
 
@@ -49,6 +68,7 @@ function addCricket({route}) {
             <TextInput placeholder='Team1' onChangeText={(value)=>{setTeamOne(value)}}/>
             <TextInput placeholder='Team2' onChangeText={(value)=>{setTeamTwo(value)}}/>
             <TextInput placeholder='Overs' onChangeText={(value)=>{setOvers(value)}}/>
+            <TextInput placeholder='Message' onChangeText={(value)=>{setMsg(value)}}/>
             <TouchableOpacity onPress={()=>{sendData()}}>
                 <Text>Send</Text>
             </TouchableOpacity>

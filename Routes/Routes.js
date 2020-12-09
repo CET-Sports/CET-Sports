@@ -313,7 +313,7 @@ const TournamentStackScreen = ({ navigation }) => (
                 headerStatusBarHeight: 0,
                 headerTintColor: '#fff'
             }}
-        />
+        />      
         <TournamentStack.Screen
             name="Update"
             component={Update}

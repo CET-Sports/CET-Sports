@@ -65,11 +65,13 @@ const styles = StyleSheet.create({
         fontSize:16
     },
     scoreBoard:{
-        padding:10,
+        paddingVertical:10,
         backgroundColor:'#1e3799',
         borderRadius:100,
         marginHorizontal:25,
-        flexDirection:'row'
+        flexDirection:'row',
+        alignItems:'center',
+        justifyContent:'center'
     },
     teamName:{
         color:'#fff',
@@ -115,6 +117,25 @@ const styles = StyleSheet.create({
         backgroundColor:'#ff3838',
         marginHorizontal:40,
         borderRadius:15
+    },
+    btnCntnr:{
+        flexDirection:'row',
+        backgroundColor:'#fff'
+    },
+    nameBtn:{
+        marginTop:20,
+        paddingVertical:20,
+        backgroundColor:'white',
+        flexDirection:'column',
+        flex:1,
+        alignItems:'center',
+        borderColor:colors.primaryColor,
+        borderWidth:1
+    },
+    btnTxt:{
+        color:colors.primaryColor,
+        fontFamily:'OpenSans-Bold',
+        fontSize:22
     }
 })
 export default styles;
