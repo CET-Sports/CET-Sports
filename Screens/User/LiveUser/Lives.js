@@ -11,15 +11,8 @@ const dimensions = Dimensions.get('window');
 
 let sdp
 
-let candidates = []
-
 const pc_config = {
   "iceServers": [
-    // {
-    //   urls: 'stun:[STUN_IP]:[PORT]',
-    //   'credentials': '[YOR CREDENTIALS]',
-    //   'username': '[USERNAME]'
-    // },
     {
       urls: 'stun:stun.l.google.com:19302'
     }
@@ -31,32 +24,21 @@ let pc = new RTCPeerConnection(pc_config)
 function Lives() {
   const [localStream, setLocalStream] = useState(null);
   const [remoteStream, setRemoteStream] = useState(null);
+  const [start, setStart] = useState(false);
 
   useEffect(() => {
+      firebase.firestore().
+        collection('adminSdp').
+        onSnapshot(querySnapShot => {
+          createAnswer();
+        })
 
-    pc.onicecandidate = (e) => {
-      // send the candidates to the remote peer
-      // see addCandidate below to be triggered on the remote peer
-      if (e.candidate) {
-        console.log(JSON.stringify(e.candidate))
-        // sendToPeer('candidate', e.candidate)
-        firebase.firestore().
-          collection('Peers').
-          doc('userCandidate').
-          set({
-            usercandidate: e.candidate
-          })
-      }
-    }
-
-    // triggered when there is a change in connection state
     pc.oniceconnectionstatechange = (e) => {
       console.log(e)
     }
 
     pc.onaddstream = (e) => {
       debugger
-      // this.remoteVideoref.current.srcObject = e.streams[0]
       setRemoteStream(e.stream)
     }
 
@@ -85,7 +67,7 @@ function Lives() {
         audio: true,
         video: {
           mandatory: {
-            minWidth: 500, // Provide your own width, height and frame rate here
+            minWidth: 500,
             minHeight: 300,
             minFrameRate: 30
           },
@@ -99,37 +81,17 @@ function Lives() {
         .catch(failure);
     });
 
-
-    firestore()
-      .collection('adminSdp')
-      .doc(JSON.stringify(1))
-      .onSnapshot(documentSnapshot => {
-        // console.log('User data: ', documentSnapshot.data());
-        try {
-          if (documentSnapshot.data != null) {
-            const desc = JSON.parse(documentSnapshot.data().sdp);
+    const subscriber = firestore().
+      collection('adminSdp').
+      onSnapshot(querySnapShot => {
+        if (querySnapShot != null) {
+          querySnapShot.forEach(documentSnapShot => {
+            console.log(documentSnapShot.data().sdp);
+            const desc = JSON.parse(documentSnapShot.data().sdp);
             pc.setRemoteDescription(new RTCSessionDescription(desc))
-          }
+          });
         }
-        catch {
-          (err) => {
-            console.log(err);
-          }
-        }
-
-      });
-
-    // const subscriber = firestore().
-    //   collection('adminSdp').
-    //   onSnapshot(querySnapShot => {
-    //     if (querySnapShot != null) {
-    //       querySnapShot.forEach(documentSnapShot => {
-    //         console.log(documentSnapShot.data().sdp);
-    //         const desc = JSON.parse(documentSnapShot.data().sdp);
-    //         pc.setRemoteDescription(new RTCSessionDescription(desc))
-    //       });
-    //     }
-    //   })
+      })
     firestore().
       collection('adminCandidate').
       onSnapshot(querySnapShot => {
@@ -141,53 +103,14 @@ function Lives() {
           });
         }
       })
-
-      firestore()
-      .collection('adminCandidate')
-      .doc(JSON.stringify(1))
-      .onSnapshot(documentSnapshot => {
-        // console.log('User data: ', documentSnapshot.data());
-        try {
-            const cand = (documentSnapShot.data().candidate);
-            pc.addIceCandidate(new RTCIceCandidate(cand))
-          
-        }
-        catch {
-          (err) => {
-            console.log(err);
-          }
-        }
-
-      });
-      
     return () => subscriber()
   }, []);
 
-  createOffer = () => {
-    console.log('Offer')
 
-    // https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/createOffer
-    // initiates the creation of SDP
-    pc.createOffer({ offerToReceiveVideo: 1, offerToReceiveAudio: 1 })
-      .then(sdp => {
-        console.log(JSON.stringify(sdp))
-        firebase.firestore().
-          collection('Peers').
-          doc('adminSdp').
-          set({
-            adminSdp: JSON.stringify(sdp)
-          })
-
-        // set offer sdp as local description
-        pc.setLocalDescription(sdp)
-
-        // sendToPeer('offerOrAnswer', sdp)
-      })
-  }
-
-  createAnswer = () => {
+  const createAnswer = () => {
+    setStart(true);
     console.log('Answer')
-    pc.createAnswer({ offerToReceiveVideo: 1, offerToReceiveAudio: 1 })
+    pc.createAnswer({ offerToReceiveVideo: 1 })
       .then(sdp => {
         console.log(JSON.stringify(sdp))
         firebase.firestore().
@@ -196,7 +119,6 @@ function Lives() {
           set({
             sdp: JSON.stringify(sdp)
           })
-        // set answer sdp as local description
         pc.setLocalDescription(sdp)
       })
   }
@@ -208,7 +130,7 @@ function Lives() {
         key={2}
         mirror={true}
         style={{ ...styles.rtcViewRemote }}
-        objectFit='contain'
+        objectFit='cover'
         streamURL={remoteStream && remoteStream.toURL()}
       />
     ) :
