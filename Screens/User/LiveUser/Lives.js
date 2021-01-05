@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ScrollView, View, Text, StatusBar, TouchableOpacity, Dimensions } from 'react-native';
+import { SafeAreaView, StyleSheet, ScrollView, View, Text, StatusBar, TouchableOpacity, Dimensions } from 'react-native';
 import styles from './styles';
 import { RTCPeerConnection, RTCIceCandidate, RTCSessionDescription, RTCView, MediaStream, MediaStreamTrack, mediaDevices, registerGlobals }
   from 'react-native-webrtc';
@@ -22,62 +22,123 @@ const pc_config = {
 let pc = new RTCPeerConnection(pc_config)
 
 function Lives() {
-
+  const [localStream, setLocalStream] = useState(null);
   const [remoteStream, setRemoteStream] = useState(null);
+  const [start, setStart] = useState(false);
 
   useEffect(() => {
+      firebase.firestore().
+        collection('adminSdp').
+        onSnapshot(querySnapShot => {
+          createAnswer();
+        })
 
+    pc.oniceconnectionstatechange = (e) => {
+      console.log(e)
+    }
 
     pc.onaddstream = (e) => {
       debugger
       setRemoteStream(e.stream)
     }
 
+    const success = (stream) => {
+      console.log('stream.toURL:' + stream.toURL())
+      setLocalStream(stream)
+      pc.addStream(stream)
+    }
+
+    const failure = (e) => {
+      console.log('getUserMedia Error: ', e)
+    }
+
+    let isFront = true;
+    mediaDevices.enumerateDevices().then(sourceInfos => {
+      console.log(sourceInfos);
+      let videoSourceId;
+      for (let i = 0; i < sourceInfos.length; i++) {
+        const sourceInfo = sourceInfos[i];
+        if (sourceInfo.kind == "videoinput" && sourceInfo.facing == (isFront ? "front" : "environment")) {
+          videoSourceId = sourceInfo.deviceId;
+        }
+      }
+
+      const constraints = {
+        audio: true,
+        video: {
+          mandatory: {
+            minWidth: 500,
+            minHeight: 300,
+            minFrameRate: 30
+          },
+          facingMode: (isFront ? "user" : "environment"),
+          optional: (videoSourceId ? [{ sourceId: videoSourceId }] : [])
+        }
+      }
+
+      mediaDevices.getUserMedia(constraints)
+        .then(success)
+        .catch(failure);
+    });
+
+    const subscriber = firestore().
+      collection('adminSdp').
+      onSnapshot(querySnapShot => {
+        if (querySnapShot != null) {
+          querySnapShot.forEach(documentSnapShot => {
+            console.log(documentSnapShot.data().sdp);
+            const desc = JSON.parse(documentSnapShot.data().sdp);
+            pc.setRemoteDescription(new RTCSessionDescription(desc))
+          });
+        }
+      })
+    firestore().
+      collection('adminCandidate').
+      onSnapshot(querySnapShot => {
+        if (querySnapShot != null) {
+          querySnapShot.forEach(documentSnapShot => {
+            console.log(documentSnapShot.data().sdp);
+            const cand = (documentSnapShot.data().candidate);
+            pc.addIceCandidate(new RTCIceCandidate(cand))
+          });
+        }
+      })
+    return () => subscriber()
   }, []);
 
 
   const createAnswer = () => {
-    try {
-      console.log('Answer')
-      firestore().
-        collection('adminSdp').
-        onSnapshot(querySnapShot => {
-          if (querySnapShot != null) {
-            
-            querySnapShot.forEach(documentSnapShot => {
-              
-              const desc = JSON.parse(documentSnapShot.data().sdp);
-              pc.setRemoteDescription(new RTCSessionDescription(desc))
-              pc.createAnswer({ offerToReceiveVideo: 1 })
-                .then(sdp => {
-                  try{
-                  pc.setLocalDescription(sdp)
-                  firebase.firestore().collection('userSdp').doc('sdp').set({
-                    sdp: JSON.stringify(sdp)
-                  })
-                }
-                catch{}
-                })
-              
-              
-            });
-          
-          
-          }
-
-
-        })
-    }
-
-    catch {
-      (Err) => {
-        console.log(Err)
-      }
-    }
-    console.log('user ' + pc.signalingState)
-
+    setStart(true);
+    console.log('Answer')
+    pc.createAnswer({ offerToReceiveVideo: 1 })
+      .then(sdp => {
+        console.log(JSON.stringify(sdp))
+        firebase.firestore().
+          collection('userSdp').
+          doc('sdp').
+          set({
+            sdp: JSON.stringify(sdp)
+          })
+        pc.setLocalDescription(sdp)
+      })
   }
 
+
+  const remoteVideo = remoteStream ?
+    (
+      <RTCView
+        key={2}
+        mirror={true}
+        style={{ ...styles.rtcViewRemote }}
+        objectFit='cover'
+        streamURL={remoteStream && remoteStream.toURL()}
+      />
+    ) :
+    (
+      <View style={{ padding: 15, }}>
+        <Text style={{ fontSize: 22, textAlign: 'center', color: 'white' }}>Waiting for Peer connection ...</Text>
+      </View>
+    )
 
   return (
 

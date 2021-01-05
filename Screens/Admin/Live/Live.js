@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { ScrollView, View, Text, StatusBar, TouchableOpacity, Dimensions } from 'react-native';
+import { SafeAreaView, StyleSheet, ScrollView, View, Text, StatusBar, TouchableOpacity, Dimensions } from 'react-native';
 import styles from './styles';
-import { RTCPeerConnection, RTCSessionDescription, RTCView, mediaDevices }
+import { RTCPeerConnection, RTCIceCandidate, RTCSessionDescription, RTCView, MediaStream, MediaStreamTrack, mediaDevices, registerGlobals }
   from 'react-native-webrtc';
 import { firebase } from '@react-native-firebase/app';
 import firestore from '@react-native-firebase/firestore';
@@ -20,27 +20,46 @@ const pc_config = {
   ]
 }
 
+let pc = new RTCPeerConnection(pc_config)
 
 function Live() {
-
   const [localStream, setLocalStream] = useState(null);
-  const [pc, setPc] = useState(new RTCPeerConnection(pc_config));
+  const [remoteStream, setRemoteStream] = useState(null);
+  const [start, setStart] = useState(false);
+
+
+
 
   useEffect(() => {
 
+      firebase.firestore().
+      collection('userSdp').
+      onSnapshot(querySnapShot => {
+          createOffer();
+      })
+
+    pc.oniceconnectionstatechange = (e) => {
+      console.log(e)
+    }
+
+    pc.onaddstream = (e) => {
+      debugger
+      setRemoteStream(e.stream)
+    }
+
     const success = (stream) => {
-      // console.log('stream.toURL:' + stream.toURL())
+      console.log('stream.toURL:' + stream.toURL())
       setLocalStream(stream)
       pc.addStream(stream)
     }
 
     const failure = (e) => {
-      // console.log('getUserMedia Error: ', e)
+      console.log('getUserMedia Error: ', e)
     }
 
     let isFront = true;
     mediaDevices.enumerateDevices().then(sourceInfos => {
-      // console.log(sourceInfos);
+      console.log(sourceInfos);
       let videoSourceId;
       for (let i = 0; i < sourceInfos.length; i++) {
         const sourceInfo = sourceInfos[i];
@@ -67,59 +86,71 @@ function Live() {
         .catch(failure);
     });
 
-    firestore().
+    const subscriber = firestore().
       collection('userSdp').
       onSnapshot(querySnapShot => {
+        const data = [];
         if (querySnapShot != null) {
-          try{
-            querySnapShot.forEach(documentSnapShot => {
-              const desc = JSON.parse(documentSnapShot.data().sdp);
-              pc.setRemoteDescription(new RTCSessionDescription(desc))
-              console.log('admin ' + pc.signalingState)
-            });
-          }
-
-          catch{(Err)=>{
-            console.log(Err)
-          }}
-
+          querySnapShot.forEach(documentSnapShot => {
+            console.log(documentSnapShot.data().sdp);
+            const desc = JSON.parse(documentSnapShot.data().sdp);
+            pc.setRemoteDescription(new RTCSessionDescription(desc))
+          });
         }
       })
-
-
+    return () => subscriber()
   }, []);
 
   const createOffer = () => {
     console.log('Offer')
-    pc.createOffer({ offerToReceiveVideo: 1, offerToReceiveAudio: 1 })
+    pc.createOffer({ offerToReceiveVideo: 1 })
       .then(sdp => {
-        pc.setLocalDescription(sdp)
+        console.log(JSON.stringify(sdp))
         firebase.firestore().
           collection('adminSdp').
           doc('sdp').
           set({
             sdp: JSON.stringify(sdp)
           })
-
+        pc.setLocalDescription(sdp)
       })
   }
 
-  const End = () => {
-    console.log('End')
-    setPc(new RTCPeerConnection(pc_config))
-    firebase.firestore().
-      collection('adminSdp').
-      doc('sdp').
-      set({
-        sdp: null
-      })
-    firebase.firestore().
-      collection('userSdp').
-      doc('sdp').
-      set({
-        sdp: null
-      })
+
+
+
+
+
+
+
+  const setPeerConnection = () =>{
+    
   }
+
+
+
+
+
+
+
+
+
+
+  const remoteVideo = remoteStream ?
+    (
+      <RTCView
+        key={2}
+        mirror={true}
+        style={{ ...styles.rtcViewRemote }}
+        objectFit='contain'
+        streamURL={remoteStream && remoteStream.toURL()}
+      />
+    ) :
+    (
+      <View style={{ padding: 15, }}>
+        <Text style={{ fontSize: 22, textAlign: 'center', color: 'white' }}>Waiting for Peer connection ...</Text>
+      </View>
+    )
 
   return (
 
@@ -135,9 +166,6 @@ function Live() {
         />
         <TouchableOpacity style={styles.liveBtn} onPress={() => { createOffer() }}>
           <Text style={{ color: '#fff' }}>Go Live</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.liveBtn} onPress={() => { End() }}>
-          <Text style={{ color: '#fff' }}>End Live</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
