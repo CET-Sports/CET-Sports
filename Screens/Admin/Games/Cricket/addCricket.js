@@ -43,7 +43,8 @@ function addCricket({route}) {
             Overs:0.0,
             runs:0,
             wickets:0,
-            status:''
+            status:'',
+            balls:0
         })
     }
 
