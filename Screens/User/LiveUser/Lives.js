@@ -78,6 +78,48 @@ function Lives() {
 
   }
 
+  const answer1 = ()=>{
+    let pc1 = new RTCPeerConnection(pc_config)
+    try {
+      console.log('Answer')
+      firestore().
+        collection('admin1').
+        onSnapshot(querySnapShot => {
+          if (querySnapShot != null) {
+            
+            querySnapShot.forEach(documentSnapShot => {
+              
+              const desc = JSON.parse(documentSnapShot.data().sdp);
+              pc1.setRemoteDescription(new RTCSessionDescription(desc))
+              pc1.createAnswer({ offerToReceiveVideo: 1 })
+                .then(sdp => {
+                  try{
+                  pc1.setLocalDescription(sdp)
+                  firebase.firestore().collection('user1').doc('sdp').set({
+                    sdp: JSON.stringify(sdp)
+                  })
+                }
+                catch{}
+                })
+              
+              
+            });
+          
+          
+          }
+
+
+        })
+    }
+
+    catch {
+      (Err) => {
+        console.log(Err)
+      }
+    }
+    console.log('user ' + pc.signalingState)
+  }
+
 
   return (
 
