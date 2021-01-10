@@ -7,6 +7,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 export default function ViewApplication() {
   const [dataSource, setDatasource] = useState([]);
+  const [viewData,setViewdata]=useState([]);
   const [size,setSize] = useState(1);
   const [phone, setPhone] = useState('');
 
@@ -42,7 +43,7 @@ export default function ViewApplication() {
         }
       })
 
-      console.log(dataSource[1])
+      
 
 
 

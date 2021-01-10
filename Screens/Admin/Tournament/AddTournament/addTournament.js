@@ -10,7 +10,7 @@ import styles from './styles';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
-function addTournament({navigation}) {
+function addTournament({ navigation }) {
 
     const [toggleCheckBox, setToggleCheckBox] = useState(false);
     const [toggleCheckBox1, setToggleCheckBox1] = useState(false);
@@ -51,7 +51,7 @@ function addTournament({navigation}) {
             type: selectedValue,
             status: 'Pending',
             dept: dept,
-            createdAt:_date
+            createdAt: _date
         })
 
         if (toggleCheckBox == true) {

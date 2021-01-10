@@ -33,6 +33,8 @@ import _Cricket from '../Screens/Admin/Games/Cricket/Cricket';
 import addCricket from '../Screens/Admin/Games/Cricket/addCricket';
 import updateCricket from '../Screens/Admin/Games/Cricket/updateCricket';
 import ViewApplication from '../Screens/Admin/Invite/ViewApplication';
+import joinClub from '../Screens/User/Club/joinClub';
+import clubDetails from '../Screens/User/Club/clubDetails';
 
 const Drawer = createDrawerNavigator();
 const Tabs = createMaterialBottomTabNavigator();
@@ -46,6 +48,7 @@ const LiveStack = createStackNavigator();
 const LiveUserStack = createStackNavigator();
 const TournamentStack = createStackNavigator();
 const ProfileStack = createStackNavigator();
+const ClubStack=createStackNavigator();
 
 const InviteStack = createStackNavigator();
 
@@ -191,6 +194,14 @@ const ClubStackScreen = ({ navigation }) => (
                 headerStatusBarHeight: 0,
                 headerTintColor: '#fff'
             }}
+        />
+            <ClubStack.Screen
+                name="clubDetails"
+                component={clubDetails}
+                options={{
+                    headerStatusBarHeight: 0,
+                    headerTintColor: '#fff'
+                }}
         />
     </ClubStack.Navigator>
 )

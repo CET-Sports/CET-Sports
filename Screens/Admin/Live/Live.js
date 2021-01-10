@@ -34,6 +34,7 @@ function Live() {
       pc.addStream(stream)
     }
 
+    
     const failure = (e) => {
       // console.log('getUserMedia Error: ', e)
     }
