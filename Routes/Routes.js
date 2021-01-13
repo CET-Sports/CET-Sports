@@ -35,6 +35,9 @@ import updateCricket from '../Screens/Admin/Games/Cricket/updateCricket';
 import ViewApplication from '../Screens/Admin/Invite/ViewApplication';
 import joinClub from '../Screens/User/Club/joinClub';
 import clubDetails from '../Screens/User/Club/clubDetails';
+import clubAdminMain from '../Screens/Admin/Club/clubAdminMain';
+import myClub from '../Screens/User/Club/myClub';
+import clubMemAppr from '../Screens/Admin/Club/clubMemAppr';
 
 const Drawer = createDrawerNavigator();
 const Tabs = createMaterialBottomTabNavigator();
@@ -48,7 +51,8 @@ const LiveStack = createStackNavigator();
 const LiveUserStack = createStackNavigator();
 const TournamentStack = createStackNavigator();
 const ProfileStack = createStackNavigator();
-const ClubStack=createStackNavigator();
+const ClubStack = createStackNavigator();
+const ClubAdminStack = createStackNavigator();
 
 const InviteStack = createStackNavigator();
 
@@ -195,13 +199,21 @@ const ClubStackScreen = ({ navigation }) => (
                 headerTintColor: '#fff'
             }}
         />
-            <ClubStack.Screen
-                name="clubDetails"
-                component={clubDetails}
-                options={{
-                    headerStatusBarHeight: 0,
-                    headerTintColor: '#fff'
-                }}
+        <ClubStack.Screen
+            name="clubDetails"
+            component={clubDetails}
+            options={{
+                headerStatusBarHeight: 0,
+                headerTintColor: '#fff'
+            }}
+        />
+        <ClubStack.Screen
+            name="myClub"
+            component={myClub}
+            options={{
+                headerStatusBarHeight: 0,
+                headerTintColor: '#fff'
+            }}
         />
     </ClubStack.Navigator>
 )
@@ -324,7 +336,7 @@ const TournamentStackScreen = ({ navigation }) => (
                 headerStatusBarHeight: 0,
                 headerTintColor: '#fff'
             }}
-        />      
+        />
         <TournamentStack.Screen
             name="Update"
             component={Update}
@@ -359,6 +371,54 @@ const TournamentStackScreen = ({ navigation }) => (
         />
 
     </TournamentStack.Navigator>
+)
+
+const ClubAdminStackScreen = ({ navigation }) => (
+
+    <ClubAdminStack.Navigator
+        screenOptions={{
+            headerStyle: {
+                elevation: 0,
+                backgroundColor: colors.primaryColor
+            },
+            headerLeft: () => (
+                <TouchableOpacity onPress={() => { navigation.openDrawer() }} style={{ alignItems: 'center', justifyContent: 'center' }}>
+                    <AntDesign name="menuunfold" size={23} color={'#fff'} style={{ marginLeft: 10 }} />
+                </TouchableOpacity>
+            )
+        }}
+
+    >
+
+        <ClubAdminStack.Screen
+            name="clubAdminMain"
+            component={clubAdminMain}
+            options={{
+                headerStatusBarHeight: 0,
+                headerTintColor: '#fff'
+            }}
+        />
+
+        <ClubAdminStack.Screen
+            name="Club_Regis"
+            component={Club_Regis}
+            options={{
+                headerStatusBarHeight: 0,
+                headerTintColor: '#fff'
+            }}
+        />
+
+        <ClubAdminStack.Screen
+            name="clubMemAppr"
+            component={clubMemAppr}
+            options={{
+                headerStatusBarHeight: 0,
+                headerTintColor: '#fff'
+            }}
+        />
+
+    </ClubAdminStack.Navigator>
+
 )
 
 const TabScreenAdmin = () => (
@@ -516,13 +576,13 @@ function Routes(props) {
                                         name="Invite"
                                         component={InviteStackScreen}
                                     />
-                                     <Drawer.Screen
+                                    <Drawer.Screen
                                         name="ViewApplication"
                                         component={ViewApplication}
                                     />
                                     <Drawer.Screen
-                                        name="Club_Regis"
-                                        component={Club_Regis}
+                                        name="ClubAdminStackScreen"
+                                        component={ClubAdminStackScreen}
                                     />
                                     {/* <Drawer.Screen
                                         name="Cricket"
