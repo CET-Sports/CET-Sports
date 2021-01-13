@@ -38,7 +38,8 @@ function _Cricket({ route, navigation }) {
                 lName:data.Match_level,
                 tone:data.Team1,
                 ttwo:data.Team2,
-                Tname: Tname
+                Tname: Tname,
+                Ovr:data.Overs
             })}}>
                 <Text style={styles.gameBtntext}>{data.Match_name}</Text>
                 <Text style={styles.levelText}>{data.Match_level}</Text>

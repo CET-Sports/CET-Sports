@@ -16,7 +16,7 @@ import firestore from '@react-native-firebase/firestore';
 
 // const { game } = route.params;
 
-function clubDetails() {
+function clubDetails() { 
 
 
 
