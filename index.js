@@ -10,4 +10,4 @@ import View from './Screens/Admin/Invite/ViewApplication';
 import App from './App';
 
 // import Login from './Screens/Auth/Login';
-AppRegistry.registerComponent(appName, () =>App);
+AppRegistry.registerComponent(appName, () =>Routes);

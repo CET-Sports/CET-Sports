@@ -34,7 +34,9 @@ export default function JoinScreen({ setScreen, screens, roomId }) {
   const [isMuted, setIsMuted] = useState(false);
 
   useEffect(() => {
-    // startLocalStream();
+    db.collection('rooms').onSnapshot(querySnapshot =>{
+      alert(querySnapshot.size)
+    })
   }, []);
 
   const startLocalStream = async () => {
