@@ -37,6 +37,7 @@ import joinClub from '../Screens/User/Club/joinClub';
 import clubDetails from '../Screens/User/Club/clubDetails';
 import clubAdminMain from '../Screens/Admin/Club/clubAdminMain';
 import myClub from '../Screens/User/Club/myClub';
+import clubMemAppr from '../Screens/Admin/Club/clubMemAppr';
 
 const Drawer = createDrawerNavigator();
 const Tabs = createMaterialBottomTabNavigator();

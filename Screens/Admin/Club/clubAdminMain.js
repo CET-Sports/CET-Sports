@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 
-function clubAdminMain(navigation) {
+function clubAdminMain({ navigation }) {
     return (
         <View>
             <TouchableOpacity onPress={() => { navigation.navigate('Club_Regis') }}>
