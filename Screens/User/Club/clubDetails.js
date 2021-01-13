@@ -36,6 +36,7 @@ function clubDetails() {
     const [dept, setDept] = useState();
     const [clubAdvisor, setClubAdvisor] = useState('');
     const [clubPresident, setClubPresident] = useState('');
+    const [ClubName,setClubName]=useState('');
 
     useEffect(() => {
 
@@ -52,11 +53,12 @@ function clubDetails() {
                     .onSnapshot(documentSnapshot => {
                          if ((documentSnapshot.data().phone != null)) {
 
-                        //     setClubAdvisor(documentSnapshot.data().ClubAdvisor)
-                        //     setClubPresident(documentSnapshot.data().ClubPresident)
+                            setClubAdvisor(documentSnapshot.data().ClubAdvisor)
+                            setClubPresident(documentSnapshot.data().ClubPresident)
+                             setClubName(documentSnapshot.data().ClubName)
 
-                        //     setFlag(true)
-                        //     console.log("testing")
+                            setFlag(true)
+                            console.log("testing")
                          }
                     })
 
