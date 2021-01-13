@@ -20,43 +20,65 @@ function clubDetails() {
 
 
 
-    const [phone, setPhone] = useState('');
-    const [name, setName] = useState('');
+    const [phone, setPhone] = useState('+911234567899');
+
+    const [num, setNum] = useState('');
     const [clubName, setClub] = useState('');
+
+    const [ds, setDs] = useState('hello')
 
     const [dataSource, setDataSource] = useState([]);
     const [size, setSize] = useState(1);
     const [modalVisible, setModalVisible] = useState(false);
-    const [applied, setApplied] = useState();
+    const [applied, setApplied] = useState(false);
+    const [flag, setFlag] = useState(false)
+    const [name, setName] = useState('');
+    const [dept, setDept] = useState();
+    const [clubAdvisor, setClubAdvisor] = useState('');
+    const [clubPresident, setClubPresident] = useState('');
 
     useEffect(() => {
-        firebase.firestore().collection('clubMembers').doc(phone).onSnapshot(documentSnapshot =>{
-            console.log('applied:',documentSnapshot.applied)
-            // setApplied(documentSnapshot.data().applied)
-        })
+
         getData('userData')
 
             .then(response => {
                 console.log('response');
                 console.log(response);
-                setPhone(response.phone)
+                // setPhone('+911234567899')
+                setNum(response.phone);
+
+                firebase.firestore()
+                    .collection('clubMembers').doc(response.phone)
+                    .onSnapshot(documentSnapshot => {
+                         if ((documentSnapshot.data().phone != null)) {
+
+                        //     setClubAdvisor(documentSnapshot.data().ClubAdvisor)
+                        //     setClubPresident(documentSnapshot.data().ClubPresident)
+
+                        //     setFlag(true)
+                        //     console.log("testing")
+                         }
+                    })
+
+
+                    firebase.firestore().
+                    collection('Users').
+                    doc(response.phone).
+                    onSnapshot(documentSnapshot => {
+                        if (documentSnapshot != null) {
+                            console.log(documentSnapshot.data().name)
+                            setName(documentSnapshot.data().name)
+                    
+                            setDept( documentSnapshot.data().dept)
+                          
+                        }
+                    })
             })
-
-
-
-        console.log(dataSource)
-
         firebase.firestore().collection('Club').onSnapshot(querySnapshot => {
 
             const array = [];
 
             querySnapshot.forEach(documentSnapshot => {
-
-
-                console.log(documentSnapshot.data())
-
-                console.log(documentSnapshot.data());
-
                 setSize(querySnapshot.size);
 
                 array.push({
@@ -64,14 +86,7 @@ function clubDetails() {
                 })
 
                 setDataSource(array)
-
-
             });
-
-
-
-
-            //console.log(size)
 
         })
 
@@ -94,17 +109,13 @@ function clubDetails() {
             phone: phone,
             clubName: clubName,
             status: 'pending',
-            applied:true
+            applied: true,
+            name:name
 
         })
-
-
+        setFlag(false)
     }
-
     function Item({ data }) {
-
-        // setClub(data.ClubName)
-
         return (
             <>
                 <View>
@@ -115,15 +126,22 @@ function clubDetails() {
                         <Text>Prsident: {data.ClubPresident}</Text>
 
                         <View style={styles.containerJoin}>
-                            <TouchableOpacity style={styles.button} onPress={() => add()}
-                            >
-                                <Text>Join</Text>
-                            </TouchableOpacity>
+                            {
+                                flag ?
+                                    <TouchableOpacity style={styles.button}
+                                    >
+                                        <Text>Applied</Text>
+                                    </TouchableOpacity>
+                                    :
+
+                                    <TouchableOpacity style={styles.button} onPress={() => add()}
+                                    >
+                                        <Text>Join</Text>
+                                    </TouchableOpacity>
+
+                            }
+
                         </View>
-
-
-
-
                         {
                             modalVisible ?
 
@@ -152,6 +170,10 @@ function clubDetails() {
                         }
                     </View>
                 </View>
+                <TouchableOpacity style={styles.button} onPress={() => alert(flag)}
+                >
+                    <Text>Test</Text>
+                </TouchableOpacity>
             </>
 
         );
