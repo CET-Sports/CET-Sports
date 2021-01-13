@@ -24,8 +24,6 @@ function Home(props) {
     const [titleError, setTitleError] = useState('');
     const [contentError, setContentError] = useState('');
     const [imgError, setImgError] = useState('');
-    const [modalVisibleName, setModalVisibleName] = useState(false);
-    const [modalVisibleEmail, setModalVisibleEmail] = useState(false);
     const [modalVisibleLoading, setModalVisibleLoading] = useState(false);
 
 
@@ -97,6 +95,7 @@ function Home(props) {
                 setImgSource(null);
             } else {
                 console.log('User tapped custom button: ', response.customButton);
+                setImgSource(null);
             }
 
         });

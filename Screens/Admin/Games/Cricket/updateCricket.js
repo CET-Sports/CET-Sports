@@ -12,6 +12,7 @@ function updateCricket({ route }) {
     const { Tname } = route.params
     const { tone } = route.params
     const { ttwo } = route.params
+    const { Ovr } = route.params
 
     const [run, setRun] = useState('');
     const [overs, setOvers] = useState('');
@@ -40,7 +41,7 @@ function updateCricket({ route }) {
                 setOvers1(documentSnapshot.data().Overs)
                 setBalls1(documentSnapshot.data().balls)
             })
-            firebase.firestore().collection('Tournaments').
+        firebase.firestore().collection('Tournaments').
             doc(Tname).collection('Games').doc('Cricket')
             .collection('Scores').doc(mName + " " + lName).collection('Teams').doc('Team2')
             .onSnapshot(documentSnapshot => {
@@ -60,30 +61,61 @@ function updateCricket({ route }) {
         return () => subscriber();
     }, [])
 
-    const upOut1 = () => {
-        setOut1(out1 + 1)
-        firebase.firestore().collection('Tournaments').doc(Tname).collection('Games').doc('Cricket')
-            .collection('Scores').doc(mName + " " + lName).collection('Teams').doc('Team1').update({
-                wickets: out1 + 1,
-            })
-    }
-    const upBall1 = () => {
-        if (balls1 < 5) {
-            setBalls1(balls1 + 1);
-            firebase.firestore().collection('Tournaments').doc(Tname).collection('Games').doc('Cricket')
-            .collection('Scores').doc(mName + " " + lName).collection('Teams').doc('Team1').update({
-                balls: balls1 + 1,
-            })
-        }
-        else {
-            setBalls1(0);
-            setOvers1(overs1 + 1)
+    const upOut1 = (val) => {
+        if (val === 'plus' && out1 + 1 <= 10) {
+            setOut1(out1 + 1)
             firebase.firestore().collection('Tournaments').doc(Tname).collection('Games').doc('Cricket')
                 .collection('Scores').doc(mName + " " + lName).collection('Teams').doc('Team1').update({
-                    Overs: overs1 + 1,
-                    balls:0
+                    wickets: out1 + 1,
                 })
         }
+        else if (val === 'minus' && out1 - 1 >= 0) {
+            setOut1(out1 - 1)
+            firebase.firestore().collection('Tournaments').doc(Tname).collection('Games').doc('Cricket')
+                .collection('Scores').doc(mName + " " + lName).collection('Teams').doc('Team1').update({
+                    wickets: out1 - 1,
+                })
+        }
+
+    }
+    const upBall1 = (val) => {
+        if (val === 'plus') {
+            if (balls1 < 5 && overs1 + 1 <= Ovr) {
+                setBalls1(balls1 + 1);
+                firebase.firestore().collection('Tournaments').doc(Tname).collection('Games').doc('Cricket')
+                    .collection('Scores').doc(mName + " " + lName).collection('Teams').doc('Team1').update({
+                        balls: balls1 + 1,
+                    })
+            }
+            else if(overs1 + 1 <= Ovr) {
+                setBalls1(0);
+                setOvers1(overs1 + 1)
+                firebase.firestore().collection('Tournaments').doc(Tname).collection('Games').doc('Cricket')
+                    .collection('Scores').doc(mName + " " + lName).collection('Teams').doc('Team1').update({
+                        Overs: overs1 + 1,
+                        balls: 0
+                    })
+            }
+        }
+        else{
+            if (balls1 > 0) {
+                setBalls1(balls1 - 1);
+                firebase.firestore().collection('Tournaments').doc(Tname).collection('Games').doc('Cricket')
+                    .collection('Scores').doc(mName + " " + lName).collection('Teams').doc('Team1').update({
+                        balls: balls1 - 1,
+                    })
+            }
+            else if(overs1 - 1 >= 0) {
+                setBalls1(5);
+                setOvers1(overs1 - 1)
+                firebase.firestore().collection('Tournaments').doc(Tname).collection('Games').doc('Cricket')
+                    .collection('Scores').doc(mName + " " + lName).collection('Teams').doc('Team1').update({
+                        Overs: overs1 - 1,
+                        balls: 5
+                    })
+            }
+        }
+
     }
     const upRun1 = (val) => {
         setRun1(run1 + val)
@@ -95,13 +127,24 @@ function updateCricket({ route }) {
 
 
 
-    const upOut2 = () => {
-        setOut2(out2 + 1)
-        firebase.firestore().collection('Tournaments').doc(Tname).collection('Games').doc('Cricket')
-            .collection('Scores').doc(mName + " " + lName).collection('Teams').doc('Team2').update({
-                wickets: out2 + 1,
-            })
+    const upOut2 = (val) => {
+        if (val === 'plus' && out2 + 1 <= 10) {
+            setOut2(out2 + 1)
+            firebase.firestore().collection('Tournaments').doc(Tname).collection('Games').doc('Cricket')
+                .collection('Scores').doc(mName + " " + lName).collection('Teams').doc('Team2').update({
+                    wickets: out2 + 1,
+                })
+        }
+        else if (val === 'minus' && out2 - 1 >= 0) {
+            setOut2(out2 - 1)
+            firebase.firestore().collection('Tournaments').doc(Tname).collection('Games').doc('Cricket')
+                .collection('Scores').doc(mName + " " + lName).collection('Teams').doc('Team2').update({
+                    wickets: out2 - 1,
+                })
+        }
+
     }
+
     const upRun2 = (val) => {
         setRun2(run2 + val)
         firebase.firestore().collection('Tournaments').doc(Tname).collection('Games').doc('Cricket')
@@ -109,23 +152,44 @@ function updateCricket({ route }) {
                 runs: run2 + val,
             })
     }
-    const upBall2 = () => {
-        if (balls2 < 5) {
-            setBalls2(balls2 + 1);
-            firebase.firestore().collection('Tournaments').doc(Tname).collection('Games').doc('Cricket')
-            .collection('Scores').doc(mName + " " + lName).collection('Teams').doc('Team2').update({
-                balls: balls2 + 1,
-            })
+    const upBall2 = (val) => {
+        if (val === 'plus') {
+            if (balls2 < 5  && overs2 + 1 <= Ovr) {
+                setBalls2(balls2 + 1);
+                firebase.firestore().collection('Tournaments').doc(Tname).collection('Games').doc('Cricket')
+                    .collection('Scores').doc(mName + " " + lName).collection('Teams').doc('Team2').update({
+                        balls: balls2 + 1,
+                    })
+            }
+            else if(overs2 + 1 <= Ovr) {
+                setBalls2(0);
+                setOvers2(overs2 + 1)
+                firebase.firestore().collection('Tournaments').doc(Tname).collection('Games').doc('Cricket')
+                    .collection('Scores').doc(mName + " " + lName).collection('Teams').doc('Team2').update({
+                        Overs: overs2 + 1,
+                        balls: 0
+                    })
+            }
         }
         else {
-            setBalls2(0);
-            setOvers2(overs2 + 1)
-            firebase.firestore().collection('Tournaments').doc(Tname).collection('Games').doc('Cricket')
-                .collection('Scores').doc(mName + " " + lName).collection('Teams').doc('Team2').update({
-                    Overs: overs2 + 1,
-                    balls:0
-                })
+            if (balls2 > 0) {
+                setBalls2(balls2 - 1);
+                firebase.firestore().collection('Tournaments').doc(Tname).collection('Games').doc('Cricket')
+                    .collection('Scores').doc(mName + " " + lName).collection('Teams').doc('Team2').update({
+                        balls: balls2 - 1,
+                    })
+            }
+            else  if(overs2 - 1 >= 0) {
+                setBalls2(5);
+                setOvers2(overs2 - 1)
+                firebase.firestore().collection('Tournaments').doc(Tname).collection('Games').doc('Cricket')
+                    .collection('Scores').doc(mName + " " + lName).collection('Teams').doc('Team2').update({
+                        Overs: overs2 - 1,
+                        balls: 5
+                    })
+            }
         }
+
     }
 
     const upadateGame = () => {
@@ -191,22 +255,55 @@ function updateCricket({ route }) {
                                 </TouchableOpacity>
                             </View>
                             <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 20 }}>
-                                <TouchableOpacity onPress={() => { upOut1() }} style={styles.plusBtn}>
-                                    <Text>OUT +</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity style={styles.plusBtn}>
-                                    <Text>EXTRAS +</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity onPress={() => { upBall1() }} style={styles.plusBtn}>
-                                    <Text>BALL +</Text>
-                                </TouchableOpacity>
+                                <View style={{ margin: 15 }}>
+                                    <Text style={styles.hdrTxt}>OUT</Text>
+                                    <View style={styles.updateBtnContainer}>
+                                        <TouchableOpacity onPress={() => { upOut1('minus') }} style={styles.minus}>
+                                            <Text style={styles.txt}>-</Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity onPress={() => { upOut1('plus') }} style={styles.plus}>
+                                            <Text style={styles.txt}>+</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+                                <View style={{ margin: 15 }}>
+                                    <Text style={styles.hdrTxt}>RUNS</Text>
+                                    <View style={styles.updateBtnContainer}>
+                                        <TouchableOpacity onPress={() => { upRun1(-1) }} style={styles.minus}>
+                                            <Text style={styles.txt}>-</Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity onPress={() => { upRun1(1) }} style={styles.plus}>
+                                            <Text style={styles.txt}>+</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+
+                                <View style={{ margin: 15 }}>
+                                    <Text style={styles.hdrTxt}>BALLS</Text>
+                                    <View style={styles.updateBtnContainer}>
+                                        <TouchableOpacity onPress={() => { upBall1('minus') }} style={styles.minus}>
+                                            <Text style={styles.txt}>-</Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity onPress={() => { upBall1('plus') }} style={styles.plus}>
+                                            <Text style={styles.txt}>+</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
                             </View>
-                            <TouchableOpacity style={styles.endBtn}>
+                            {/* <TouchableOpacity style={styles.endBtn}>
                                 <Text style={{ fontFamily: 'OpenSans-SemiBold', color: '#fff' }}>End Match</Text>
-                            </TouchableOpacity>
+                            </TouchableOpacity> */}
 
                         </View>
-                    </View> :
+                    </View>
+
+
+
+                    :
+
+
+
+
                     <View style={styles.container}>
                         <View style={styles.header}>
                             <Text style={styles.headerText}>{mName + "-" + lName}</Text>
@@ -249,20 +346,48 @@ function updateCricket({ route }) {
                                     </View>
                                 </TouchableOpacity>
                             </View>
+
+
+
                             <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 20 }}>
-                                <TouchableOpacity onPress={() => { upOut2() }} style={styles.plusBtn}>
-                                    <Text>OUT +</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity style={styles.plusBtn}>
-                                    <Text>EXTRAS +</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity onPress={() => { upBall2() }} style={styles.plusBtn}>
-                                    <Text>BALL +</Text>
-                                </TouchableOpacity>
+                                <View style={{ margin: 15 }}>
+                                    <Text style={styles.hdrTxt}>OUT</Text>
+                                    <View style={styles.updateBtnContainer}>
+                                        <TouchableOpacity onPress={() => { upOut2('minus') }} style={styles.minus}>
+                                            <Text style={styles.txt}>-</Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity onPress={() => { upOut2('plus') }} style={styles.plus}>
+                                            <Text style={styles.txt}>+</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+                                <View style={{ margin: 15 }}>
+                                    <Text style={styles.hdrTxt}>RUNS</Text>
+                                    <View style={styles.updateBtnContainer}>
+                                        <TouchableOpacity onPress={() => { upRun2(-1) }} style={styles.minus}>
+                                            <Text style={styles.txt}>-</Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity onPress={() => { upRun2(1) }} style={styles.plus}>
+                                            <Text style={styles.txt}>+</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+
+                                <View style={{ margin: 15 }}>
+                                    <Text style={styles.hdrTxt}>BALLS</Text>
+                                    <View style={styles.updateBtnContainer}>
+                                        <TouchableOpacity onPress={() => { upBall2('minus') }} style={styles.minus}>
+                                            <Text style={styles.txt}>-</Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity onPress={() => { upBall2('plus') }} style={styles.plus}>
+                                            <Text style={styles.txt}>+</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
                             </View>
-                            <TouchableOpacity style={styles.endBtn}>
+                            {/* <TouchableOpacity style={styles.endBtn}>
                                 <Text style={{ fontFamily: 'OpenSans-SemiBold', color: '#fff' }}>End Match</Text>
-                            </TouchableOpacity>
+                            </TouchableOpacity> */}
 
                         </View>
                     </View>

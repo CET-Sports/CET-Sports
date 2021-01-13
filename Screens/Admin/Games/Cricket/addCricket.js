@@ -10,7 +10,7 @@ function addCricket({route}) {
     const[name,setName] = useState('');
     const[teamOne,setTeamOne] = useState('');
     const[teamTwo,setTeamTwo] = useState('');
-    const[overs,setOvers] = useState('');
+    const[overs,setOvers] = useState();
     const[msg,setMsg] = useState('');
 
     const date = new Date(); 

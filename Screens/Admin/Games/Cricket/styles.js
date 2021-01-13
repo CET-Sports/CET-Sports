@@ -60,14 +60,14 @@ const styles = StyleSheet.create({
         justifyContent:'center'
     },
     headerText:{
-        color:colors.primaryColor,
+        color:'#000000',
         fontFamily:'OpenSans-SemiBold',
-        fontSize:16
+        fontSize:14
     },
     scoreBoard:{
         paddingVertical:10,
         backgroundColor:'#1e3799',
-        borderRadius:100,
+        borderRadius:12,
         marginHorizontal:25,
         flexDirection:'row',
         alignItems:'center',
@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
         alignSelf:'center',
         margin:10,
         fontFamily:'OpenSans-SemiBold',
-        color:colors.primaryColor,
+        color:'#000000',
         fontSize:12
     },
     scoreCalc:{
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
         padding:20,
         alignItems:'center',
         marginTop:40,
-        backgroundColor:'#ff3838',
+        backgroundColor:'#c82333',
         marginHorizontal:40,
         borderRadius:15
     },
@@ -129,13 +129,44 @@ const styles = StyleSheet.create({
         flexDirection:'column',
         flex:1,
         alignItems:'center',
-        borderColor:colors.primaryColor,
-        borderWidth:1
+        borderColor:'#000000',
+        borderWidth:0.5
     },
     btnTxt:{
-        color:colors.primaryColor,
-        fontFamily:'OpenSans-Bold',
-        fontSize:22
+        color:'#000000',
+        fontFamily:'OpenSans-SemiBold',
+        fontSize:18
+    },
+    updateBtnContainer:{
+        flexDirection:'row'
+    },
+    plus:{
+        backgroundColor:'#28a745',
+        alignItems:'center',
+        justifyContent:'center',
+        height:40,
+        paddingHorizontal:20,
+        borderTopRightRadius:4,
+        borderBottomRightRadius:4,
+
+    },
+    minus:{
+        backgroundColor:'#c82333',
+        alignItems:'center',
+        justifyContent:'center',
+        height:40,
+        paddingHorizontal:23,
+        borderTopLeftRadius:4,
+        borderBottomLeftRadius:4
+
+    },
+    txt:{
+        color:'#fff'
+    },
+    hdrTxt:{
+        textAlign:'center',
+        fontFamily:'OpenSans-SemiBold',
+        marginBottom:5
     }
 })
 export default styles;
