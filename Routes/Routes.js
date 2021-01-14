@@ -38,6 +38,7 @@ import clubDetails from '../Screens/User/Club/clubDetails';
 import clubAdminMain from '../Screens/Admin/Club/clubAdminMain';
 import myClub from '../Screens/User/Club/myClub';
 import clubMemAppr from '../Screens/Admin/Club/clubMemAppr';
+import clubView from '../Screens/Admin/Club/clubView';
 
 const Drawer = createDrawerNavigator();
 const Tabs = createMaterialBottomTabNavigator();
@@ -411,6 +412,15 @@ const ClubAdminStackScreen = ({ navigation }) => (
         <ClubAdminStack.Screen
             name="clubMemAppr"
             component={clubMemAppr}
+            options={{
+                headerStatusBarHeight: 0,
+                headerTintColor: '#fff'
+            }}
+        />
+
+        <ClubAdminStack.Screen
+            name="clubView"
+            component={clubView}
             options={{
                 headerStatusBarHeight: 0,
                 headerTintColor: '#fff'
