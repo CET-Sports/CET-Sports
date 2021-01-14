@@ -35,8 +35,15 @@ import updateCricket from '../Screens/Admin/Games/Cricket/updateCricket';
 import ViewApplication from '../Screens/Admin/Invite/ViewApplication';
 import joinClub from '../Screens/User/Club/joinClub';
 import clubDetails from '../Screens/User/Club/clubDetails';
+<<<<<<< HEAD
 
 
+=======
+import clubAdminMain from '../Screens/Admin/Club/clubAdminMain';
+import myClub from '../Screens/User/Club/myClub';
+import clubMemAppr from '../Screens/Admin/Club/clubMemAppr';
+import clubView from '../Screens/Admin/Club/clubView';
+>>>>>>> f1c7b34e14ce543cea9b8024fdecf2534b90263f
 
 const Drawer = createDrawerNavigator();
 const Tabs = createMaterialBottomTabNavigator();
@@ -363,6 +370,66 @@ const TournamentStackScreen = ({ navigation }) => (
     </TournamentStack.Navigator>
 )
 
+<<<<<<< HEAD
+=======
+const ClubAdminStackScreen = ({ navigation }) => (
+
+    <ClubAdminStack.Navigator
+        screenOptions={{
+            headerStyle: {
+                elevation: 0,
+                backgroundColor: colors.primaryColor
+            },
+            headerLeft: () => (
+                <TouchableOpacity onPress={() => { navigation.openDrawer() }} style={{ alignItems: 'center', justifyContent: 'center' }}>
+                    <AntDesign name="menuunfold" size={23} color={'#fff'} style={{ marginLeft: 10 }} />
+                </TouchableOpacity>
+            )
+        }}
+
+    >
+
+        <ClubAdminStack.Screen
+            name="clubAdminMain"
+            component={clubAdminMain}
+            options={{
+                headerStatusBarHeight: 0,
+                headerTintColor: '#fff'
+            }}
+        />
+
+        <ClubAdminStack.Screen
+            name="Club_Regis"
+            component={Club_Regis}
+            options={{
+                headerStatusBarHeight: 0,
+                headerTintColor: '#fff'
+            }}
+        />
+
+        <ClubAdminStack.Screen
+            name="clubMemAppr"
+            component={clubMemAppr}
+            options={{
+                headerStatusBarHeight: 0,
+                headerTintColor: '#fff'
+            }}
+        />
+
+        <ClubAdminStack.Screen
+            name="clubView"
+            component={clubView}
+            options={{
+                headerStatusBarHeight: 0,
+                headerTintColor: '#fff'
+            }}
+        />
+
+    </ClubAdminStack.Navigator>
+
+)
+
+>>>>>>> f1c7b34e14ce543cea9b8024fdecf2534b90263f
 const TabScreenAdmin = () => (
     <Tabs.Navigator
         initialRouteName='Home'

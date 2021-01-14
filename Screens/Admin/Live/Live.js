@@ -1,328 +1,191 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, ScrollView, View, Text, StatusBar, TouchableOpacity, Dimensions, TextInput } from 'react-native';
-import styles from './styles';
-import { RTCPeerConnection, RTCIceCandidate, RTCSessionDescription, RTCView, MediaStream, MediaStreamTrack, mediaDevices, registerGlobals }
-  from 'react-native-webrtc';
-import { firebase } from '@react-native-firebase/app';
-import firestore from '@react-native-firebase/firestore';
+import { Text, StyleSheet, Button, View } from 'react-native';
 
-import { colors } from '../../../Colors/colors';
+import { RTCPeerConnection, RTCView, mediaDevices, RTCIceCandidate, RTCSessionDescription } from 'react-native-webrtc';
+import { db } from '../../../utilities/firebase';
 
-const dimensions = Dimensions.get('window');
-
-let sdp
-
-const pc_config = {
-  "iceServers": [
+const configuration = {
+  iceServers: [
     {
-      urls: 'stun:stun.l.google.com:19302'
+      urls: ['stun:stun1.l.google.com:19302', 'stun:stun2.l.google.com:19302'],
+    },
+  ],
+  iceCandidatePoolSize: 10,
+};
+
+export default function CallScreen({ setScreen, screens, roomId }) {
+
+  function onBackPress() {
+    if (cachedLocalPC) {
+      cachedLocalPC.removeStream(localStream);
+      cachedLocalPC.close();
     }
-  ]
-}
+    setLocalStream();
+    setCachedLocalPC();
+    // cleanup
+  }
 
-let pc = new RTCPeerConnection(pc_config)
+  const [localStream, setLocalStream] = useState();
+  const [cachedLocalPC, setCachedLocalPC] = useState();
 
-function Live() {
-  const [localStream, setLocalStream] = useState(null);
-  const [remoteStream, setRemoteStream] = useState(null);
-  const [modalVisible, setModalVisible] = useState(false);
-
-  // const [pc, setPc] = useState([]);
-
-
-
-
+  const [isMuted, setIsMuted] = useState(false);
 
   useEffect(() => {
-
-    // pc.oniceconnectionstatechange = (e) => {
-    //   // console.log(e)
-    // }
-
-    // pc.onaddstream = (e) => {
-    //   debugger
-    //   setRemoteStream(e.stream)
-    // }
-
-    // const success = (stream) => {
-    //   // console.log('stream.toURL:' + stream.toURL())
-    //   setLocalStream(stream)
-    //   pc.addStream(stream)
-    // }
-
-    // const failure = (e) => {
-    //   // console.log('getUserMedia Error: ', e)
-    // }
-
-    // let isFront = true;
-    // mediaDevices.enumerateDevices().then(sourceInfos => {
-    //   // console.log(sourceInfos);
-    //   let videoSourceId;
-    //   for (let i = 0; i < sourceInfos.length; i++) {
-    //     const sourceInfo = sourceInfos[i];
-    //     if (sourceInfo.kind == "videoinput" && sourceInfo.facing == (isFront ? "front" : "environment")) {
-    //       videoSourceId = sourceInfo.deviceId;
-    //     }
-    //   }
-
-    //   const constraints = {
-    //     audio: true,
-    //     video: {
-    //       mandatory: {
-    //         minWidth: 500,
-    //         minHeight: 300,
-    //         minFrameRate: 30
-    //       },
-    //       facingMode: (isFront ? "user" : "environment"),
-    //       optional: (videoSourceId ? [{ sourceId: videoSourceId }] : [])
-    //     }
-    //   }
-
-    //   mediaDevices.getUserMedia(constraints)
-    //     .then(success)
-    //     .catch(failure);
-    // });
-
-
-
-    const subscriber = firestore().
-      collection('userSdp').
-      onSnapshot(querySnapShot => {
-        if (querySnapShot != null) {
-          querySnapShot.forEach(documentSnapShot => {
-            // console.log(documentSnapShot.data().sdp);
-            const desc = JSON.parse(documentSnapShot.data().sdp);
-            pc.setRemoteDescription(new RTCSessionDescription(desc))
-          });
-        }
-      })
-    return () => subscriber()
+    // startLocalStream();
   }, []);
 
-  const createOffer = () => {
-    console.log('Offer')
-    pc.createOffer({ offerToReceiveVideo: 1 })
-      .then(sdp => {
-        // console.log(JSON.stringify(sdp))
-        firebase.firestore().
-          collection('adminSdp').
-          doc('sdp').
-          set({
-            sdp: JSON.stringify(sdp)
-          })
-        pc.setLocalDescription(sdp)
-      })
+  const startLocalStream = async () => {
+    // isFront will determine if the initial camera should face user or environment
+    const isFront = true;
+    const devices = await mediaDevices.enumerateDevices();
 
-    setModalVisible(false)
-  }
+    const facing = isFront ? 'front' : 'environment';
+    const videoSourceId = devices.find(device => device.kind === 'videoinput' && device.facing === facing);
+    const facingMode = isFront ? 'user' : 'environment';
+    const constraints = {
+      audio: true,
+      video: {
+        mandatory: {
+          minWidth: 500, // Provide your own width, height and frame rate here
+          minHeight: 300,
+          minFrameRate: 30,
+        },
+        facingMode,
+        optional: videoSourceId ? [{ sourceId: videoSourceId }] : [],
+      },
+    };
+    const newStream = await mediaDevices.getUserMedia(constraints);
+    setLocalStream(newStream);
+  };
 
-  const setModal = () => {
-    // createOffer()
-    setModalVisible(true)
-  }
+  const startCall = async () => {
+    for (let i = 0; i < 10; i++) {
+      const localPC = new RTCPeerConnection(configuration);
+      localPC.addStream(localStream);
 
-  const createConnection1 = () => {
-
-    let pc1 = new RTCPeerConnection(pc_config)
-
-    pc1.oniceconnectionstatechange = (e) => {
-      // console.log(e)
-    }
-
-    pc1.onaddstream = (e) => {
-      debugger
-      setRemoteStream(e.stream)
-    }
-
-    const success = (stream) => {
-      // console.log('stream.toURL:' + stream.toURL())
-      setLocalStream(stream)
-      pc1.addStream(stream)
-    }
-
-    
-    const failure = (e) => {
-      // console.log('getUserMedia Error: ', e)
-    }
-
-    let isFront = true;
-    mediaDevices.enumerateDevices().then(sourceInfos => {
-      // console.log(sourceInfos);
-      let videoSourceId;
-      for (let i = 0; i < sourceInfos.length; i++) {
-        const sourceInfo = sourceInfos[i];
-        if (sourceInfo.kind == "videoinput" && sourceInfo.facing == (isFront ? "front" : "environment")) {
-          videoSourceId = sourceInfo.deviceId;
+      const roomRef = await db.collection('rooms').doc('id'+i);
+      const callerCandidatesCollection = roomRef.collection('callerCandidates');
+      localPC.onicecandidate = e => {
+        if (!e.candidate) {
+          console.log('Got final candidate!');
+          return;
         }
-      }
+        callerCandidatesCollection.add(e.candidate.toJSON());
+      };
 
-      const constraints = {
-        audio: true,
-        video: {
-          mandatory: {
-            minWidth: 500,
-            minHeight: 300,
-            minFrameRate: 30
-          },
-          facingMode: (isFront ? "user" : "environment"),
-          optional: (videoSourceId ? [{ sourceId: videoSourceId }] : [])
+      // localPC.onaddstream = e => {
+      //   if (e.stream && remoteStream !== e.stream) {
+      //     console.log('RemotePC received the stream call', e.stream);
+      //     setRemoteStream(e.stream);
+      //   }
+      // };
+
+      const offer = await localPC.createOffer();
+      await localPC.setLocalDescription(offer);
+
+      const roomWithOffer = { offer };
+      await roomRef.set(roomWithOffer);
+
+      roomRef.onSnapshot(async snapshot => {
+        const data = snapshot.data();
+        if (!localPC.currentRemoteDescription && data.answer) {
+          const rtcSessionDescription = new RTCSessionDescription(data.answer);
+          await localPC.setRemoteDescription(rtcSessionDescription);
         }
-      }
+      });
 
-      mediaDevices.getUserMedia(constraints)
-        .then(success)
-        .catch(failure);
+      roomRef.collection('calleeCandidates').onSnapshot(snapshot => {
+        snapshot.docChanges().forEach(async change => {
+          if (change.type === 'added') {
+            let data = change.doc.data();
+            await localPC.addIceCandidate(new RTCIceCandidate(data));
+          }
+        });
+      });
+
+      setCachedLocalPC(localPC);
+    }
+  };
+
+
+  const switchCamera = () => {
+    localStream.getVideoTracks().forEach(track => track._switchCamera());
+  };
+
+  // Mutes the local's outgoing audio
+  const toggleMute = () => {
+    // if (!remoteStream) {
+    //   return;
+    // }
+    localStream.getAudioTracks().forEach(track => {
+      // console.log(track.enabled ? 'muting' : 'unmuting', ' local track', track);
+      track.enabled = !track.enabled;
+      setIsMuted(!track.enabled);
     });
+  };
 
-    pc1.createOffer({ offerToReceiveVideo: 1 })
-      .then(sdp => {
-        // console.log(JSON.stringify(sdp))
-        firebase.firestore().
-          collection('admin1').
-          doc('sdp').
-          set({
-            sdp: JSON.stringify(sdp)
-          })
-        pc1.setLocalDescription(sdp)
-      })
-  }
-
-  const createConnection2 = () => {
-
-    let pc2 = new RTCPeerConnection(pc_config)
-
-    pc2.oniceconnectionstatechange = (e) => {
-      // console.log(e)
-    }
-
-    pc2.onaddstream = (e) => {
-      debugger
-      setRemoteStream(e.stream)
-    }
-
-    const success = (stream) => {
-      // console.log('stream.toURL:' + stream.toURL())
-      setLocalStream(stream)
-      pc2.addStream(stream)
-    }
-
-    const failure = (e) => {
-      // console.log('getUserMedia Error: ', e)
-    }
-
-    let isFront = true;
-    mediaDevices.enumerateDevices().then(sourceInfos => {
-      // console.log(sourceInfos);
-      let videoSourceId;
-      for (let i = 0; i < sourceInfos.length; i++) {
-        const sourceInfo = sourceInfos[i];
-        if (sourceInfo.kind == "videoinput" && sourceInfo.facing == (isFront ? "front" : "environment")) {
-          videoSourceId = sourceInfo.deviceId;
-        }
-      }
-
-      const constraints = {
-        audio: true,
-        video: {
-          mandatory: {
-            minWidth: 500,
-            minHeight: 300,
-            minFrameRate: 30
-          },
-          facingMode: (isFront ? "user" : "environment"),
-          optional: (videoSourceId ? [{ sourceId: videoSourceId }] : [])
-        }
-      }
-
-      mediaDevices.getUserMedia(constraints)
-        .then(success)
-        .catch(failure);
-    });
-    pc2.createOffer({ offerToReceiveVideo: 1 })
-      .then(sdp => {
-        // console.log(JSON.stringify(sdp))
-        firebase.firestore().
-          collection('admin2').
-          doc('two').
-          set({
-            sdp: JSON.stringify(sdp)
-          })
-        pc2.setLocalDescription(sdp)
-      })
-  }
-  const remoteVideo = remoteStream ?
-    (
-      <RTCView
-        key={2}
-        mirror={true}
-        style={{ ...styles.rtcViewRemote }}
-        objectFit='contain'
-        streamURL={remoteStream && remoteStream.toURL()}
-      />
-    ) :
-    (
-      <View style={{ padding: 15, }}>
-        <Text style={{ fontSize: 22, textAlign: 'center', color: 'white' }}>Waiting for Peer connection ...</Text>
-      </View>
-    )
 
   return (
+    <>
+      <Text style={styles.heading} >Call Screen</Text>
 
-    <ScrollView contentContainerStyle={{ flex: 1 }}>
-      <StatusBar backgroundColor={colors.primaryColor} barStyle={'light-content'} />
-      <View style={styles.videoContainer}>
-        <RTCView
-          key={1}
-          zOrder={0}
-          objectFit='cover'
-          style={styles.RtcView}
-          streamURL={localStream && localStream.toURL()}
-        />
-        <TouchableOpacity style={styles.liveBtn} onPress={() => { setModal() }}>
-          <Text style={{ color: '#fff' }}>Go Live</Text>
-        </TouchableOpacity>
-        <TextInput
-          placeholder="sdp1"
-          onChange={(value) => { setLocalDescription1(value) }}
-        />
-        <TextInput
-          placeholder="sdp2"
-          onChange={(value) => { setLocalDescription2(value) }}
-        />
-
-        {
-          modalVisible ?
-            <Modal
-              animationType="fade"
-              transparent={true}
-              visible={modalVisible}
-              onRequestClose={() => { setModalVisible(false) }}
-            >
-
-              <View style={styles.modalContainer}>
-                <View style={styles.modalView}>
-                  <Text>You are going live now...</Text>
-                  <View style={styles.buttonsContainer}>
-                    <TouchableOpacity onPress={() => createConnection1()} style={styles.Button}>
-                      <Text style={styles.btnText}>one</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => createConnection2()} style={styles.Button}>
-                      <Text style={styles.btnText}>two</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => setModalVisible(false)} style={styles.Button}>
-                      <Text style={styles.btnText}>CANCEL</Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              </View>
-
-            </Modal> :
-
-            null
-        }
+      <View style={styles.callButtons} >
+        <View styles={styles.buttonContainer} >
+          <Button title="Click to stop call" onPress={onBackPress} />
+        </View>
+        <View styles={styles.buttonContainer} >
+          {!localStream && <Button title='Click to start stream' onPress={startLocalStream} />}
+          {localStream && <Button title='Click to start call' onPress={() => startCall()} />}
+        </View>
       </View>
-    </ScrollView>
-  );
+
+      {localStream && (
+        <View style={styles.toggleButtons}>
+          <Button title='Switch camera' onPress={switchCamera} />
+          <Button title={`${isMuted ? 'Unmute' : 'Mute'} stream`} onPress={toggleMute}  />
+        </View>
+      )}
+
+      <View style={{ display: 'flex', flex: 1, padding: 10 }} >
+        <View style={styles.rtcview}>
+          {localStream && <RTCView style={styles.rtc} streamURL={localStream && localStream.toURL()} />}
+        </View>
+       
+      </View>
+
+    </>
+  )
 }
 
-export default Live;
+const styles = StyleSheet.create({
+  heading: {
+    alignSelf: 'center',
+    fontSize: 30,
+  },
+  rtcview: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'black',
+    margin: 5,
+  },
+  rtc: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
+  },
+  toggleButtons: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
+  callButtons: {
+    padding: 10,
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
+  buttonContainer: {
+    margin: 5,
+  }
+});

@@ -112,7 +112,11 @@ function DrawerContent({ navigation }) {
                     ViewApplication
                 </Text>
             </TouchableOpacity>
+<<<<<<< HEAD
             <TouchableOpacity style={styles.button} onPress={() => { navigation.navigate('clubAdminMain') }}>
+=======
+            <TouchableOpacity style={styles.button} onPress={() => { navigation.navigate('ClubAdminStackScreen') }}>
+>>>>>>> f1c7b34e14ce543cea9b8024fdecf2534b90263f
                 <Entypo name='sports-club' color='#000' size={25} style={{ ...styles.icon, opacity: 0.8 }} />
                 <Text style={styles.drawerText}>
                     Club

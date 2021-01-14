@@ -1,144 +1,162 @@
 import React, { useState, useEffect } from 'react';
-import { ScrollView, View, Text, StatusBar, TouchableOpacity, Dimensions } from 'react-native';
-import styles from './styles';
-import { RTCPeerConnection, RTCIceCandidate, RTCSessionDescription, RTCView, MediaStream, MediaStreamTrack, mediaDevices, registerGlobals }
-  from 'react-native-webrtc';
-import { firebase } from '@react-native-firebase/app';
-import firestore from '@react-native-firebase/firestore';
-import { colors } from '../../../Colors/colors';
+import { Text, StyleSheet, Button, View } from 'react-native';
 
-const dimensions = Dimensions.get('window');
+import { RTCPeerConnection, RTCView, mediaDevices, RTCIceCandidate, RTCSessionDescription } from 'react-native-webrtc';
+import { db } from '../../../utilities/firebase';
 
-let sdp
-
-const pc_config = {
-  "iceServers": [
+const configuration = {
+  iceServers: [
     {
-      urls: 'stun:stun.l.google.com:19302'
+      urls: ['stun:stun1.l.google.com:19302', 'stun:stun2.l.google.com:19302'],
+    },
+  ],
+  iceCandidatePoolSize: 10,
+};
+
+export default function JoinScreen({ setScreen, screens, roomId }) {
+
+  function onBackPress() {
+    if (cachedLocalPC) {
+      cachedLocalPC.close();
     }
-  ]
-}
+    setRemoteStream();
+    setCachedLocalPC();
+    // cleanup
+    setScreen(screens.ROOM);
+  }
 
-let pc = new RTCPeerConnection(pc_config)
+  const [remoteStream, setRemoteStream] = useState();
+  const [cachedLocalPC, setCachedLocalPC] = useState();
+  const [_id, setId] = useState();
 
-function Lives() {
-
-  const [remoteStream, setRemoteStream] = useState(null);
+  const [isMuted, setIsMuted] = useState(false);
 
   useEffect(() => {
-
-
-    pc.onaddstream = (e) => {
-      debugger
-      setRemoteStream(e.stream)
-    }
+    db.collection('Id').doc('Id').onSnapshot(documentSnapshot =>{
+      setId(documentSnapshot.data().id);
+    })
 
   }, []);
 
 
-  const createAnswer = () => {
-    try {
-      console.log('Answer')
-      firestore().
-        collection('adminSdp').
-        onSnapshot(querySnapShot => {
-          if (querySnapShot != null) {
-            
-            querySnapShot.forEach(documentSnapShot => {
-              
-              const desc = JSON.parse(documentSnapShot.data().sdp);
-              pc.setRemoteDescription(new RTCSessionDescription(desc))
-              pc.createAnswer({ offerToReceiveVideo: 1 })
-                .then(sdp => {
-                  try{
-                  pc.setLocalDescription(sdp)
-                  firebase.firestore().collection('userSdp').doc('sdp').set({
-                    sdp: JSON.stringify(sdp)
-                  })
-                }
-                catch{}
-                })
-              
-              
-            });
-          
-          
-          }
 
+  const joinCall = async () => {
+    const roomRef = await db.collection('rooms').doc('id'+_id);
+    const roomSnapshot = await roomRef.get();
+    
+    if (!roomSnapshot.exists) return
+    const localPC = new RTCPeerConnection(configuration);
 
-        })
-    }
-
-    catch {
-      (Err) => {
-        console.log(Err)
+    const calleeCandidatesCollection = roomRef.collection('calleeCandidates');
+    localPC.onicecandidate = e => {
+      if (!e.candidate) {
+        console.log('Got final candidate!');
+        return;
       }
-    }
-    console.log('user ' + pc.signalingState)
+      calleeCandidatesCollection.add(e.candidate.toJSON());
+    };
 
-  }
-
-  const answer1 = ()=>{
-    let pc1 = new RTCPeerConnection(pc_config)
-    try {
-      console.log('Answer')
-      firestore().
-        collection('admin1').
-        onSnapshot(querySnapShot => {
-          if (querySnapShot != null) {
-            
-            querySnapShot.forEach(documentSnapShot => {
-              
-              const desc = JSON.parse(documentSnapShot.data().sdp);
-              pc1.setRemoteDescription(new RTCSessionDescription(desc))
-              pc1.createAnswer({ offerToReceiveVideo: 1 })
-                .then(sdp => {
-                  try{
-                  pc1.setLocalDescription(sdp)
-                  firebase.firestore().collection('user1').doc('sdp').set({
-                    sdp: JSON.stringify(sdp)
-                  })
-                }
-                catch{}
-                })
-              
-              
-            });
-          
-          
-          }
-
-
-        })
-    }
-
-    catch {
-      (Err) => {
-        console.log(Err)
+    localPC.onaddstream = e => {
+      if (e.stream && remoteStream !== e.stream) {
+        console.log('RemotePC received the stream join', e.stream);
+        setRemoteStream(e.stream);
       }
+    };
+
+    const offer = roomSnapshot.data().offer;
+    await localPC.setRemoteDescription(new RTCSessionDescription(offer));
+
+    const answer = await localPC.createAnswer();
+    await localPC.setLocalDescription(answer);
+
+    const roomWithAnswer = { answer };
+    await roomRef.update(roomWithAnswer);
+
+    roomRef.collection('callerCandidates').onSnapshot(snapshot => {
+      snapshot.docChanges().forEach(async change => {
+        if (change.type === 'added') {
+          let data = change.doc.data();
+          await localPC.addIceCandidate(new RTCIceCandidate(data));
+        }
+      });
+    });
+
+    setCachedLocalPC(localPC);
+
+    db.collection('Id').doc('Id').set({
+      id:_id+1
+    })
+  };
+
+
+
+  // Mutes the local's outgoing audio
+  const toggleMute = () => {
+    if (!remoteStream) {
+      return;
     }
-    console.log('user ' + pc.signalingState)
-  }
+  };
 
 
   return (
+    <>
+      <Text style={styles.heading} >Join Screen</Text>
 
-    <ScrollView contentContainerStyle={{ flex: 1 }}>
-      <StatusBar backgroundColor={colors.primaryColor} barStyle={'light-content'} />
-      <View style={styles.videoContainer}>
-        <RTCView
-          key={2}
-          mirror={true}
-          style={styles.RtcView}
-          objectFit='contain'
-          streamURL={remoteStream && remoteStream.toURL()}
-        />
-        <TouchableOpacity style={styles.liveBtn} onPress={() => { createAnswer() }}>
-          <Text style={{ color: '#fff' }}>Watch Live</Text>
-        </TouchableOpacity>
+      <View style={styles.callButtons} >
+        <View styles={styles.buttonContainer} >
+          <Button title="Click to stop call" onPress={onBackPress} />
+        </View>
+        <View styles={styles.buttonContainer} >
+          <Button title='Click to join call' onPress={() => joinCall()}/>
+        </View>
       </View>
-    </ScrollView>
-  );
+
+      {(
+        <View style={styles.toggleButtons}>
+          <Button title={`${isMuted ? 'Unmute' : 'Mute'} stream`} onPress={toggleMute} disabled={!remoteStream} />
+        </View>
+      )}
+
+      <View style={{ display: 'flex', flex: 1, padding: 10 }} >
+        <View style={styles.rtcview}>
+          {remoteStream && <RTCView style={styles.rtc} streamURL={remoteStream && remoteStream.toURL()} />}
+        </View>
+      </View>
+
+    </>
+  )
 }
 
-export default Lives;
+const styles = StyleSheet.create({
+  heading: {
+    alignSelf: 'center',
+    fontSize: 30,
+  },
+  rtcview: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'black',
+    margin: 5,
+  },
+  rtc: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
+  },
+  toggleButtons: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
+  callButtons: {
+    padding: 10,
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
+  buttonContainer: {
+    margin: 5,
+  }
+});
+
