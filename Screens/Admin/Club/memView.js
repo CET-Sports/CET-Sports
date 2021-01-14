@@ -13,7 +13,7 @@ function memView({ route }) {
 
     useEffect(() => {
 
-        firebase.firestore().collection('clubMembers').onSnapshot(querySnapshot => {
+        firebase.firestore().collection('clubMembers').where('ClubName', '==', Cname).where('status', '==', 'Approved').get().then(querySnapshot => {
             const data = [];
             querySnapshot.forEach(documentSnapshot => {
                 //console.log(documentSnapshot.data())
@@ -25,22 +25,27 @@ function memView({ route }) {
 
         })
 
-        console.log(Cname);
+        // firebase.firestore().collection('Users').doc(dataSource.phone).onSnapshot(documentSnapshot =>)
+
+        //console.log(Cname);
 
 
     }, [])
 
     function Item({ data }) {
+        console.log(data.ClubName);
         return (
             <>
                 {
-                    data.clubName === { Cname } ?
+
+                    data.ClubName === Cname ?
                         <>
                             <Text>STUDENT NAME : {data.name}</Text>
                             <Text>DEPARTMENT : {data.dept} </Text>
                             <Text>SEMESTER : {data.sem}</Text>
                             <Text>PHONE NUMBER : {data.phone}</Text>
-                        </> :
+                        </>
+                        :
                         null
                 }
 
