@@ -30,8 +30,9 @@ function clubMemAppr(props) {
     }, [])
 
     function Approval(val) {
+        // alert('test')
         return (
-            firebase.firestore().collection('Referal').doc(val).set({
+            firebase.firestore().collection('clubMembers').doc(val).update({
                 status: 'Approved'
             })
 

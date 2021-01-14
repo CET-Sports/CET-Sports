@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { TouchableOpacity, View, FlatList, Text } from 'react-native';
+import { Text, View, FlatList } from 'react-native';
 import { firebase } from '@react-native-firebase/app';
 import firestore from '@react-native-firebase/firestore';
 
-function clubView({ navigation }) {
+function memView({ route }) {
+
+    const { Cname } = route.params
+
+
 
     const [dataSource, setDataSource] = useState([]);
 
     useEffect(() => {
 
-        firebase.firestore().collection('Club').onSnapshot(querySnapshot => {
+        firebase.firestore().collection('clubMembers').onSnapshot(querySnapshot => {
             const data = [];
             querySnapshot.forEach(documentSnapshot => {
                 //console.log(documentSnapshot.data())
@@ -21,15 +25,27 @@ function clubView({ navigation }) {
 
         })
 
+        console.log(Cname);
+
 
     }, [])
 
     function Item({ data }) {
         return (
             <>
-                <TouchableOpacity onPress={() => { navigation.navigate('memView', { Cname: data.ClubName }) }}>
-                    <Text>{data.ClubName}</Text>
-                </TouchableOpacity>
+                {
+                    data.clubName === { Cname } ?
+                        <>
+                            <Text>STUDENT NAME : {data.name}</Text>
+                            <Text>DEPARTMENT : {data.dept} </Text>
+                            <Text>SEMESTER : {data.sem}</Text>
+                            <Text>PHONE NUMBER : {data.phone}</Text>
+                        </> :
+                        null
+                }
+
+
+
 
             </>
         )
@@ -44,4 +60,4 @@ function clubView({ navigation }) {
     );
 }
 
-export default clubView;
+export default memView;
