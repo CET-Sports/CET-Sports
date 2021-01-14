@@ -16,14 +16,14 @@ import firestore from '@react-native-firebase/firestore';
 
 // const { game } = route.params;
 
-function clubDetails() { 
+function clubDetails({route}) {
 
 
 
     const [phone, setPhone] = useState('+911234567899');
 
     const [num, setNum] = useState('');
-    const [clubName, setClub] = useState('');
+    const {clb}=route.params;
 
     const [ds, setDs] = useState('hello')
 
@@ -36,7 +36,8 @@ function clubDetails() {
     const [dept, setDept] = useState();
     const [clubAdvisor, setClubAdvisor] = useState('');
     const [clubPresident, setClubPresident] = useState('');
-    const [ClubName,setClubName]=useState('');
+    const [ClubName, setClubName] = useState('');
+    const [sem,setSem]=useState('');
 
     useEffect(() => {
 
@@ -48,166 +49,200 @@ function clubDetails() {
                 // setPhone('+911234567899')
                 setNum(response.phone);
 
+
+
+
+
                 firebase.firestore()
                     .collection('clubMembers').doc(response.phone)
                     .onSnapshot(documentSnapshot => {
-                         if ((documentSnapshot.data().phone != null)) {
-
-                            setClubAdvisor(documentSnapshot.data().ClubAdvisor)
-                            setClubPresident(documentSnapshot.data().ClubPresident)
-                             setClubName(documentSnapshot.data().ClubName)
-
-                            setFlag(true)
-                            console.log("testing")
-                         }
-                    })
+                        if (documentSnapshot.data() != undefined ) {
+                            console.log(documentSnapshot.data())
+                            if ((documentSnapshot.data().phone) != null) {
 
 
-                    firebase.firestore().
-                    collection('Users').
-                    doc(response.phone).
-                    onSnapshot(documentSnapshot => {
-                        if (documentSnapshot != null) {
-                            console.log(documentSnapshot.data().name)
-                            setName(documentSnapshot.data().name)
-                    
-                            setDept( documentSnapshot.data().dept)
-                          
+                                setFlag(true)
+                                console.log("testing")
+                            }
                         }
-                    })
+
+
+                    
+
+
             })
-        firebase.firestore().collection('Club').onSnapshot(querySnapshot => {
-
-            const array = [];
-
-            querySnapshot.forEach(documentSnapshot => {
-                setSize(querySnapshot.size);
-
-                array.push({
-                    ...documentSnapshot.data()
-                })
-
-                setDataSource(array)
-            });
-
-        })
 
 
+        firebase.firestore().
+            collection('Users').
+            doc(response.phone).
+            onSnapshot(documentSnapshot => {
+                if (documentSnapshot != null) {
+                    console.log(documentSnapshot.data().name)
+                    setName(documentSnapshot.data().name)
+                    setDept(documentSnapshot.data().dept)
+                    setSem(documentSnapshot.data().sem)
 
-    }, [])
+                }
+            })
+    })
+        
+    
 
-    getData = async (key) => {
-        try {
-            const jsonValue = await AsyncStorage.getItem(key)
-            return jsonValue != null ? JSON.parse(jsonValue) : null;
-        } catch (e) {
-            // error reading value
+
+    firebase.firestore().
+    collection('Club').
+    doc(clb).
+    onSnapshot(documentSnapshot => {
+        if (documentSnapshot != null) {
+            console.log(documentSnapshot.data().name)
+            setClubName(documentSnapshot.ClubName)
+            setClubAdvisor(documentSnapshot.ClubAdvisor)
+            setClubPresident(documentSnapshot.ClubPresident)
+            
 
         }
-    }
+    })
 
-    const add = () => {
-        firebase.firestore().collection('clubMembers').doc(phone).set({
-            phone: phone,
-            clubName: clubName,
-            status: 'pending',
-            applied: true,
-            name:name
 
-        })
-        setFlag(false)
+    firebase.firestore().collection('Club').onSnapshot(querySnapshot => {
+
+        const array = [];
+
+        querySnapshot.forEach(documentSnapshot => {
+            setSize(querySnapshot.size);
+
+            array.push({
+                ...documentSnapshot.data()
+            })
+
+            setDataSource(array)
+         
+        });
+    })
+    
+    
+
+
+
+}, [])
+
+getData = async (key) => {
+    try {
+        const jsonValue = await AsyncStorage.getItem(key)
+        return jsonValue != null ? JSON.parse(jsonValue) : null;
+    } catch (e) {
+        // error reading value
+
     }
-    function Item({ data }) {
-        return (
-            <>
+}
+
+const add = () => {
+    firebase.firestore().collection('clubMembers').doc(phone).set({
+        phone: phone,
+        clubName: clb,
+        status: 'pending',
+        applied: true,
+        name: name,
+        dept:dept,
+        sem:sem,
+        clubAdvisor:clubAdvisor,
+        clubPresident:clubPresident
+
+
+
+    })
+    setFlag(false)
+}
+function Item({ data }) {
+    return (
+        <>
+            <View>
                 <View>
-                    <View>
-                        <Text>Club Name: {data.ClubName}</Text>
-                        <Text>Description: {data.ClubDescription}</Text>
-                        <Text>Advisor: {data.ClubAdvisor}</Text>
-                        <Text>Prsident: {data.ClubPresident}</Text>
+                    <Text>Club Name: {data.ClubName}</Text>
+                    <Text>Description: {data.ClubDescription}</Text>
+                    <Text>Advisor: {data.ClubAdvisor}</Text>
+                    <Text>Prsident: {data.ClubPresident}</Text>
 
-                        <View style={styles.containerJoin}>
-                            {
-                                flag ?
-                                    <TouchableOpacity style={styles.button}
-                                    >
-                                        <Text>Applied</Text>
-                                    </TouchableOpacity>
-                                    :
-
-                                    <TouchableOpacity style={styles.button} onPress={() => add()}
-                                    >
-                                        <Text>Join</Text>
-                                    </TouchableOpacity>
-
-                            }
-
-                        </View>
+                    <View style={styles.containerJoin}>
                         {
-                            modalVisible ?
-
-                                <Modal
-                                    animationType="fade"
-                                    transparent={true}
-                                    visible={modalVisible}
-                                    onRequestClose={() => { setModalVisible(false) }}
+                            flag ?
+                                <TouchableOpacity style={styles.button}
                                 >
-
-                                    <View style={styles.modalContainer}>
-                                        <View style={styles.modalView}>
-                                            <View style={{ flexDirection: 'column', alignItems: 'center', width: 100, margin: 10 }}>
-                                                <Icon name="check-circle" size={60} color='#2ed573' />
-                                                <Text style={styles.modalText}>Applied</Text>
-                                            </View>
-                                        </View>
-                                    </View>
-
-                                </Modal>
-
+                                    <Text>Applied</Text>
+                                </TouchableOpacity>
                                 :
 
-                                null
+                                <TouchableOpacity style={styles.button} onPress={() => add()}
+                                >
+                                    <Text>Join</Text>
+                                </TouchableOpacity>
 
                         }
+
                     </View>
+                    {
+                        modalVisible ?
+
+                            <Modal
+                                animationType="fade"
+                                transparent={true}
+                                visible={modalVisible}
+                                onRequestClose={() => { setModalVisible(false) }}
+                            >
+
+                                <View style={styles.modalContainer}>
+                                    <View style={styles.modalView}>
+                                        <View style={{ flexDirection: 'column', alignItems: 'center', width: 100, margin: 10 }}>
+                                            <Icon name="check-circle" size={60} color='#2ed573' />
+                                            <Text style={styles.modalText}>Applied</Text>
+                                        </View>
+                                    </View>
+                                </View>
+
+                            </Modal>
+
+                            :
+
+                            null
+
+                    }
                 </View>
-                <TouchableOpacity style={styles.button} onPress={() => alert(flag)}
-                >
-                    <Text>Test</Text>
-                </TouchableOpacity>
-            </>
+            </View>
+          
+        </>
 
-        );
-    }
+    );
+}
 
 
 
-    return (
+return (
 
-        <View>
-            <View style={styles.joinHeader}>
-                <Text style={styles.joinHeaderText}>
-                    Club Details
+    <View>
+        <View style={styles.joinHeader}>
+            <Text style={styles.joinHeaderText}>
+                Club Details
             </Text>
 
-            </View>
-            {
-
-                size > 0 ?
-                    <FlatList
-                        data={dataSource}
-                        renderItem={({ item }) => <Item data={item} />}
-                        keyExtractor={(item, index) => index.toString()}
-                    />
-                    :
-                    <Text>No Invitaions</Text>
-            }
         </View>
-    );
+        {
+
+            size > 0 ?
+                <FlatList
+                    data={dataSource}
+                    renderItem={({ item }) => <Item data={item} />}
+                    keyExtractor={(item, index) => index.toString()}
+                />
+                :
+                <Text>No Invitaions</Text>
+        }
+    </View>
+);
 
 
 
-}
+    }
+
 
 export default clubDetails
