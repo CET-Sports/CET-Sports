@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Text, StyleSheet, Button, View } from 'react-native';
+import { Text, StyleSheet, Button, View, TouchableOpacity, Image } from 'react-native';
 
 import { RTCPeerConnection, RTCView, mediaDevices, RTCIceCandidate, RTCSessionDescription } from 'react-native-webrtc';
 import { db } from '../../../utilities/firebase';
+
+import styles from './styles';
+
+// import InCallManager from 'react-native-incall-manager';
 
 const configuration = {
   iceServers: [
@@ -17,12 +21,12 @@ export default function JoinScreen({ setScreen, screens, roomId }) {
 
   function onBackPress() {
     if (cachedLocalPC) {
+      cachedLocalPC.removeStream(remoteStream);
       cachedLocalPC.close();
     }
     setRemoteStream();
     setCachedLocalPC();
-    // cleanup
-    setScreen(screens.ROOM);
+    setStarted(false);
   }
 
   const [remoteStream, setRemoteStream] = useState();
@@ -31,7 +35,16 @@ export default function JoinScreen({ setScreen, screens, roomId }) {
 
   const [isMuted, setIsMuted] = useState(false);
 
+  const [started, setStarted] = useState(false);
+
   useEffect(() => {
+
+    db.collection('Id').doc('Id').onSnapshot(documentSnapshot =>{
+      if(documentSnapshot.data().id === -1){
+        onBackPress()
+      }
+    })
+
     db.collection('Id').doc('Id').onSnapshot(documentSnapshot =>{
       setId(documentSnapshot.data().id);
     })
@@ -41,6 +54,7 @@ export default function JoinScreen({ setScreen, screens, roomId }) {
 
 
   const joinCall = async () => {
+    setStarted(true);
     const roomRef = await db.collection('rooms').doc('id'+_id);
     const roomSnapshot = await roomRef.get();
     
@@ -81,6 +95,8 @@ export default function JoinScreen({ setScreen, screens, roomId }) {
       });
     });
 
+    // InCallManager.setSpeakerphoneOn(true);
+
     setCachedLocalPC(localPC);
 
     db.collection('Id').doc('Id').set({
@@ -99,8 +115,8 @@ export default function JoinScreen({ setScreen, screens, roomId }) {
 
 
   return (
-    <>
-      <Text style={styles.heading} >Join Screen</Text>
+    <View style={{ display: 'flex', flex: 1}}>
+      {/* <Text style={styles.heading} >Join Screen</Text>
 
       <View style={styles.callButtons} >
         <View styles={styles.buttonContainer} >
@@ -109,13 +125,13 @@ export default function JoinScreen({ setScreen, screens, roomId }) {
         <View styles={styles.buttonContainer} >
           <Button title='Click to join call' onPress={() => joinCall()}/>
         </View>
-      </View>
+      </View> */}
 
-      {(
+      {/* {(
         <View style={styles.toggleButtons}>
           <Button title={`${isMuted ? 'Unmute' : 'Mute'} stream`} onPress={toggleMute} disabled={!remoteStream} />
         </View>
-      )}
+      )} */}
 
       <View style={{ display: 'flex', flex: 1, padding: 10 }} >
         <View style={styles.rtcview}>
@@ -123,40 +139,31 @@ export default function JoinScreen({ setScreen, screens, roomId }) {
         </View>
       </View>
 
-    </>
+      <View style={styles.liveBtnContainer}>
+        {
+          isMuted ?
+            <TouchableOpacity style={styles.rounded} onPress={toggleMute}>
+              <Image source={require('../../../Images/unmute.png')} style={{ height: 30, width: 30 }} />
+            </TouchableOpacity> :
+            <TouchableOpacity style={styles.rounded} onPress={toggleMute}>
+              <Image source={require('../../../Images/mute.png')} style={{ height: 30, width: 30 }} />
+            </TouchableOpacity>
+
+        }
+        {
+          started ?
+            <TouchableOpacity style={styles.rounded} onPress={onBackPress}>
+              <Image source={require('../../../Images/stop.png')} style={{ height: 40, width: 40 }} />
+            </TouchableOpacity> :
+            <TouchableOpacity style={styles.rounded} onPress={() => joinCall()}>
+              <Image source={require('../../../Images/video.png')} style={{ height: 30, width: 30 }} />
+            </TouchableOpacity>
+        }
+
+
+      </View>
+
+    </View>
   )
 }
-
-const styles = StyleSheet.create({
-  heading: {
-    alignSelf: 'center',
-    fontSize: 30,
-  },
-  rtcview: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'black',
-    margin: 5,
-  },
-  rtc: {
-    flex: 1,
-    width: '100%',
-    height: '100%',
-  },
-  toggleButtons: {
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-  },
-  callButtons: {
-    padding: 10,
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-  },
-  buttonContainer: {
-    margin: 5,
-  }
-});
 

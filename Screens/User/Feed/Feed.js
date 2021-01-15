@@ -7,6 +7,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import AutoHeightImage from 'react-native-auto-height-image';
 import { FacebookLoader, InstagramLoader } from 'react-native-easy-content-loader';
 import ContentLoader from "react-native-easy-content-loader";
+import moment from 'moment';
 import styles from './styles';
 
 function Feed({ navigation }) {
@@ -75,6 +76,8 @@ function Feed({ navigation }) {
                     </View>
                     <Text style={styles.title}>{data.Title}</Text>
                     <Text style={styles.content} numberOfLines={6}>{data.Content}</Text>
+                    {/* <Text style={styles.content} numberOfLines={6}>{moment(JSON.stringify(data.CreatedAt)).format('YYYY-MM-DD')}
+                    </Text> */}
                     <View style={styles.divider} />
 
                 </View>

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Text, StyleSheet, Button, View } from 'react-native';
+import { Text, TouchableOpacity, Button, View, Image } from 'react-native';
 
 import { RTCPeerConnection, RTCView, mediaDevices, RTCIceCandidate, RTCSessionDescription } from 'react-native-webrtc';
 import { db } from '../../../utilities/firebase';
+import styles from './styles';
 
 const configuration = {
   iceServers: [
@@ -22,16 +23,24 @@ export default function CallScreen({ setScreen, screens, roomId }) {
     }
     setLocalStream();
     setCachedLocalPC();
+    setStarted(false);
+    db.collection('Id').doc('Id').set({
+      id: -1
+    })
+    for (let i = 0; i < 10; i++) {
+      db.collection('rooms').doc('id' + i).delete()
+    }
     // cleanup
   }
 
   const [localStream, setLocalStream] = useState();
   const [cachedLocalPC, setCachedLocalPC] = useState();
+  const [started, setStarted] = useState(false);
 
   const [isMuted, setIsMuted] = useState(false);
 
   useEffect(() => {
-    // startLocalStream();
+    startLocalStream();
   }, []);
 
   const startLocalStream = async () => {
@@ -59,11 +68,15 @@ export default function CallScreen({ setScreen, screens, roomId }) {
   };
 
   const startCall = async () => {
+    setStarted(true);
+    db.collection('Id').doc('Id').set({
+      id:0
+    })
     for (let i = 0; i < 10; i++) {
       const localPC = new RTCPeerConnection(configuration);
       localPC.addStream(localStream);
 
-      const roomRef = await db.collection('rooms').doc('id'+i);
+      const roomRef = await db.collection('rooms').doc('id' + i);
       const callerCandidatesCollection = roomRef.collection('callerCandidates');
       localPC.onicecandidate = e => {
         if (!e.candidate) {
@@ -105,6 +118,7 @@ export default function CallScreen({ setScreen, screens, roomId }) {
 
       setCachedLocalPC(localPC);
     }
+
   };
 
 
@@ -126,66 +140,49 @@ export default function CallScreen({ setScreen, screens, roomId }) {
 
 
   return (
-    <>
-      <Text style={styles.heading} >Call Screen</Text>
+    <View style={{ backgroundColor: '#fff', flex: 1 }}>
 
-      <View style={styles.callButtons} >
-        <View styles={styles.buttonContainer} >
-          <Button title="Click to stop call" onPress={onBackPress} />
-        </View>
-        <View styles={styles.buttonContainer} >
-          {!localStream && <Button title='Click to start stream' onPress={startLocalStream} />}
-          {localStream && <Button title='Click to start call' onPress={() => startCall()} />}
-        </View>
-      </View>
 
-      {localStream && (
+      {/* {localStream && (
         <View style={styles.toggleButtons}>
           <Button title='Switch camera' onPress={switchCamera} />
-          <Button title={`${isMuted ? 'Unmute' : 'Mute'} stream`} onPress={toggleMute}  />
+          <Button title={`${isMuted ? 'Unmute' : 'Mute'} stream`} onPress={toggleMute} />
         </View>
-      )}
+      )} */}
 
       <View style={{ display: 'flex', flex: 1, padding: 10 }} >
         <View style={styles.rtcview}>
           {localStream && <RTCView style={styles.rtc} streamURL={localStream && localStream.toURL()} />}
         </View>
-       
+      </View>
+      <View style={styles.liveBtnContainer}>
+        {
+          isMuted ?
+            <TouchableOpacity style={styles.rounded} onPress={toggleMute}>
+              <Image source={require('../../../Images/unmute.png')} style={{ height: 30, width: 30 }} />
+            </TouchableOpacity> :
+            <TouchableOpacity style={styles.rounded} onPress={toggleMute}>
+              <Image source={require('../../../Images/mute.png')} style={{ height: 30, width: 30 }} />
+            </TouchableOpacity>
+
+        }
+        {
+          started ?
+            <TouchableOpacity style={styles.rounded} onPress={onBackPress}>
+              <Image source={require('../../../Images/stop.png')} style={{ height: 40, width: 40 }} />
+            </TouchableOpacity> :
+            <TouchableOpacity style={styles.rounded} onPress={() => startCall()}>
+              <Image source={require('../../../Images/video.png')} style={{ height: 30, width: 30 }} />
+            </TouchableOpacity>
+        }
+        <TouchableOpacity style={styles.rounded} onPress={switchCamera}>
+          <Image source={require('../../../Images/switch.png')} style={{ height: 30, width: 30 }} />
+        </TouchableOpacity>
+
+
       </View>
 
-    </>
+    </View>
   )
 }
 
-const styles = StyleSheet.create({
-  heading: {
-    alignSelf: 'center',
-    fontSize: 30,
-  },
-  rtcview: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'black',
-    margin: 5,
-  },
-  rtc: {
-    flex: 1,
-    width: '100%',
-    height: '100%',
-  },
-  toggleButtons: {
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-  },
-  callButtons: {
-    padding: 10,
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-  },
-  buttonContainer: {
-    margin: 5,
-  }
-});
