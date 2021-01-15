@@ -1,4 +1,4 @@
-import React,{ useState } from 'react';
+import React, { useState } from 'react';
 import {
     Text,
     TouchableOpacity,
@@ -17,46 +17,39 @@ function Club_Regis(props) {
     const [clubAdvisor, setClubAdvisor] = useState('');
     const [clubPresident, setClubPresident] = useState('');
 
-    function Regis(){
+    function Regis() {
 
         firebase.firestore().collection('Club').doc(clubName).set({
-            ClubName:clubName,
-            ClubDescription:clubDescription,
-            ClubAdvisor:clubAdvisor,
-            ClubPresident:clubPresident
+            ClubName: clubName,
+            ClubDescription: clubDescription,
+            ClubAdvisor: clubAdvisor,
+            ClubPresident: clubPresident
         })
 
     }
 
 
     return (
-        <>
+        <View style={{ margin: 25 }}>
+            <TextInput placeholder='CLUB NAME' onChangeText={(value) => setClubName(value)} style={styles.textinputS} />
 
-        <View style={styles.container}>
-            <Text>Club Name</Text>
-            <TextInput placeholder='CLUB NAME' onChangeText={(value)=>setClubName(value)}/>
+
+            <TextInput placeholder='DESCRIPTION' onChangeText={(value) => setClubDescription(value)} style={styles.textinputS} />
+
+
+
+            <TextInput placeholder='Faculty Name' onChangeText={(value) => setClubAdvisor(value)} style={styles.textinputS} />
+
+
+
+            <TextInput placeholder='Student Name' onChangeText={(value) => setClubPresident(value)} style={styles.textinputS} />
+
+
+            <TouchableOpacity style={styles.button} onPress={() => { Regis() }} style={{...styles.btn, alignSelf:'center'}}>
+                <Text style={styles.btnTxt}>Register</Text>
+            </TouchableOpacity>
+
         </View>
-
-        <View style={styles.container}>
-            <Text>Club Description</Text>
-            <TextInput placeholder='DESCRIPTION' onChangeText={(value)=>setClubDescription(value)}/>
-        </View>
-
-        <View style={styles.container}>
-            <Text>Staff Advisor</Text>
-            <TextInput placeholder='Faculty Name' onChangeText={(value)=>setClubAdvisor(value)}></TextInput>
-        </View>
-
-        <View style={styles.container}>
-            <Text>Club President</Text>
-            <TextInput placeholder='Student Name' onChangeText={(value)=>setClubPresident(value)}></TextInput>
-        </View>
-
-        <TouchableOpacity style={styles.button} onPress={()=>{Regis()}}> 
-            <Text>Register</Text>
-        </TouchableOpacity>
-        
-        </>
     );
 }
 

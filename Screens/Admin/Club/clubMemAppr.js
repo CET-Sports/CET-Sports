@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { TouchableOpacity, View, Text, FlatList } from 'react-native';
+import { TouchableOpacity, View, Text, FlatList, Image } from 'react-native';
 import { firebase } from '@react-native-firebase/app';
 import firestore from '@react-native-firebase/firestore';
+import styles from './styles';
 
 function clubMemAppr(props) {
 
@@ -9,8 +10,6 @@ function clubMemAppr(props) {
     const [text, setText] = useState('');
 
     useEffect(() => {
-
-
         firebase.firestore().collection('clubMembers').onSnapshot(querySnapshot => {
             const data = [];
             querySnapshot.forEach(documentSnapshot => {
@@ -37,24 +36,30 @@ function clubMemAppr(props) {
 
     }
 
+
     function Item({ data }) {
         return (
             <>
                 {
                     data.status === 'pending' ?
-                        <>
-                            <Text>Club Name : {data.ClubName} </Text>
-                            <Text>Student Phone : {data.phone} </Text>
-                            <TouchableOpacity onPress={() => { Approval(data.phone, data.ClubName) }}>
-                                <Text>Approve</Text>
-                            </TouchableOpacity>
-                        </> :
+                        <View style={styles.clbView}>
+                            <View>
+                                <Text>Club Name : {data.ClubName} </Text>
+                                <Text>Name : {data.name} </Text>
+                                <Text>Student Phone : {data.phone} </Text>
+                            </View>
+                            <View style={{alignItems:'center',justifyContent:'flex-end',flex:1,flexDirection:'row'}}>
+                                <TouchableOpacity onPress={() => { Approval(data.phone, data.ClubName) }} style={styles.imgBtn}>
+                                    <Image source={require('../../../Images/tic.png')} style={{height:40,width:40}}/>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={styles.imgBtn}>
+                                <Image source={require('../../../Images/cross.png')} style={{height:35,width:35}}/>
+                                </TouchableOpacity>
+                            </View>
+
+                        </View> :
                         null
                 }
-
-
-
-
             </>
         )
     }
