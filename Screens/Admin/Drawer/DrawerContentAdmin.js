@@ -100,18 +100,18 @@ function DrawerContent({ navigation }) {
                     Profile
                 </Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={() => { navigation.navigate('Invite') }}>
+            <TouchableOpacity style={styles.button} onPress={() => { navigation.navigate('InviteStackScreen') }}>
                 <Entypo name='sports-club' color='#000' size={25} style={{ ...styles.icon, opacity: 0.8 }} />
                 <Text style={styles.drawerText}>
-                    Team Invitation
+                    College Team
                 </Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={() => { navigation.navigate('ViewApplication') }}>
+            {/* <TouchableOpacity style={styles.button} onPress={() => { navigation.navigate('ViewApplication') }}>
                 <Entypo name='sports-club' color='#000' size={25} style={{ ...styles.icon, opacity: 0.8 }} />
                 <Text style={styles.drawerText}>
                     ViewApplication
                 </Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             <TouchableOpacity style={styles.button} onPress={() => { navigation.navigate('ClubAdminStackScreen') }}>
                 <Entypo name='sports-club' color='#000' size={25} style={{ ...styles.icon, opacity: 0.8 }} />
                 <Text style={styles.drawerText}>
