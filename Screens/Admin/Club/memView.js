@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Text, View, FlatList } from 'react-native';
 import { firebase } from '@react-native-firebase/app';
 import firestore from '@react-native-firebase/firestore';
+import styles from './styles';
 
 function memView({ route }) {
 
@@ -39,12 +40,12 @@ function memView({ route }) {
                 {
 
                     data.ClubName === Cname ?
-                        <>
-                            <Text>STUDENT NAME : {data.name}</Text>
-                            <Text>DEPARTMENT : {data.dept} </Text>
-                            <Text>SEMESTER : {data.sem}</Text>
-                            <Text>PHONE NUMBER : {data.phone}</Text>
-                        </>
+                        <View style={styles.gameBtn}>
+                            <Text style={styles.txt}>STUDENT NAME : {data.name}</Text>
+                            <Text style={styles.txt}>DEPARTMENT : {data.dept} </Text>
+                            <Text style={styles.txt}>SEMESTER : {data.sem}</Text>
+                            <Text style={styles.txt}>PHONE NUMBER : {data.phone}</Text>
+                        </View>
                         :
                         null
                 }
