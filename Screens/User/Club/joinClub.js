@@ -62,7 +62,7 @@ function joinClub({ navigation }) {
             <>
 
                 <View style={styles.containerJoin}>
-                    <TouchableOpacity style={styles.button} onPress={() => { navigation.navigate('clubDetails') }}
+                    <TouchableOpacity style={styles.button} onPress={() => { navigation.navigate('clubDetails', { clb: data.ClubName }) }}
                     >
                         <Text>{data.ClubName}</Text>
                     </TouchableOpacity>

@@ -10,6 +10,9 @@ function clubAdminMain({ navigation }) {
             <TouchableOpacity onPress={() => { navigation.navigate('clubMemAppr') }}>
                 <Text>MEMBER APPROVAL</Text>
             </TouchableOpacity>
+            <TouchableOpacity onPress={() => { navigation.navigate('clubView') }}>
+                <Text>VIEW CLUB</Text>
+            </TouchableOpacity>
         </View>
     );
 }

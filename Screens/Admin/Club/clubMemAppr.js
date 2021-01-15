@@ -10,32 +10,31 @@ function clubMemAppr(props) {
 
     useEffect(() => {
 
+
         firebase.firestore().collection('clubMembers').onSnapshot(querySnapshot => {
             const data = [];
             querySnapshot.forEach(documentSnapshot => {
-                //console.log(documentSnapshot.data())
+                console.log('documentSnapshot.data()')
+                console.log(documentSnapshot.data())
                 data.push({
                     ...documentSnapshot.data()
                 })
-                setDataSource(data)
             })
-
+            setDataSource(data)
         })
-
-
-
-
-
-
     }, [])
 
-    function Approval(val) {
-        return (
-            firebase.firestore().collection('Referal').doc(val).set({
-                status: 'Approved'
+    function Approval(phone, clb) {
+        firebase.firestore().collection('clubMembers').where('phone', '==', phone).where('ClubName', '==', clb).get().then(querySnapshot => {
+            querySnapshot.forEach(documentSnapshot => {
+                console.log(documentSnapshot.id)
+                firebase.firestore().collection('clubMembers').doc(documentSnapshot.id).update({
+                    status: 'Approved'
+                })
             })
+        });
 
-        )
+
     }
 
     function Item({ data }) {
@@ -44,9 +43,9 @@ function clubMemAppr(props) {
                 {
                     data.status === 'pending' ?
                         <>
-                            <Text>Club Name : {data.clubName} </Text>
+                            <Text>Club Name : {data.ClubName} </Text>
                             <Text>Student Phone : {data.phone} </Text>
-                            <TouchableOpacity onPress={() => { Approval(data.phone) }}>
+                            <TouchableOpacity onPress={() => { Approval(data.phone, data.ClubName) }}>
                                 <Text>Approve</Text>
                             </TouchableOpacity>
                         </> :
