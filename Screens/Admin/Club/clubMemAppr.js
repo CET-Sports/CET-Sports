@@ -44,9 +44,9 @@ function clubMemAppr(props) {
                     data.status === 'pending' ?
                         <View style={styles.clbView}>
                             <View>
-                                <Text>Club Name : {data.ClubName} </Text>
-                                <Text>Name : {data.name} </Text>
-                                <Text>Student Phone : {data.phone} </Text>
+                                <Text style={styles.txt}>Club Name : {data.ClubName} </Text>
+                                <Text style={styles.txt}>Name : {data.name} </Text>
+                                <Text style={styles.txt}>Student Phone : {data.phone} </Text>
                             </View>
                             <View style={{alignItems:'center',justifyContent:'flex-end',flex:1,flexDirection:'row'}}>
                                 <TouchableOpacity onPress={() => { Approval(data.phone, data.ClubName) }} style={styles.imgBtn}>
