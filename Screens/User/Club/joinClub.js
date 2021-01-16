@@ -59,15 +59,11 @@ function joinClub({ navigation }) {
 
 
         return (
-            <>
 
-                <View style={styles.containerJoin}>
-                    <TouchableOpacity style={styles.button} onPress={() => { navigation.navigate('clubDetails', { clb: data.ClubName }) }}
-                    >
-                        <Text>{data.ClubName}</Text>
-                    </TouchableOpacity>
-                </View>
-            </>
+            <TouchableOpacity style={styles.gameBtn} onPress={() => { navigation.navigate('clubDetails', { clb: data.ClubName }) }}
+            >
+                <Text style={styles.txt}>{data.ClubName}</Text>
+            </TouchableOpacity>
 
         );
     }
@@ -77,12 +73,6 @@ function joinClub({ navigation }) {
     return (
 
         <View>
-            <View style={styles.joinHeader}>
-                <Text style={styles.joinHeaderText}>
-                    JoinAClub
-            </Text>
-
-            </View>
             {
 
                 size > 0 ?

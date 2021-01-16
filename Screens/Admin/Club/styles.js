@@ -69,7 +69,13 @@ const styles = StyleSheet.create({
         fontSize:14,
         color:'#2c3e50',
         marginVertical:3
-    }
+    },
+    divider:{
+        flex:1,
+        height:1,
+        opacity:0.3,
+        backgroundColor:'#CCCCCC'
+    },
 })
 
 export default styles;

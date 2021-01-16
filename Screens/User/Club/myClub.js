@@ -3,6 +3,7 @@ import { FlatList, Text, View } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import { firebase } from '@react-native-firebase/app';
 import firestore from '@react-native-firebase/firestore';
+import styles from './styles';
 
 
 function myClub(props) {
@@ -43,17 +44,16 @@ function myClub(props) {
 
   function Item({ data }) {
     return (
-      <>
+      <View style={styles.gameBtn}>
 
         <Text>{data.ClubName} </Text>
 
-      </>
+      </View>
     )
   }
 
   return (
     <View>
-      <Text>CLUB JOINED</Text>
       <FlatList
         data={dataSource}
         renderItem={({ item }) => <Item data={item} />}

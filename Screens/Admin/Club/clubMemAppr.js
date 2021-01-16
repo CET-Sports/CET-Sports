@@ -46,6 +46,8 @@ function clubMemAppr(props) {
                             <View>
                                 <Text style={styles.txt}>Club Name : {data.ClubName} </Text>
                                 <Text style={styles.txt}>Name : {data.name} </Text>
+                                <Text style={styles.txt}>Dept : {data.dept} </Text>
+                                <Text style={styles.txt}>Sem : {data.sem} </Text>
                                 <Text style={styles.txt}>Student Phone : {data.phone} </Text>
                             </View>
                             <View style={{alignItems:'center',justifyContent:'flex-end',flex:1,flexDirection:'row'}}>
@@ -56,10 +58,13 @@ function clubMemAppr(props) {
                                 <Image source={require('../../../Images/cross.png')} style={{height:35,width:35}}/>
                                 </TouchableOpacity>
                             </View>
+                            
+
 
                         </View> :
                         null
                 }
+                <View style={styles.divider}/>
             </>
         )
     }
