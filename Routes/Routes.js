@@ -19,12 +19,9 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Home from '../Screens/Admin/Home/Home';
 import Live from '../Screens/Admin/Live/Live';
 import Lives from '../Screens/User/LiveUser/Lives';
-import Invite from '../Screens/Admin/Invite/Invite';
-import Cricket from '../Screens/Admin/InviteForm/cricket';
 import Apply from '../Screens/User/Apply/Apply';
 import Feed from '../Screens/User/Feed/Feed';
 import addTournament from '../Screens/Admin/Tournament/AddTournament/addTournament';
-import Club_Main from '../Screens/User/Club/Club_Main';
 import Club_Regis from '../Screens/Admin/Club/Club_Regis';
 import Profile from '../Screens/User/Profile/Profile';
 import Tournaments from '../Screens/Admin/Tournament/Tournaments/Tournaments';
@@ -32,14 +29,21 @@ import Update from '../Screens/Admin/Tournament/UpdateTournament/Update';
 import _Cricket from '../Screens/Admin/Games/Cricket/Cricket';
 import addCricket from '../Screens/Admin/Games/Cricket/addCricket';
 import updateCricket from '../Screens/Admin/Games/Cricket/updateCricket';
-import ViewApplication from '../Screens/Admin/Invite/ViewApplication';
+
 import joinClub from '../Screens/User/Club/joinClub';
 import clubDetails from '../Screens/User/Club/clubDetails';
-import clubAdminMain from '../Screens/Admin/Club/clubAdminMain';
 import myClub from '../Screens/User/Club/myClub';
+import Club_Main from '../Screens/User/Club/Club_Main';
+
 import clubMemAppr from '../Screens/Admin/Club/clubMemAppr';
 import clubView from '../Screens/Admin/Club/clubView';
 import memView from '../Screens/Admin/Club/memView';
+import clubAdminMain from '../Screens/Admin/Club/clubAdminMain';
+
+import Invite from '../Screens/Admin/Invite/Invite';
+import Cricket from '../Screens/Admin/InviteForm/cricket';
+import ViewApplication from '../Screens/Admin/Invite/ViewApplication';
+import inviteMain from '../Screens/Admin/Invite/inviteMain';
 
 
 const Drawer = createDrawerNavigator();
@@ -128,16 +132,16 @@ const InviteStackScreen = ({ navigation }) => (
 
     >
         <InviteStack.Screen
-            name="Invite"
-            component={Invite}
+            name="inviteMain"
+            component={inviteMain}
             options={{
                 headerStatusBarHeight: 0,
                 headerTintColor: '#fff'
             }}
         />
         <InviteStack.Screen
-            name="Cricket"
-            component={Cricket}
+            name="Invite"
+            component={Invite}
             options={{
                 headerStatusBarHeight: 0,
                 headerTintColor: '#fff'
