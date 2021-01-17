@@ -1,88 +1,42 @@
-import { useEffect, useState } from 'react';
-import React from 'react'
-import { View, Text, TouchableOpacity, FlatList } from 'react-native'
+import React from 'react';
+import { Text, TouchableOpacity, View } from 'react-native';
 import { firebase } from '@react-native-firebase/app';
 import firestore from '@react-native-firebase/firestore';
 import AsyncStorage from '@react-native-community/async-storage';
 
-export default function ViewApplication() {
-  const [dataSource, setDatasource] = useState([]);
-  const [viewData,setViewdata]=useState([]);
-  const [size,setSize] = useState(1);
-  const [phone, setPhone] = useState('');
 
+function ViewApplication(props) {
 
-  useEffect(() => {
-
-   
-
-
-
-    getData('userData')
-                .then(response => {
-                console.log('response');
-                console.log(response);
-                setPhone(response.phone);
-                })
-
-
-                firebase.firestore().
-      collection('Sports').
-      onSnapshot(querySnapShot => {
-        const array = [];
-        if (querySnapShot != null) {
-          console.log(querySnapShot.size);
-          setSize(querySnapShot.size);
-          querySnapShot.forEach(documentSnapShot => {
-            array.push({
-              ...documentSnapShot.data().item    
-            });
-            setDatasource(array);
-            // getChampImage(yr);
-            });
-        }
-      })
-
-      
-
-
-
-
-
-
-
-
-
-
-    
-  }, [])
-
-
-  getData = async (key) => {
-    try {
-        const jsonValue = await AsyncStorage.getItem(key)
-        return jsonValue != null ? JSON.parse(jsonValue) : null;
-    } catch (e) {
-        // error reading value
-
-    }
-  }
-
-
-  function Item() {
+  function Item({ data }) {
     return (
-      
-      <View>
-        <Text>Hello</Text>
-
-      </View>
-
+      <>
+        <Text>Name :  </Text>
+        <Text>Dept :  </Text>
+        <Text>Sem :  </Text>
+        <Text>Student Phone :  </Text>
+        <TouchableOpacity>
+          <Text>
+            Approve
+        </Text>
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <Text>
+            Regect
+        </Text>
+        </TouchableOpacity>
+      </>
     )
   }
 
   return (
     <View>
-      <Text>HELLO</Text>
+      <FlatList
+        data={dataSource}
+        renderItem={({ item }) => <Item data={item} />}
+        keyExtractor={(item, index) => index.toString()}
+      />
     </View>
-  )
+  );
 }
+
+export default ViewApplication;
