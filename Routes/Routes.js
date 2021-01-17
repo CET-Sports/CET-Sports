@@ -147,6 +147,14 @@ const InviteStackScreen = ({ navigation }) => (
                 headerTintColor: '#fff'
             }}
         />
+        <InviteStack.Screen
+            name="ViewApplication"
+            component={ViewApplication}
+            options={{
+                headerStatusBarHeight: 0,
+                headerTintColor: '#fff'
+            }}
+        />
     </InviteStack.Navigator>
 )
 const ProfileStackScreen = ({ navigation }) => (
