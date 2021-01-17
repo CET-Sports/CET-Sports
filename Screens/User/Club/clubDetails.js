@@ -139,24 +139,24 @@ function clubDetails({ route }) {
 
     return (
 
-        <View>
-            <Text>Club Name: {ClubName}</Text>
-            <Text>Description: {desc}</Text>
-            <Text>Advisor: {clubAdvisor}</Text>
-            <Text>Prsident: {clubPresident}</Text>
+        <View style={styles.gameBtn}>
+            <Text style={styles.txt}>Club Name: {ClubName}</Text>
+            <Text style={styles.txt}>Description: {desc}</Text>
+            <Text style={styles.txt}>Advisor: {clubAdvisor}</Text>
+            <Text style={styles.txt}>Prsident: {clubPresident}</Text>
 
             <View style={styles.containerJoin}>
                 {
                     flag ?
                         <TouchableOpacity style={styles.button}
                         >
-                            <Text>Applied</Text>
+                            <Text style={styles.txt}>Applied</Text>
                         </TouchableOpacity>
                         :
 
                         <TouchableOpacity style={styles.button} onPress={() => add()}
                         >
-                            <Text>Join</Text>
+                            <Text style={styles.txt}>Join</Text>
                         </TouchableOpacity>
 
                 }

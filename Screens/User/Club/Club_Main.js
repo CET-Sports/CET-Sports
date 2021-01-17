@@ -11,15 +11,15 @@ function Club_Main({navigation}) {
     return (
 
         <SafeAreaView style={styles.container}>
-            <TouchableOpacity style={styles.button1} onPress={()=>{navigation.navigate('joinClub')}}>
-                <Text>
+            <TouchableOpacity style={styles.btn} onPress={()=>{navigation.navigate('joinClub')}}>
+                <Text style={styles.btnTxt}>
                     JOIN A CLUB
                 </Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.button2 }  onPress={()=>{navigation.navigate('myClub')}}>
-                <Text>
-                    ENTER TO YOUR CLUB
+            <TouchableOpacity style={styles.btn}  onPress={()=>{navigation.navigate('myClub')}}>
+                <Text style={styles.btnTxt}>
+                    MY CLUBS
                 </Text>
             </TouchableOpacity>
 
