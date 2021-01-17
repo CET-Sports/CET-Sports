@@ -598,13 +598,13 @@ function Routes(props) {
                                         component={TabScreenAdmin}
                                     />
                                     <Drawer.Screen
-                                        name="Invite"
+                                        name="InviteStackScreen"
                                         component={InviteStackScreen}
                                     />
-                                    <Drawer.Screen
+                                    {/* <Drawer.Screen
                                         name="ViewApplication"
                                         component={ViewApplication}
-                                    />
+                                    /> */}
                                     <Drawer.Screen
                                         name="ClubAdminStackScreen"
                                         component={ClubAdminStackScreen}
