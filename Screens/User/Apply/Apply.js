@@ -13,7 +13,7 @@ export default function Apply() {
   const [name, setName] = useState('');
   const [dp, setDp] = useState();
   const [dept, setDept] = useState();
-  const [gender, setGender] = useState();
+  const [gender, setGender] = useState('');
   const [phone, setPhone] = useState('');
   const [event,setEvent]=useState();
   const [trp,setTrp]=useState(false);
@@ -43,9 +43,15 @@ export default function Apply() {
                     })
             })
     const date = new Date();
-      firebase.firestore().
-      collection('Sports').where('due', '>=', date).
-      onSnapshot(querySnapShot => {
+
+
+console.log("gender:"+gender)
+console.log("due"+date)
+  
+
+  const query = firebase.firestore().collection('Sports').where('due', '>=',date).where('gender','==' ,gender);
+
+     query.onSnapshot(querySnapShot => {
         const array = [];
         if (querySnapShot != null) {
           console.log(querySnapShot.size);
@@ -61,6 +67,8 @@ export default function Apply() {
       })
   }, [])
 
+  
+
 
   getData = async (key) => {
     try {
@@ -75,17 +83,12 @@ export default function Apply() {
 
   function push(data1)
   {
-    console.log("Hello"+name)
-    console.log("")
-   console.log("block 1")
+   
+
+
+
   
-    firebase.firestore()
-    .collection('Apply').doc(data1).collection('Student')
-     .
-     where('sprt','==',data1).
-     where('phone','==',phone)
-    .get()
-    .then(querySnapshot => {
+    firebase.firestore().collection('Apply').doc(data1).collection('Student').where('sprt','==',data1).where('phone','==',phone).onSnapshot(querySnapshot => {
 
         if(!querySnapshot.empty)
         {
@@ -122,7 +125,8 @@ export default function Apply() {
     <View>
         <View>
            </View>
-
+      
+        
         <Text>{data.item}</Text>       
         <TouchableOpacity onPress={()=>{push(data.item)}}><Text>Apply</Text></TouchableOpacity>
 
@@ -159,7 +163,10 @@ export default function Apply() {
   }
 
   return (
+    
     <View>
+  
+   
       {
         
         size > 0 ?
