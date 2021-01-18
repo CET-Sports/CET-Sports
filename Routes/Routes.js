@@ -26,9 +26,13 @@ import Club_Regis from '../Screens/Admin/Club/Club_Regis';
 import Profile from '../Screens/User/Profile/Profile';
 import Tournaments from '../Screens/Admin/Tournament/Tournaments/Tournaments';
 import Update from '../Screens/Admin/Tournament/UpdateTournament/Update';
-import _Cricket from '../Screens/Admin/Games/Cricket/Cricket';
+import Cricket from '../Screens/Admin/Games/Cricket/Cricket';
 import addCricket from '../Screens/Admin/Games/Cricket/addCricket';
 import updateCricket from '../Screens/Admin/Games/Cricket/updateCricket';
+import scores from '../Screens/User/Scores/scores';
+import games from '../Screens/User/Scores/games';
+import _Cricket from '../Screens/User/Scores/Games/_Cricket'
+import CricketScore from '../Screens/User/Scores/Games/CricketScore';
 
 import joinClub from '../Screens/User/Club/joinClub';
 import clubDetails from '../Screens/User/Club/clubDetails';
@@ -41,9 +45,10 @@ import memView from '../Screens/Admin/Club/memView';
 import clubAdminMain from '../Screens/Admin/Club/clubAdminMain';
 
 import Invite from '../Screens/Admin/Invite/Invite';
-import Cricket from '../Screens/Admin/InviteForm/cricket';
 import ViewApplication from '../Screens/Admin/Invite/ViewApplication';
 import inviteMain from '../Screens/Admin/Invite/inviteMain';
+
+import groundBooking from '../Screens/User/Booking/groundBooking';
 
 
 const Drawer = createDrawerNavigator();
@@ -62,6 +67,8 @@ const ClubStack = createStackNavigator();
 const ClubAdminStack = createStackNavigator();
 
 const InviteStack = createStackNavigator();
+
+const UserScoresStack = createStackNavigator();
 
 
 //user 
@@ -147,6 +154,14 @@ const InviteStackScreen = ({ navigation }) => (
                 headerTintColor: '#fff'
             }}
         />
+        <InviteStack.Screen
+            name="ViewApplication"
+            component={ViewApplication}
+            options={{
+                headerStatusBarHeight: 0,
+                headerTintColor: '#fff'
+            }}
+        />
     </InviteStack.Navigator>
 )
 const ProfileStackScreen = ({ navigation }) => (
@@ -225,6 +240,57 @@ const ClubStackScreen = ({ navigation }) => (
     </ClubStack.Navigator>
 )
 
+const ScoreStackScreen = ({ navigation }) => (
+    <UserScoresStack.Navigator
+        screenOptions={{
+            headerStyle: {
+                elevation: 0,
+                backgroundColor: colors.primaryColor
+            },
+            headerLeft: () => (
+                <TouchableOpacity onPress={() => { navigation.openDrawer() }} style={{ alignItems: 'center', justifyContent: 'center' }}>
+                    <AntDesign name="menuunfold" size={23} color={'#fff'} style={{ marginLeft: 10 }} />
+                </TouchableOpacity>
+            )
+        }}
+
+    >
+        <UserScoresStack.Screen
+            name="Scores"
+            component={scores}
+            options={{
+                headerStatusBarHeight: 0,
+                headerTintColor: '#fff'
+            }}
+        />
+        <UserScoresStack.Screen
+            name="userGames"
+            component={games}
+            options={{
+                headerStatusBarHeight: 0,
+                headerTintColor: '#fff'
+            }}
+        />
+        <UserScoresStack.Screen
+            name="_Cricket"
+            component={_Cricket}
+            options={{
+                headerStatusBarHeight: 0,
+                headerTintColor: '#fff'
+            }}
+        />
+        <UserScoresStack.Screen
+            name="CricketScore"
+            component={CricketScore}
+            options={{
+                headerStatusBarHeight: 0,
+                headerTintColor: '#fff'
+            }}
+        />
+    </UserScoresStack.Navigator>
+)
+
+
 
 const TabScreen = () => (
     <Tabs.Navigator
@@ -253,9 +319,19 @@ const TabScreen = () => (
                 )
             }}
         />
+        <Tabs.Screen
+            name="Scores"
+            component={ScoreStackScreen}
+            options={{
+                tabBarIcon: ({ color }) => (
+                    <Icon name='scoreboard-outline' color={color} size={23} style={{}} />
+                )
+            }}
+        />
 
     </Tabs.Navigator>
 )
+
 
 // user end
 
@@ -354,7 +430,7 @@ const TournamentStackScreen = ({ navigation }) => (
         />
         <TournamentStack.Screen
             name="Cricket"
-            component={_Cricket}
+            component={Cricket}
             options={{
                 headerStatusBarHeight: 0,
                 headerTintColor: '#fff'
@@ -598,21 +674,21 @@ function Routes(props) {
                                         component={TabScreenAdmin}
                                     />
                                     <Drawer.Screen
-                                        name="Invite"
+                                        name="InviteStackScreen"
                                         component={InviteStackScreen}
                                     />
-                                    <Drawer.Screen
+                                    {/* <Drawer.Screen
                                         name="ViewApplication"
                                         component={ViewApplication}
-                                    />
+                                    /> */}
                                     <Drawer.Screen
                                         name="ClubAdminStackScreen"
                                         component={ClubAdminStackScreen}
                                     />
-                                    {/* <Drawer.Screen
-                                        name="Cricket"
-                                        component={Cricket}
-                                    /> */}
+                                    <Drawer.Screen
+                                        name="groundBooking"
+                                        component={groundBooking}
+                                    />
                                 </Drawer.Navigator>
 
                             :

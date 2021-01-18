@@ -8,7 +8,7 @@ import firestore from '@react-native-firebase/firestore';
 import { colors } from '../../../../Colors/colors';
 
 
-function _Cricket({ route, navigation }) {
+function Cricket({ route, navigation }) {
 
     const [dataSource, setDataSource] = useState([]);
     const { Tname } = route.params
@@ -39,10 +39,23 @@ function _Cricket({ route, navigation }) {
                 tone:data.Team1,
                 ttwo:data.Team2,
                 Tname: Tname,
-                Ovr:data.Overs
+                Ovr:data.Overs,
+                _status:data.status
             })}}>
                 <Text style={styles.gameBtntext}>{data.Match_name}</Text>
                 <Text style={styles.levelText}>{data.Match_level}</Text>
+                {
+                    data.status == 'Pending' ?
+                        <View style={{flexDirection:'row',alignItems:'center'}}>
+                            <FontAwesome name="circle" color="#ff3838" style={{marginTop:10,fontSize:10,marginRight:3}}/>
+                            <Text style={styles.pending}>{data.status}</Text>
+                        </View>
+                        :
+                        <View style={{flexDirection:'row',alignItems:'center'}}>
+                        <FontAwesome name="circle" color="#32ff7e" style={{marginTop:10,fontSize:10,marginRight:3}}/>
+                        <Text style={styles.ongoing}>{data.status}</Text>
+                    </View>
+                }
             </TouchableOpacity>
         )
     }
@@ -72,4 +85,4 @@ function _Cricket({ route, navigation }) {
     );
 }
 
-export default _Cricket;
+export default Cricket;

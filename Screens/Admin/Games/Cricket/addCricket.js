@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { TextInput, TouchableOpacity, View, Text } from 'react-native';
+import { TextInput, TouchableOpacity, View, Text, Modal } from 'react-native';
 import { firebase } from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import styles from './styles';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-function addCricket({route}) {
+function addCricket({route,navigation}) {
 
     const[level,setLevel] = useState('');
     const[name,setName] = useState('');
@@ -12,6 +13,7 @@ function addCricket({route}) {
     const[teamTwo,setTeamTwo] = useState('');
     const[overs,setOvers] = useState();
     const[msg,setMsg] = useState('');
+    const [modalVisible, setModalVisible] = useState(false);
 
     const date = new Date(); 
 
@@ -26,7 +28,8 @@ function addCricket({route}) {
             Overs:overs,
             Team1:teamOne,
             Team2:teamTwo,
-            createdAt:date
+            createdAt:date,
+            status:'Pending'
         })
         firebase.firestore().collection('Tournaments').doc(Tname).collection('Games').doc('Cricket')
         .collection('Scores').doc(name+" "+level).collection('Teams').doc('Team1').set({
@@ -46,36 +49,54 @@ function addCricket({route}) {
             status:'',
             balls:0
         })
-    }
 
-    const update = ()=>{
-        // firebase.firestore().collection('Tournaments').doc(Tname).collection('Games').doc('Cricket')
-        // .collection('Scores').where('Match_name', '==', 'Match1').get().then(querySnapshot =>{
-        //     querySnapshot.forEach(doc=>{
-        //         console.log(doc.data())
-        //     })
-        // })
-        firebase.firestore().collection('Tournaments').doc(Tname).collection('Games').doc('Cricket')
-        .collection('Scores').doc('A').update({
-            Match_name:'Thatsit'
-        })
+        setModalVisible(true);
+
+        setTimeout(() => {
+            setModalVisible(false);
+            navigation.navigate('Cricket');
+        }, 1000);
     }
 
     
     return (
         <View style={styles.container}>
-            <TextInput placeholder='game level' onChangeText={(value)=>{setLevel(value)}}/>
-            <TextInput placeholder='game name' onChangeText={(value)=>{setName(value)}}/>
-            <TextInput placeholder='Team1' onChangeText={(value)=>{setTeamOne(value)}}/>
-            <TextInput placeholder='Team2' onChangeText={(value)=>{setTeamTwo(value)}}/>
-            <TextInput placeholder='Overs' onChangeText={(value)=>{setOvers(value)}}/>
-            <TextInput placeholder='Message' onChangeText={(value)=>{setMsg(value)}}/>
-            <TouchableOpacity onPress={()=>{sendData()}}>
-                <Text>Send</Text>
+            <TextInput placeholder='game level' onChangeText={(value)=>{setLevel(value)}} style={styles.TextInput}/>
+            <TextInput placeholder='game name' onChangeText={(value)=>{setName(value)}} style={styles.TextInput}/>
+            <TextInput placeholder='Team1' onChangeText={(value)=>{setTeamOne(value)}} style={styles.TextInput}/>
+            <TextInput placeholder='Team2' onChangeText={(value)=>{setTeamTwo(value)}} style={styles.TextInput}/>
+            <TextInput placeholder='Overs' onChangeText={(value)=>{setOvers(value)}} style={styles.TextInput}/>
+            <TextInput placeholder='Message' onChangeText={(value)=>{setMsg(value)}} style={styles.TextInput}/>
+            <TouchableOpacity onPress={()=>{sendData()}} style={styles.btn}>
+                <Text style={styles.btnTxtf}>Add</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={()=>{update()}}>
-                <Text>update</Text>
-            </TouchableOpacity>
+
+            {
+                modalVisible ?
+
+                    <Modal
+                        animationType="fade"
+                        transparent={true}
+                        visible={modalVisible}
+                        onRequestClose={() => { setModalVisible(false) }}
+                    >
+
+                        <View style={styles.modalContainer}>
+                            <View style={styles.modalView}>
+                                <View style={{ flexDirection: 'column', alignItems: 'center', width: 100, margin: 10 }}>
+                                    <Icon name="check-circle" size={60} color='#2ed573' />
+                                    <Text style={styles.modalText}>Done</Text>
+                                </View>
+                            </View>
+                        </View>
+
+                    </Modal>
+
+                    :
+
+                    null
+
+            }
         </View>
     );
 }
