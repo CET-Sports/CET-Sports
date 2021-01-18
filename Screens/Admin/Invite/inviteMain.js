@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 
-function inviteMain(navigation) {
+function inviteMain({ navigation }) {
     return (
         <View>
             <TouchableOpacity onPress={() => { navigation.navigate('Invite') }}>
