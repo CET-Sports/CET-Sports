@@ -45,6 +45,8 @@ import Cricket from '../Screens/Admin/InviteForm/cricket';
 import ViewApplication from '../Screens/Admin/Invite/ViewApplication';
 import inviteMain from '../Screens/Admin/Invite/inviteMain';
 
+import groundBooking from '../Screens/User/Booking/groundBooking';
+
 
 const Drawer = createDrawerNavigator();
 const Tabs = createMaterialBottomTabNavigator();
@@ -617,10 +619,10 @@ function Routes(props) {
                                         name="ClubAdminStackScreen"
                                         component={ClubAdminStackScreen}
                                     />
-                                    {/* <Drawer.Screen
-                                        name="Cricket"
-                                        component={Cricket}
-                                    /> */}
+                                    <Drawer.Screen
+                                        name="groundBooking"
+                                        component={groundBooking}
+                                    />
                                 </Drawer.Navigator>
 
                             :

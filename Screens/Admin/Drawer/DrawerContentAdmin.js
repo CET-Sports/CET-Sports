@@ -106,16 +106,16 @@ function DrawerContent({ navigation }) {
                     College Team
                 </Text>
             </TouchableOpacity>
-            {/* <TouchableOpacity style={styles.button} onPress={() => { navigation.navigate('ViewApplication') }}>
-                <Entypo name='sports-club' color='#000' size={25} style={{ ...styles.icon, opacity: 0.8 }} />
-                <Text style={styles.drawerText}>
-                    ViewApplication
-                </Text>
-            </TouchableOpacity> */}
             <TouchableOpacity style={styles.button} onPress={() => { navigation.navigate('ClubAdminStackScreen') }}>
                 <Entypo name='sports-club' color='#000' size={25} style={{ ...styles.icon, opacity: 0.8 }} />
                 <Text style={styles.drawerText}>
                     Club
+                </Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={() => { navigation.navigate('groundBooking') }}>
+                <Entypo name='sports-club' color='#000' size={25} style={{ ...styles.icon, opacity: 0.8 }} />
+                <Text style={styles.drawerText}>
+                    Ground Booking
                 </Text>
             </TouchableOpacity>
             <View style={{ flex: 1, alignItems: 'flex-end', marginBottom: 25, flexDirection: 'row' }}>
