@@ -18,14 +18,17 @@ function groundBooking(props) {
 
     //     )
     // }
-    function fun1(k, t) {
+    function fun1(t) {
+
+        console.log(t) //The time ==> This time is to be uploaded in the database
+
 
     }
 
     return (
         <View>
             { time.map(time => (
-                <TouchableOpacity onPress={() => fun1(keys, time)}>
+                <TouchableOpacity onPress={() => fun1(time)}>
                     <Text key={keys}>{time}</Text>
                 </TouchableOpacity>
             ))}
