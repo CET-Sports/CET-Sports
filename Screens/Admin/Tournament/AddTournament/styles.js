@@ -9,13 +9,17 @@ const styles = StyleSheet.create({
     },  
     pickerBox:{
         justifyContent: 'center',
+        backgroundColor: '#f1f2f6',
+        padding: 5,
+        fontFamily: 'OpenSans-Regular',
+        height: 60,
         borderWidth: 1,
+        borderRadius: 5,
         borderColor: '#dcdee0',
-        borderRadius: 10,
-        height: 55,
-        marginVertical: 30,
-        marginHorizontal: 30,
-        backgroundColor: '#FAFAFA'
+        textAlign: 'justify',
+        marginTop: 15,
+        marginHorizontal: 15,
+        paddingLeft: 15
     },
     dateBtn:{
         padding:15,
@@ -26,13 +30,19 @@ const styles = StyleSheet.create({
         marginTop:20
         
     },
-    TextInput:{
-        borderBottomWidth:1.5,
-        borderColor:colors.primaryColor,
-        fontSize:16,
-        marginHorizontal:10,
-        marginVertical:20
-    },
+    TextInput: {
+        backgroundColor: '#f1f2f6',
+        padding: 5,
+        fontFamily: 'OpenSans-Regular',
+        height: 60,
+        borderWidth: 1,
+        borderRadius: 5,
+        borderColor: '#dcdee0',
+        textAlign: 'justify',
+        marginTop: 15,
+        marginHorizontal: 15,
+        paddingLeft: 15
+      },
     modalContainer: {
         flex: 1,
         backgroundColor: 'rgba(52,52,52,0.5)',
@@ -48,6 +58,16 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         padding: 30
     },
+    fontMain:{
+        marginLeft: 20, 
+        marginTop: 20,
+        fontFamily:'OpenSans-SemiBold',
+        fontSize:20
+    },
+    fontSml:{
+        fontFamily:'OpenSans-Regular',
+        fontSize:16
+    }
 })
 
 export default styles;

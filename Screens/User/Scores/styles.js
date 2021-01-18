@@ -1,23 +1,11 @@
 
 import { StyleSheet } from 'react-native';
-import { colors } from '../../../../Colors/colors';
+import { colors } from '../../../Colors/colors';
 
 const styles = StyleSheet.create({
     container:{
         backgroundColor:'#fff',
-        flex:1,
-        justifyContent:'center'
-    },
-    Btn:{
-        padding:15,
-        marginHorizontal:40,
-        borderRadius:5,
-        backgroundColor:colors.primaryColor,
-        alignItems:'center'
-    },
-    btnText:{
-        color:'#fff',
-        fontFamily:'OpenSans-Regular'
+        flexGrow:1
     },
     addTournament:{
         backgroundColor:'#fff'

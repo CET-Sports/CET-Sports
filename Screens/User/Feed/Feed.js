@@ -76,8 +76,8 @@ function Feed({ navigation }) {
                     </View>
                     <Text style={styles.title}>{data.Title}</Text>
                     <Text style={styles.content} numberOfLines={6}>{data.Content}</Text>
-                    {/* <Text style={styles.content} numberOfLines={6}>{moment(JSON.stringify(data.CreatedAt)).format('YYYY-MM-DD')}
-                    </Text> */}
+                    <Text style={styles.content} numberOfLines={6}>{moment(data.CreatedAt.toDate()).format('DD-MM-YYYY')}
+                    </Text>
                     <View style={styles.divider} />
 
                 </View>

@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { firebase } from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
-import styles from './styles'
+import styles from './styles';
 
 function Update({ route,navigation }) {
-    const { Tname } = route.params
-    const { _status } = route.params
+    const { Tname } = route.params;
+    const { _status } = route.params;
     const [dataSource, setDataSource] = useState([]);
     const [pending, setPending] = useState(_status);
 
