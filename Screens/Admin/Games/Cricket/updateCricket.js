@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { TextInput, TouchableOpacity, View, Text, Image } from 'react-native';
+import React, { useEffect, useState} from 'react';
+import { TextInput, TouchableOpacity, View, Text, Image, Modal } from 'react-native';
 import { firebase } from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import styles from './styles';
@@ -31,6 +31,9 @@ function updateCricket({ route }) {
 
     const [msg, setMsg] = useState('');
     const [pending, setPending] = useState(_status);
+
+    const [modalVisible, setModalVisible] = useState(false);
+    const [fmessage, setFmessage] = useState('')
 
     useEffect(() => {
         const subscriber = firebase.firestore().collection('Tournaments').
@@ -214,6 +217,19 @@ function updateCricket({ route }) {
             .collection('Scores').doc(mName + " " + lName).update({
                 status: 'Ongoing'
             })
+    }
+
+    const endMatch = ()=>{
+        firebase.firestore().collection('Tournaments').doc(Tname).collection('Games').doc('Cricket')
+        .collection('Scores').doc(mName + " " + lName).update({
+            fmessage: fmessage
+        })
+        firebase.firestore().collection('Tournaments').doc(Tname).collection('Games').doc('Cricket')
+        .collection('Scores').doc(mName + " " + lName).update({
+            status: 'Finished'
+        })
+
+        setModalVisible(false);
     }
 
     return (
@@ -419,6 +435,47 @@ function updateCricket({ route }) {
                         }
                     </>
             }
+
+            <View style={{ padding: 30, backgroundColor: '#fff' }}>
+                <TouchableOpacity style={styles.endBtn} onPress={()=>{setModalVisible(true)}}>
+                    <Text style={styles.btnText}>
+                        End Match
+                    </Text>
+                </TouchableOpacity>
+
+            </View>
+
+            <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={modalVisible}
+                    onRequestClose={() => { setModalVisible(false) }}
+                >
+                    <View style={styles.modalContainer}>
+                        <View style={styles.modalView}>
+                            <View style={styles.headerContainer}>
+                                <Text style={styles.nameText}>Final Message</Text>
+                            </View>
+
+                            <TextInput
+                                placeholder="Name"
+                                autoFocus={true}
+                                placeholderTextColor='#8395a7'
+                                onChangeText={(value) => setFmessage(value)}
+                                style={styles.textInput} />
+
+
+                            <View style={styles.buttonsContainer}>
+                                <TouchableOpacity onPress={() => setModalVisible(false)} style={styles.Button}>
+                                    <Text style={styles._btnText}>CANCEL</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={() => endMatch()} style={styles.Button}>
+                                    <Text style={styles._btnText}>SAVE</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </View>
+                </Modal>
 
         </>
     );
