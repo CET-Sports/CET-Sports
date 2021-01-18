@@ -47,6 +47,8 @@ import clubAdminMain from '../Screens/Admin/Club/clubAdminMain';
 import Invite from '../Screens/Admin/Invite/Invite';
 import ViewApplication from '../Screens/Admin/Invite/ViewApplication';
 import inviteMain from '../Screens/Admin/Invite/inviteMain';
+import ViewApproved from '../Screens/Admin/Invite/ViewApproved';
+
 
 import groundBooking from '../Screens/User/Booking/groundBooking';
 
@@ -157,6 +159,14 @@ const InviteStackScreen = ({ navigation }) => (
         <InviteStack.Screen
             name="ViewApplication"
             component={ViewApplication}
+            options={{
+                headerStatusBarHeight: 0,
+                headerTintColor: '#fff'
+            }}
+        />
+        <InviteStack.Screen
+            name="ViewApproved"
+            component={ViewApproved}
             options={{
                 headerStatusBarHeight: 0,
                 headerTintColor: '#fff'
