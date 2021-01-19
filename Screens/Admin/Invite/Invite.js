@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, Image,Picker } from 'react-native';
+import { View, Text, TouchableOpacity, Image } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
 import styles from './styles';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { colors } from '../../../Colors/colors';
@@ -43,7 +44,8 @@ function Invite({ navigation }) {
         <View style={styles.container}>
 
  <Picker
-        game={game}
+
+      selectedValue={game}
         style={{ height: 50, width: 150 }}
         onValueChange={(itemValue, itemIndex) => setGame(itemValue)}
       >
@@ -57,7 +59,7 @@ function Invite({ navigation }) {
       </Picker>
 
       <Picker
-        gender={gender}
+        selectedValue={gender}
         style={{ height: 50, width: 150 }}
         onValueChange={(itemValue, itemIndex) => setGender(itemValue)}
       >

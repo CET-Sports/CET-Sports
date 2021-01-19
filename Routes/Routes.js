@@ -52,6 +52,10 @@ import ViewApproved from '../Screens/Admin/Invite/ViewApproved';
 
 import groundBooking from '../Screens/User/Booking/groundBooking';
 
+import regisTeam from '../Screens/User/Tournament/regisTeam';
+import viewTournament from '../Screens/User/Tournament/viewTournament';
+import viewEvents from '../Screens/User/Tournament/viewEvents';
+
 
 const Drawer = createDrawerNavigator();
 const Tabs = createMaterialBottomTabNavigator();
@@ -71,6 +75,8 @@ const ClubAdminStack = createStackNavigator();
 const InviteStack = createStackNavigator();
 
 const UserScoresStack = createStackNavigator();
+
+const TournamentUserStack = createStackNavigator();
 
 
 //user 
@@ -343,9 +349,58 @@ const TabScreen = () => (
 )
 
 
-// user end
+const TournamentUserStackScreen = ({ navigation }) => (
 
-// admin
+    <TournamentUserStack.Navigator
+        screenOptions={{
+            headerStyle: {
+                elevation: 0,
+                backgroundColor: colors.primaryColor
+            },
+            headerLeft: () => (
+                <TouchableOpacity onPress={() => { navigation.openDrawer() }} style={{ alignItems: 'center', justifyContent: 'center' }}>
+                    <AntDesign name="menuunfold" size={23} color={'#fff'} style={{ marginLeft: 10 }} />
+                </TouchableOpacity>
+            )
+        }}
+
+    >
+
+        <TournamentUserStack.Screen
+            name="viewTournament"
+            component={viewTournament}
+            options={{
+                headerStatusBarHeight: 0,
+                headerTintColor: '#fff'
+            }}
+        />
+
+        <TournamentUserStack.Screen
+            name="viewEvents"
+            component={viewEvents}
+            options={{
+                headerStatusBarHeight: 0,
+                headerTintColor: '#fff'
+            }}
+        />
+
+        <TournamentUserStack.Screen
+            name="regisTeam"
+            component={regisTeam}
+            options={{
+                headerStatusBarHeight: 0,
+                headerTintColor: '#fff'
+            }}
+        />
+
+
+    </TournamentUserStack.Navigator>
+
+)
+
+// user end------------------------------------------------------------------
+
+// admin----------------------------------------------------------------------
 
 const HomeStackScreen = ({ navigation }) => (
     <HomeStack.Navigator
@@ -662,7 +717,6 @@ function Routes(props) {
                                     />
 
                                     <Drawer.Screen
-
                                         name="Apply"
                                         component={Apply}
                                     />
@@ -673,6 +727,14 @@ function Routes(props) {
                                     <Drawer.Screen
                                         name="Profile"
                                         component={ProfileStackScreen}
+                                    />
+                                    <Drawer.Screen
+                                        name="groundBooking"
+                                        component={groundBooking}
+                                    />
+                                    <Drawer.Screen
+                                        name="TournamentUserStackScreen"
+                                        component={TournamentUserStackScreen}
                                     />
                                 </Drawer.Navigator>
 
@@ -695,10 +757,7 @@ function Routes(props) {
                                         name="ClubAdminStackScreen"
                                         component={ClubAdminStackScreen}
                                     />
-                                    <Drawer.Screen
-                                        name="groundBooking"
-                                        component={groundBooking}
-                                    />
+
                                 </Drawer.Navigator>
 
                             :
