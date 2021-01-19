@@ -11,9 +11,9 @@ export default function Apply() {
   const [sports, setSports] = useState(false);
   const [dataSource, setDatasource] = useState([]);
   const [name, setName] = useState('');
-  const [dp, setDp] = useState();
+  const [sem, setSem] = useState('');
   const [dept, setDept] = useState();
-  const [gender, setGender] = useState('');
+  const [gender, setGender] = useState('Male');
   const [phone, setPhone] = useState('');
   const [event,setEvent]=useState();
   const [trp,setTrp]=useState(false);
@@ -35,7 +35,7 @@ export default function Apply() {
                         if (documentSnapshot != null) {
                             console.log(documentSnapshot.data().name)
                             setName(documentSnapshot.data().name)
-                            setDp(documentSnapshot.data().dpUrl)
+                            setSem(documentSnapshot.data().sem)
                             setDept( documentSnapshot.data().dept)
                             setGender(documentSnapshot.data().gender)
                             setPhone(documentSnapshot.data().phone)
@@ -88,7 +88,7 @@ console.log("due"+date)
 
 
   
-    firebase.firestore().collection('Apply').doc(data1).collection('Student').where('sprt','==',data1).where('phone','==',phone).onSnapshot(querySnapshot => {
+    firebase.firestore().collection('Apply').where('sprt','==',data1).where('phone','==',phone).onSnapshot(querySnapshot => {
 
         if(!querySnapshot.empty)
         {
@@ -96,13 +96,14 @@ console.log("due"+date)
         }
         else
         {
-          firebase.firestore().collection('Apply').doc(data1).collection('Student').doc().set({
+          firebase.firestore().collection('Apply').doc().set({
             name:name,
-            dp:dp,
+            sem:sem,
             dept:dept,
             gender:gender,
             phone:phone,
-            sprt:data1
+            sprt:data1,
+            status:'pending'
           })
         }
   
