@@ -52,6 +52,8 @@ import ViewApproved from '../Screens/Admin/Invite/ViewApproved';
 
 import groundBooking from '../Screens/User/Booking/groundBooking';
 
+import regisTeam from '../Screens/User/Tournament/regisTeam';
+
 
 const Drawer = createDrawerNavigator();
 const Tabs = createMaterialBottomTabNavigator();
@@ -662,7 +664,6 @@ function Routes(props) {
                                     />
 
                                     <Drawer.Screen
-
                                         name="Apply"
                                         component={Apply}
                                     />
@@ -673,6 +674,14 @@ function Routes(props) {
                                     <Drawer.Screen
                                         name="Profile"
                                         component={ProfileStackScreen}
+                                    />
+                                    <Drawer.Screen
+                                        name="groundBooking"
+                                        component={groundBooking}
+                                    />
+                                    <Drawer.Screen
+                                        name="regisTeam"
+                                        component={regisTeam}
                                     />
                                 </Drawer.Navigator>
 
@@ -695,10 +704,7 @@ function Routes(props) {
                                         name="ClubAdminStackScreen"
                                         component={ClubAdminStackScreen}
                                     />
-                                    <Drawer.Screen
-                                        name="groundBooking"
-                                        component={groundBooking}
-                                    />
+
                                 </Drawer.Navigator>
 
                             :

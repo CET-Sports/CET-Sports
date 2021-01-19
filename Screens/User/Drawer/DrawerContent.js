@@ -121,6 +121,18 @@ function DrawerContent({ navigation }) {
                     Clubs
                 </Text>
             </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={() => { navigation.navigate('groundBooking') }}>
+                <Icon name='select-group' color='#000' size={23} style={styles.icon} />
+                <Text style={styles.drawerText}>
+                    Ground Booking
+                </Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={() => { navigation.navigate('regisTeam') }}>
+                <Icon name='select-group' color='#000' size={23} style={styles.icon} />
+                <Text style={styles.drawerText}>
+                    Team Registration
+                </Text>
+            </TouchableOpacity>
 
 
 
