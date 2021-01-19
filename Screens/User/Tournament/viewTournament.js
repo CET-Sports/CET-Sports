@@ -1,19 +1,38 @@
-import React from 'react';
-import { View, FlatList, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, FlatList, TouchableOpacity, Text } from 'react-native';
 import { firebase } from '@react-native-firebase/app';
 import firestore from '@react-native-firebase/firestore';
 
-function viewTournament(props) {
+function viewTournament({ navigation }) {
 
     const [dataSource, setDataSource] = useState([]);
+    const array = [];
+
+    useEffect(() => {
+
+        firebase.firestore().collection('Tournaments').onSnapshot(querySnapShot => {
+
+            if (querySnapShot != null) {
+                querySnapShot.forEach(documentSnapshot => {
+                    array.push({
+                        ...documentSnapshot.id
+                    });
+                    setDataSource(array);
+                    console.log(documentSnapshot.id)
+                })
+            }
+        })
+
+    }, [])
+
 
     function Item({ data }) {
         return (
             <View>
-                <Text></Text>
+                <Text>{data[0, 1]}</Text>
                 {/* add tournament name from database above */}
-                <TouchableOpacity>
-                    <Text>ENTER</Text>
+                <TouchableOpacity onPress={() => { navigation.navigate('viewEvents') }}>
+                    <Text>Enter This Tournament</Text>
                 </TouchableOpacity>
 
             </View>

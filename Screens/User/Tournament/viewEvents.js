@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, FlatList, TouchableOpacity } from 'react-native';
 import { firebase } from '@react-native-firebase/app';
 import firestore from '@react-native-firebase/firestore';
