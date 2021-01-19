@@ -6,7 +6,7 @@ import firestore from '@react-native-firebase/firestore';
 import AsyncStorage from '@react-native-community/async-storage';
 
 
-function ViewApplication(props) {
+function ViewApplication({navigation}) {
 
   const [size,setSize] = useState(1);
   const [dataSource, setDatasource] = useState([]);
