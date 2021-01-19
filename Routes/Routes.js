@@ -54,6 +54,7 @@ import groundBooking from '../Screens/User/Booking/groundBooking';
 
 import regisTeam from '../Screens/User/Tournament/regisTeam';
 import viewTournament from '../Screens/User/Tournament/viewTournament';
+import viewEvents from '../Screens/User/Tournament/viewEvents';
 
 
 const Drawer = createDrawerNavigator();
@@ -373,6 +374,25 @@ const TournamentUserStackScreen = ({ navigation }) => (
                 headerTintColor: '#fff'
             }}
         />
+
+        <TournamentUserStack.Screen
+            name="viewEvents"
+            component={viewEvents}
+            options={{
+                headerStatusBarHeight: 0,
+                headerTintColor: '#fff'
+            }}
+        />
+
+        <TournamentUserStack.Screen
+            name="regisTeam"
+            component={regisTeam}
+            options={{
+                headerStatusBarHeight: 0,
+                headerTintColor: '#fff'
+            }}
+        />
+
 
     </TournamentUserStack.Navigator>
 
