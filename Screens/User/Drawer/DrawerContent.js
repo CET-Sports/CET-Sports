@@ -127,10 +127,10 @@ function DrawerContent({ navigation }) {
                     Ground Booking
                 </Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={() => { navigation.navigate('regisTeam') }}>
+            <TouchableOpacity style={styles.button} onPress={() => { navigation.navigate('TournamentUserStackScreen') }}>
                 <Icon name='select-group' color='#000' size={23} style={styles.icon} />
                 <Text style={styles.drawerText}>
-                    Team Registration
+                    Tournament
                 </Text>
             </TouchableOpacity>
 
