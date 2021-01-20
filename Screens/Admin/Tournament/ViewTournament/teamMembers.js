@@ -17,7 +17,8 @@ function selectTournament({ route, navigation }) {
 
 
     useEffect(() => {
-         firebase.firestore().collection('Team').doc(Dname).collection('phones').where('teamName','==',Tname).get().then(querySnapShot => {
+        console.log(Dname+Tname+'adata')
+         firebase.firestore().collection('Team').doc(Dname).collection('phone').where('teamName','==',Tname).get().then(querySnapShot => {
         const array = [];
         if (querySnapShot != null) {
             querySnapShot.forEach(documentSnapShot => {
