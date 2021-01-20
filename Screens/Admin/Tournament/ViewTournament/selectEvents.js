@@ -24,13 +24,16 @@ function selectTournament({ route, navigation }) {
                 })
             }
         })
-        setGame(data.Game)
+
 
     }, [])
 
 
 
     function Item({ data }) {
+
+        setGame(data.Game)
+
         return (
             <View>
                 <Text>
