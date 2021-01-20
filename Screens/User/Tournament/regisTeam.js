@@ -82,6 +82,9 @@ function regisTeam({route}) {
         console.log("tour"+Tname)
 
        
+               firebase.firestore().collection('Team').doc(Tname).set({
+                    Tname:Tname
+               })
 
               firebase.firestore().collection('Team').doc(Tname).collection('phone').doc(phone).set({
                 teamName:teamName,
