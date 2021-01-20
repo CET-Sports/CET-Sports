@@ -65,6 +65,7 @@ import selectTournament from '../Screens/Admin/Tournament/ViewTournament/selectT
 import selectEvents from '../Screens/Admin/Tournament/ViewTournament/selectEvents';
 import viewTeams from '../Screens/Admin/Tournament/ViewTournament/viewTeams';
 import teamMembers from '../Screens/Admin/Tournament/ViewTournament/teamMembers';
+import Calender from '../Screens/User/Booking/Calender';
 
 
 const Drawer = createDrawerNavigator();
@@ -346,6 +347,33 @@ const NotificationStackScreen = ({ navigation }) => (
         />
 
     </NotificationStack.Navigator>
+)
+
+const BookinStackScreen = ({ navigation }) => (
+    <BookingStack.Navigator
+        screenOptions={{
+            headerStyle: {
+                elevation: 0,
+                backgroundColor: colors.primaryColor
+            },
+            headerLeft: () => (
+                <TouchableOpacity onPress={() => { navigation.openDrawer() }} style={{ alignItems: 'center', justifyContent: 'center' }}>
+                    <AntDesign name="menuunfold" size={23} color={'#fff'} style={{ marginLeft: 10 }} />
+                </TouchableOpacity>
+            )
+        }}
+
+    >
+        <BookingStack.Screen
+            name="Notifications"
+            component={Calender}
+            options={{
+                headerStatusBarHeight: 0,
+                headerTintColor: '#fff'
+            }}
+        />
+
+    </BookingStack.Navigator>
 )
 
 
@@ -874,7 +902,7 @@ function Routes() {
                                     />
                                     <Drawer.Screen
                                         name="groundBooking"
-                                        component={groundBooking}
+                                        component={BookinStackScreen}
                                     />
                                     <Drawer.Screen
                                         name="TournamentUserStackScreen"
