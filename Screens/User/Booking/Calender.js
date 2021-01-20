@@ -72,7 +72,7 @@ function Calender(props) {
 
     const check = ()=>{
         firebase.firestore().collection('Bookings').doc(selectDate).collection('slots').doc('').set({
-            slot:
+            slot:slot
         })
     }
 
