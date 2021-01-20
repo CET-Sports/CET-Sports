@@ -5,6 +5,9 @@ import { firebase } from '@react-native-firebase/app';
 import firestore from '@react-native-firebase/firestore';
 import AsyncStorage from '@react-native-community/async-storage';
 
+import styles from './styles';
+import { colors } from '../../../Colors/colors';
+
 
 function ViewApplication({navigation}) {
 
@@ -72,25 +75,25 @@ function Reject(phone, sprt) {
   
   function Item({ data }) {
     return (
-      <>
-        <Text>Game :{data.sprt}  </Text>
-        <Text>Name :{data.name}  </Text>
-        <Text>Dept : {data.dept} </Text>
-        <Text>Sem : {data.sem} </Text>
+      <View style={styles.gameBtn}>
+        <Text style={styles.txt}>Game :{data.sprt}  </Text>
+        <Text style={styles.txt}>Name :{data.name}  </Text>
+        <Text style={styles.txt}>Dept : {data.dept} </Text>
+        <Text style={styles.txt}>Sem : {data.sem} </Text>
 
-        <Text>Student Phone : {data.phone} </Text>
+        <Text style={styles.txt}>Student Phone : {data.phone} </Text>
         <TouchableOpacity onPress={() => { Approval(data.phone, data.sprt) }}>
-          <Text>
+          <Text style={{...styles.txt,color:colors.primaryColor}}>
             Approve
         </Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => { Reject(data.phone, data.sprt) }}>
-          <Text>
+          <Text style={{...styles.txt,color:'red'}}>
             Reject
         </Text>
         </TouchableOpacity>
         
-      </>
+      </View>
     )
   }
 

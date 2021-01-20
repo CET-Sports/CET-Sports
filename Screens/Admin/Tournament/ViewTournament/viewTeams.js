@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { FlatList, Text, TouchableOpacity, View } from 'react-native';
 import { firebase } from '@react-native-firebase/app';
 import firestore from '@react-native-firebase/firestore';
+import styles from './styles';
+import { colors } from '../../../../Colors/colors';
 
 function selectTournament({ route, navigation }) {
 
@@ -34,12 +36,12 @@ function selectTournament({ route, navigation }) {
 
     function Item({ data }) {
         return (
-            <View>
-                <Text>
-                    TEAM NAME : {data.teamName}
+            <View style={styles.gameBtn}>
+                <Text style={styles.txt}>
+                 {data.teamName}
                 </Text>
                 <TouchableOpacity onPress={() => { navigation.navigate('teamMembers', { Dname: Dname, Tname: data.teamName }) }}>
-                    <Text>VIEW MEMBERS</Text>
+                    <Text style={{...styles.txt,color:colors.primaryColor,marginTop:5}}>VIEW MEMBERS</Text>
                 </TouchableOpacity>
             </View>
         )

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Alert, FlatList, Text, TouchableOpacity, View } from 'react-native';
 import { firebase } from '@react-native-firebase/app';
 import firestore from '@react-native-firebase/firestore';
+import styles from './styles';
+import { colors } from '../../../../Colors/colors';
 
 function selectTournament({ route, navigation }) {
 
@@ -55,22 +57,24 @@ function selectTournament({ route, navigation }) {
         //         keyExtractor={(item, index) => index.toString()}
         //     />
         // </View>
-
-        <View>
-            <Text>
-                EVENT NAME : CRICKET
-            </Text>
-            <TouchableOpacity onPress={() => { navigation.navigate('viewTeams', { Dname: Dname }) }}>
-                <Text>ENTER</Text>
-            </TouchableOpacity>
-            <Text>
-                EVENT NAME : FOOTBALL
-            </Text>
-            <TouchableOpacity >
-                <Text>ENTER</Text>
-            </TouchableOpacity>
-        </View>
-
+        <>
+            <View style={styles.gameBtn}>
+                <Text style={styles.txt}>
+                    EVENT NAME : CRICKET
+                </Text>
+                <TouchableOpacity onPress={() => { navigation.navigate('viewTeams', { Dname: Dname }) }}>
+                <Text style={{...styles.txt,color:colors.primaryColor}}>VIEW</Text>
+                </TouchableOpacity>
+            </View>
+            <View style={styles.gameBtn}>
+                <Text style={styles.txt}>
+                    EVENT NAME : FOOTBALL
+                </Text>
+                <TouchableOpacity >
+                    <Text style={{...styles.txt,color:colors.primaryColor}}>VIEW</Text>
+                </TouchableOpacity>
+            </View>
+        </>
     );
 }
 

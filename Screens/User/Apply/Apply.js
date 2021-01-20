@@ -6,6 +6,7 @@ import firestore from '@react-native-firebase/firestore';
 import AsyncStorage from '@react-native-community/async-storage';
 import styles from './styles';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { colors } from '../../../Colors/colors';
 
 export default function Apply() {
   const [sports, setSports] = useState(false);
@@ -125,29 +126,17 @@ export default function Apply() {
 
 
     return (
-      <View>
-        <View>
-        </View>
-
-
-        <Text>{data.item}</Text>
-        <TouchableOpacity onPress={() => { push(data.item) }}><Text>Apply</Text></TouchableOpacity>
-
-
-
+      <View style={styles.gameBtn}>
+        <Text style={styles.txt} >{data.item}</Text>
+        <TouchableOpacity onPress={() => { push(data.item) }}><Text style={{...styles.txt,color:colors.primaryColor}}>Apply</Text></TouchableOpacity>
         {
-
-
           modalVisible ?
-
-
             <Modal
               animationType="fade"
               transparent={true}
               visible={modalVisible}
               onRequestClose={() => { setModalVisible(false) }}
             >
-
               <View style={styles.modalContainer}>
                 <View style={styles.modalView}>
                   <View style={{ flexDirection: 'column', alignItems: 'center', width: 100, margin: 10 }}>
@@ -171,8 +160,6 @@ export default function Apply() {
   return (
 
     <View>
-
-
       {
 
         size > 0 ?

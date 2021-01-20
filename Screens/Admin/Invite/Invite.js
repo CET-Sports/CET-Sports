@@ -7,45 +7,44 @@ import { colors } from '../../../Colors/colors';
 import { firebase } from '@react-native-firebase/app';
 
 function Invite({ navigation }) {
-    const [game, setGame] = useState("");
-    const [gender,setGender]=useState("NULL")
-    const [date, setDate] = useState(new Date(1598051730000));
-    const [mode, setMode] = useState('date');
-    const [show, setShow] = useState(false);
-    const _date = new Date();
-    const onChange = (event, selectedDate) => {
-      const currentDate = selectedDate || date;
-      setShow(Platform.OS === 'ios');
-      setDate(currentDate);
+  const [game, setGame] = useState("");
+  const [gender, setGender] = useState("NULL")
+  const [date, setDate] = useState(new Date(1598051730000));
+  const [mode, setMode] = useState('date');
+  const [show, setShow] = useState(false);
+  const _date = new Date();
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    setShow(Platform.OS === 'ios');
+    setDate(currentDate);
   };
 
   const showMode = (currentMode) => {
-      setShow(true);
-      setMode(currentMode);
+    setShow(true);
+    setMode(currentMode);
   };
 
   const showDatepicker = () => {
-      showMode('date');
+    showMode('date');
   };
 
   const showTimepicker = () => {
-      showMode('time');
+    showMode('time');
   };
-  function add()
-  {
+  function add() {
     firebase.firestore().collection('Sports').doc(game).set({
-      item:game,
-      gender:gender,
-      due:date,
-      
-  })
+      item: game,
+      gender: gender,
+      due: date,
+
+    })
   }
-    return (
-        <View style={styles.container}>
+  return (
+    <View style={styles.container}>
 
- <Picker
+      <Picker
 
-      selectedValue={game}
+        selectedValue={game}
         style={{ height: 50, width: 150 }}
         onValueChange={(itemValue, itemIndex) => setGame(itemValue)}
       >
@@ -68,31 +67,31 @@ function Invite({ navigation }) {
         <Picker.Item label="Female" value="Female" />
 
       </Picker>
-      <Text>DeadLine</Text>
+
       {show && (
-                <DateTimePicker
-                    testID="dateTimePicker"
-                    value={date}
-                    mode={mode}
-                    is24Hour={true}
-                    display="default"
-                    onChange={onChange}
-                />
-            )}
-            <TouchableOpacity style={styles.dateBtn} onPress={() => { showDatepicker() }}>
-                <Text style={{ padding: 15, backgroundColor: colors.primaryColor, borderRadius: 12, marginTop: 20 }}>Dew date</Text>
-            </TouchableOpacity>
-
-            
-      
-            <TouchableOpacity style={styles.button} onPress={() => { add() }} style={{...styles.btn, alignSelf:'center'}}>
-                <Text style={styles.btnTxt}>Invite</Text>
-            </TouchableOpacity>
+        <DateTimePicker
+          testID="dateTimePicker"
+          value={date}
+          mode={mode}
+          is24Hour={true}
+          display="default"
+          onChange={onChange}
+        />
+      )}
+      <TouchableOpacity style={styles.dateBtn} onPress={() => { showDatepicker() }}>
+        <Text style={{ ...styles.txt, color: '#fff' }}>Dew date</Text>
+      </TouchableOpacity>
 
 
 
-        </View>
-    );
+      <TouchableOpacity style={styles.dateBtn} onPress={() => { add() }} >
+        <Text style={{ ...styles.txt, color: '#fff' }}>Invite</Text>
+      </TouchableOpacity>
+
+
+
+    </View>
+  );
 }
 
 export default Invite;

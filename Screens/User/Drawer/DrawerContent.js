@@ -116,7 +116,7 @@ function DrawerContent({ navigation }) {
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.button} onPress={() => { navigation.navigate('Club_Main') }}>
-                <Icon name='select-group' color='#000' size={23} style={styles.icon} />
+                <Entypo name='sports-club' color='#000' size={23} style={{ ...styles.icon, opacity: 0.8 }} />
                 <Text style={styles.drawerText}>
                     Clubs
                 </Text>
@@ -128,7 +128,7 @@ function DrawerContent({ navigation }) {
                 </Text>
             </TouchableOpacity> */}
             <TouchableOpacity style={styles.button} onPress={() => { navigation.navigate('TournamentUserStackScreen') }}>
-                <Icon name='select-group' color='#000' size={23} style={styles.icon} />
+            <Entypo name='flag' color='#000' size={23} style={{ ...styles.icon, opacity: 0.8 }} />
                 <Text style={styles.drawerText}>
                     Tournament
                 </Text>

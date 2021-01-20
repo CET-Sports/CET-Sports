@@ -94,14 +94,14 @@ function DrawerContent({ navigation }) {
                     Home
                 </Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button}>
+            {/* <TouchableOpacity style={styles.button}>
                 <Icon name='account-outline' color='#000' size={25} style={{ ...styles.icon, opacity: 0.8 }} />
                 <Text style={styles.drawerText}>
                     Profile
                 </Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             <TouchableOpacity style={styles.button} onPress={() => { navigation.navigate('InviteStackScreen') }}>
-                <Entypo name='sports-club' color='#000' size={25} style={{ ...styles.icon, opacity: 0.8 }} />
+                <Icon name='medal' color='#000' size={25} style={{ ...styles.icon, opacity: 0.8 }} />
                 <Text style={styles.drawerText}>
                     College Team
                 </Text>
@@ -109,13 +109,13 @@ function DrawerContent({ navigation }) {
             <TouchableOpacity style={styles.button} onPress={() => { navigation.navigate('ClubAdminStackScreen') }}>
                 <Entypo name='sports-club' color='#000' size={25} style={{ ...styles.icon, opacity: 0.8 }} />
                 <Text style={styles.drawerText}>
-                    Club
+                    Clubs
                 </Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.button} onPress={() => { navigation.navigate('TournamentAdminStackScreen') }}>
-                <Entypo name='sports-club' color='#000' size={25} style={{ ...styles.icon, opacity: 0.8 }} />
+                <Entypo name='flag' color='#000' size={25} style={{ ...styles.icon, opacity: 0.8 }} />
                 <Text style={styles.drawerText}>
-                    VIEW TOURNAMENT
+                    Tournament
                 </Text>
             </TouchableOpacity>
             <View style={{ flex: 1, alignItems: 'flex-end', marginBottom: 25, flexDirection: 'row' }}>

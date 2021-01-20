@@ -4,6 +4,7 @@ import { Text, TouchableOpacity, View ,FlatList} from 'react-native';
 import { firebase } from '@react-native-firebase/app';
 import firestore from '@react-native-firebase/firestore';
 import AsyncStorage from '@react-native-community/async-storage';
+import styles from '../Club/styles';
 
 
 function ViewApproved({navigation}) {
@@ -50,13 +51,12 @@ function ViewApproved({navigation}) {
   
   function Item({ data }) {
     return (
-      <>
-        <Text>Game :{data.sprt}  </Text>
-        <Text>Name :{data.name}  </Text>
-        <Text>Dept : {data.dept} </Text>
-        <Text>Sem : {data.sem} </Text>
-        
-      </>
+      <View style={styles.gameBtn}>
+        <Text style={styles.txt}>Game :{data.sprt}  </Text>
+        <Text style={styles.txt}>Name :{data.name}  </Text>
+        <Text style={styles.txt}>Dept : {data.dept} </Text>
+        <Text style={styles.txt}>Sem : {data.sem} </Text>
+      </View>
     )
   }
 

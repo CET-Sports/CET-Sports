@@ -49,6 +49,22 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         padding: 30
     },
+    gameBtn:{
+        borderRadius:12,
+        marginHorizontal:20,
+        marginVertical:6,
+        padding:50,
+        backgroundColor:'#fff',
+        borderColor:'#dcdde1',
+        borderWidth:0.6,
+        alignItems:'center'
+    },
+    txt:{
+        fontFamily:'OpenSans-SemiBold',
+        fontSize:14,
+        color:'#2c3e50',
+        marginVertical:3
+    },
 })
 
 export default styles;

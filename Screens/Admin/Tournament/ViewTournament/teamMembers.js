@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { FlatList, Text, TouchableOpacity, View } from 'react-native';
 import { firebase } from '@react-native-firebase/app';
 import firestore from '@react-native-firebase/firestore';
+import styles from './styles';
+import { colors } from '../../../../Colors/colors';
 
 function selectTournament({ route, navigation }) {
 
@@ -9,7 +11,7 @@ function selectTournament({ route, navigation }) {
     const { Dname } = route.params;
 
 
- 
+
     const { Tname } = route.params;
 
 
@@ -17,45 +19,45 @@ function selectTournament({ route, navigation }) {
 
 
     useEffect(() => {
-        console.log(Dname+Tname+'adata')
-         firebase.firestore().collection('Team').doc(Dname).collection('phone').where('teamName','==',Tname).get().then(querySnapShot => {
-        const array = [];
-        if (querySnapShot != null) {
-            querySnapShot.forEach(documentSnapShot => {
-                array.push({
-                    ...documentSnapShot.data()
-                });
-                setDataSource(array);
-            })
-        }
-    }) }, [])
+        console.log(Dname + Tname + 'adata')
+        firebase.firestore().collection('Team').doc(Dname).collection('phone').where('teamName', '==', Tname).get().then(querySnapShot => {
+            const array = [];
+            if (querySnapShot != null) {
+                querySnapShot.forEach(documentSnapShot => {
+                    array.push({
+                        ...documentSnapShot.data()
+                    });
+                    setDataSource(array);
+                })
+            }
+        })
+    }, [])
 
 
     function Item({ data }) {
         return (
-            <View>
-                <Text>
-                    TEAM NAME :{data.teamName}
+            <View style={styles.gameBtn}>
+                <Text style={{...styles.txt,fontSize:18,color:colors.primaryColor}}>
+                    {data.teamName}
                 </Text>
-                <TouchableOpacity onPress={() => { navigation.navigate('teamMembers', { Dname: Dname, Tname: data.teamName }) }}>
-                    <Text>VIEW MEMBERS</Text>
-                    <Text>{data.player1}</Text>
-                    <Text>{data.player2}</Text>
-                    <Text>{data.player3}</Text>
-                    <Text>{data.player4}</Text>
-                    <Text>{data.player5}</Text>
-                    <Text>{data.player6}</Text>
-                    <Text>{data.player7}</Text>
-                    <Text>{data.player8}</Text>
-                    <Text>{data.player9}</Text>
-                    <Text>{data.player10}</Text>
-                    <Text>{data.player11}</Text>
-                    <Text>{data.player12}</Text>
-                    <Text>{data.player13}</Text>
-                    <Text>{data.player14}</Text>
-                    <Text>{data.player15}</Text>
-                    <Text>phone{data.phone}</Text>
-                </TouchableOpacity>
+
+                    <Text style={styles.txt}>{data.player1}</Text>
+                    <Text style={styles.txt}>{data.player2}</Text>
+                    <Text style={styles.txt}>{data.player3}</Text>
+                    <Text style={styles.txt}>{data.player4}</Text>
+                    <Text style={styles.txt}>{data.player5}</Text>
+                    <Text style={styles.txt}>{data.player6}</Text>
+                    <Text style={styles.txt}>{data.player7}</Text>
+                    <Text style={styles.txt}>{data.player8}</Text>
+                    <Text style={styles.txt}>{data.player9}</Text>
+                    <Text style={styles.txt}>{data.player10}</Text>
+                    <Text style={styles.txt}>{data.player11}</Text>
+                    <Text style={styles.txt}>{data.player12}</Text>
+                    <Text style={styles.txt}>{data.player13}</Text>
+                    <Text style={styles.txt}>{data.player14}</Text>
+                    <Text style={styles.txt}>{data.player15}</Text>
+                    <Text style={{...styles.txt,color:colors.primaryColor}}>{data.phone}</Text>
+           
             </View>
         )
     }
