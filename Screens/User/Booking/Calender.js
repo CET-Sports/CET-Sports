@@ -17,7 +17,7 @@ function Calender(props) {
     const [dateError, setDateError] = useState('');
     const [descError, setDescError] = useState('');
     const [cordName, setCordName] = useState('');
-    const [dept, setDept] = useState();
+    const [dept, setDept] = useState('');
 
     const onChange = (event, selectedDate) => {
         const currentDate = selectedDate || date;
