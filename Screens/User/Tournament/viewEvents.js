@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { firebase } from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
+import styles from './styles';
 
 
 function viewEvents({route,navigation}) {
@@ -37,8 +38,8 @@ function viewEvents({route,navigation}) {
                 navigation.navigate('regisTeam',{
                     Tname: Tname,Game:Game
                 })
-            }}>
-                <Text >{data.name}</Text>
+            }} style={styles.gameBtn}>
+                <Text style={styles.txt}>{data.name}</Text>
             </TouchableOpacity>
         )
     }

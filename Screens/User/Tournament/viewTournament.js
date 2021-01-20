@@ -4,6 +4,7 @@ import { TouchableOpacity, View, Text, FlatList, ScrollView } from 'react-native
 import { firebase } from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import styles from './styles';
 function ViewTournament({navigation}) {
 
     const [dataSource, setDataSource] = useState([]);
@@ -35,8 +36,8 @@ function ViewTournament({navigation}) {
         return (
             <TouchableOpacity  onPress={()=>{navigation.navigate('viewEvents',{
                 Tname:data.name
-            })}}>
-                <Text >{data.name}</Text>
+            })}} style={styles.gameBtn}>
+                <Text style={styles.txt}>{data.name}</Text>
 
             </TouchableOpacity>
         )

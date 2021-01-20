@@ -2,6 +2,8 @@ import React, { useState ,useEffect} from 'react';
 import { Text, TextInput, TouchableOpacity, ScrollView } from 'react-native';
 import { firebase } from '@react-native-firebase/auth';
 
+import styles from './styles';
+
 
 function regisTeam({route}) {
     const { Tname } = route.params;
@@ -114,10 +116,10 @@ function regisTeam({route}) {
    
             }
     return (
-        <ScrollView>
+        <ScrollView contentContainerStyle={{flexGrow:1,backgroundColor:'#fff'}}>
 
-            <Text>ENTER TEAM NAME : </Text>
-            <TextInput placeholder='TEAM NAME' onChangeText={(value) => setTeamName(value)} />
+            <Text style={styles.label}>ENTER TEAM NAME : </Text>
+            <TextInput placeholder='TEAM NAME' onChangeText={(value) => setTeamName(value)} style={styles.textinputS}/>
 
             {/* <Text>ENTER TOTAL NUMBER OF PLAYERS : </Text>
             <TextInput placeholder='NO OF PLAYERS INCL. SUB' onChangeText={(value) => setPlayerNumber(value)} />
@@ -127,29 +129,29 @@ function regisTeam({route}) {
                 
             } */}
 
-            <Text>ENTER CAPTIAN NAME : </Text>
-            <TextInput placeholder='CAPTIAN NAME' onChangeText={(value) => setPlayer14(value)} />
+            <Text style={styles.label}>ENTER CAPTIAN NAME : </Text>
+            <TextInput placeholder='CAPTIAN NAME' onChangeText={(value) => setPlayer14(value)} style={styles.textinputS}/>
 
-            <Text>ENTER VICE CAPTIAN NAME : </Text>
-            <TextInput placeholder='VICE CAPTIAN NAME' onChangeText={(value) => setPlayer15(value)} />
+            <Text style={styles.label}>ENTER VICE CAPTIAN NAME : </Text>
+            <TextInput placeholder='VICE CAPTIAN NAME' onChangeText={(value) => setPlayer15(value)} style={styles.textinputS}/>
 
-            <Text>ENTER NAME OF PLAYERS : </Text>
-            <TextInput placeholder='PLAYER NAME' onChangeText={(value) => setPlayer1(value)} />
-            <TextInput placeholder='PLAYER NAME' onChangeText={(value) => setPlayer2(value)} />
-            <TextInput placeholder='PLAYER NAME' onChangeText={(value) => setPlayer3(value)} />
-            <TextInput placeholder='PLAYER NAME' onChangeText={(value) => setPlayer4(value)} />
-            <TextInput placeholder='PLAYER NAME' onChangeText={(value) => setPlayer5(value)} />
-            <TextInput placeholder='PLAYER NAME' onChangeText={(value) => setPlayer6(value)} />
-            <TextInput placeholder='PLAYER NAME' onChangeText={(value) => setPlayer7(value)} />
-            <TextInput placeholder='PLAYER NAME' onChangeText={(value) => setPlayer8(value)} />
-            <TextInput placeholder='PLAYER NAME' onChangeText={(value) => setPlayer9(value)} />
-            <TextInput placeholder='PLAYER NAME' onChangeText={(value) => setPlayer10(value)} />
-            <TextInput placeholder='PLAYER NAME' onChangeText={(value) => setPlayer11(value)} />
-            <TextInput placeholder='PLAYER NAME' onChangeText={(value) => setPlayer12(value)} />
-            <TextInput placeholder='PLAYER NAME' onChangeText={(value) => setPlayer13(value)} />
+            <Text style={styles.label}>ENTER NAME OF PLAYERS : </Text>
+            <TextInput placeholder='PLAYER NAME' onChangeText={(value) => setPlayer1(value)} style={styles.textinputS}/>
+            <TextInput placeholder='PLAYER NAME' onChangeText={(value) => setPlayer2(value)} style={styles.textinputS}/>
+            <TextInput placeholder='PLAYER NAME' onChangeText={(value) => setPlayer3(value)} style={styles.textinputS}/>
+            <TextInput placeholder='PLAYER NAME' onChangeText={(value) => setPlayer4(value)} style={styles.textinputS}/>
+            <TextInput placeholder='PLAYER NAME' onChangeText={(value) => setPlayer5(value)} style={styles.textinputS}/>
+            <TextInput placeholder='PLAYER NAME' onChangeText={(value) => setPlayer6(value)} style={styles.textinputS}/>
+            <TextInput placeholder='PLAYER NAME' onChangeText={(value) => setPlayer7(value)} style={styles.textinputS}/>
+            <TextInput placeholder='PLAYER NAME' onChangeText={(value) => setPlayer8(value)} style={styles.textinputS}/>
+            <TextInput placeholder='PLAYER NAME' onChangeText={(value) => setPlayer9(value)} style={styles.textinputS}/>
+            <TextInput placeholder='PLAYER NAME' onChangeText={(value) => setPlayer10(value)} style={styles.textinputS}/>
+            <TextInput placeholder='PLAYER NAME' onChangeText={(value) => setPlayer11(value)} style={styles.textinputS}/>
+            <TextInput placeholder='PLAYER NAME' onChangeText={(value) => setPlayer12(value)} style={styles.textinputS}/>
+            <TextInput placeholder='PLAYER NAME' onChangeText={(value) => setPlayer13(value)} style={styles.textinputS}/>
 
-            <TouchableOpacity onPress={() => {Register()}}>
-                <Text>
+            <TouchableOpacity onPress={() => {Register()}} style={styles.uploadBtn}>
+                <Text style={{...styles.txt,color:'#fff'}}>
                     REGISTER
                 </Text>
             </TouchableOpacity>
