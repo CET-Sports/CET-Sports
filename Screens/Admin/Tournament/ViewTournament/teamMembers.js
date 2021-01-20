@@ -9,7 +9,7 @@ function selectTournament({ route, navigation }) {
     const { Dname } = route.params;
 
 
-    const { Dname } = route.params;
+ 
     const { Tname } = route.params;
 
 
