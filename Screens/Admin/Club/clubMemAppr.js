@@ -35,6 +35,19 @@ function clubMemAppr(props) {
 
 
     }
+    function Reject(phone, clb) {
+        firebase.firestore().collection('clubMembers').where('phone', '==', phone).where('ClubName', '==', clb).get().then(querySnapshot => {
+            querySnapshot.forEach(documentSnapshot => {
+                console.log(documentSnapshot.id)
+                firebase.firestore().collection('clubMembers').doc(documentSnapshot.id).update({
+                    status: 'Rejected'
+                })
+            })
+        });
+
+
+    }
+
 
 
     function Item({ data }) {
@@ -54,7 +67,7 @@ function clubMemAppr(props) {
                                 <TouchableOpacity onPress={() => { Approval(data.phone, data.ClubName) }} style={styles.imgBtn}>
                                     <Image source={require('../../../Images/tic.png')} style={{height:40,width:40}}/>
                                 </TouchableOpacity>
-                                <TouchableOpacity style={styles.imgBtn}>
+                                <TouchableOpacity onPress={() => { Reject(data.phone, data.ClubName) }} style={styles.imgBtn}>
                                 <Image source={require('../../../Images/cross.png')} style={{height:35,width:35}}/>
                                 </TouchableOpacity>
                             </View>
