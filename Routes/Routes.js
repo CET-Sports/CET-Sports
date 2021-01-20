@@ -61,6 +61,12 @@ import { firebase } from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import NotificationsAdmin from '../Screens/Admin/Notifications/NotificationsAdmin';
 
+import selectTournament from '../Screens/Admin/Tournament/ViewTournament/selectTournament';
+import selectEvents from '../Screens/Admin/Tournament/ViewTournament/selectEvents';
+import viewTeams from '../Screens/Admin/Tournament/ViewTournament/viewTeams';
+import teamMembers from '../Screens/Admin/Tournament/ViewTournament/teamMembers';
+import Calender from '../Screens/User/Booking/Calender';
+
 
 const Drawer = createDrawerNavigator();
 const Tabs = createMaterialBottomTabNavigator();
@@ -82,12 +88,13 @@ const InviteStack = createStackNavigator();
 const UserScoresStack = createStackNavigator();
 
 const TournamentUserStack = createStackNavigator();
+const TournamentAdminStack = createStackNavigator();
 
 const NotificationStack = createStackNavigator();
 const NotificationAdminStack = createStackNavigator();
 
 
-//user 
+//user----------------------------------------------------------------------------------------
 
 const FeedStackScreen = ({ navigation }) => (
     <FeedStack.Navigator
@@ -340,6 +347,33 @@ const NotificationStackScreen = ({ navigation }) => (
         />
 
     </NotificationStack.Navigator>
+)
+
+const BookinStackScreen = ({ navigation }) => (
+    <BookingStack.Navigator
+        screenOptions={{
+            headerStyle: {
+                elevation: 0,
+                backgroundColor: colors.primaryColor
+            },
+            headerLeft: () => (
+                <TouchableOpacity onPress={() => { navigation.openDrawer() }} style={{ alignItems: 'center', justifyContent: 'center' }}>
+                    <AntDesign name="menuunfold" size={23} color={'#fff'} style={{ marginLeft: 10 }} />
+                </TouchableOpacity>
+            )
+        }}
+
+    >
+        <BookingStack.Screen
+            name="Notifications"
+            component={Calender}
+            options={{
+                headerStatusBarHeight: 0,
+                headerTintColor: '#fff'
+            }}
+        />
+
+    </BookingStack.Navigator>
 )
 
 
@@ -657,6 +691,62 @@ const NotificationAdminStackScreen = ({ navigation }) => (
 
     </NotificationAdminStack.Navigator>
 )
+const TournamentAdminStackScreen = ({ navigation }) => (
+
+    <TournamentAdminStack.Navigator
+        screenOptions={{
+            headerStyle: {
+                elevation: 0,
+                backgroundColor: colors.primaryColor
+            },
+            headerLeft: () => (
+                <TouchableOpacity onPress={() => { navigation.openDrawer() }} style={{ alignItems: 'center', justifyContent: 'center' }}>
+                    <AntDesign name="menuunfold" size={23} color={'#fff'} style={{ marginLeft: 10 }} />
+                </TouchableOpacity>
+            )
+        }}
+
+    >
+
+        <TournamentAdminStack.Screen
+            name="selectTournament"
+            component={selectTournament}
+            options={{
+                headerStatusBarHeight: 0,
+                headerTintColor: '#fff'
+            }}
+        />
+
+        <TournamentAdminStack.Screen
+            name="selectEvents"
+            component={selectEvents}
+            options={{
+                headerStatusBarHeight: 0,
+                headerTintColor: '#fff'
+            }}
+        />
+
+        <TournamentAdminStack.Screen
+            name="viewTeams"
+            component={viewTeams}
+            options={{
+                headerStatusBarHeight: 0,
+                headerTintColor: '#fff'
+            }}
+        />
+
+        <TournamentAdminStack.Screen
+            name="teamMembers"
+            component={teamMembers}
+            options={{
+                headerStatusBarHeight: 0,
+                headerTintColor: '#fff'
+            }}
+        />
+
+    </TournamentAdminStack.Navigator>
+
+)
 const TabScreenAdmin = () => (
     <Tabs.Navigator
         initialRouteName='Home'
@@ -714,7 +804,7 @@ const TabScreenAdmin = () => (
         /> */}
     </Tabs.Navigator>
 )
-// admin end
+// admin end-------------------------------------------------------------------------------
 
 function Routes() {
 
@@ -812,7 +902,7 @@ function Routes() {
                                     />
                                     <Drawer.Screen
                                         name="groundBooking"
-                                        component={groundBooking}
+                                        component={BookinStackScreen}
                                     />
                                     <Drawer.Screen
                                         name="TournamentUserStackScreen"
@@ -831,15 +921,14 @@ function Routes() {
                                         name="InviteStackScreen"
                                         component={InviteStackScreen}
                                     />
-                                    {/* <Drawer.Screen
-                                        name="ViewApplication"
-                                        component={ViewApplication}
-                                    /> */}
                                     <Drawer.Screen
                                         name="ClubAdminStackScreen"
                                         component={ClubAdminStackScreen}
                                     />
-
+                                    <Drawer.Screen
+                                        name="TournamentAdminStackScreen"
+                                        component={TournamentAdminStackScreen}
+                                    />
                                 </Drawer.Navigator>
 
                             :
