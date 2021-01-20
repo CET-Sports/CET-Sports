@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 20,
         display: 'flex',
         flexDirection: 'column',
-        height: 150,
+        height: 320,
         backgroundColor: "red",
         shadowColor: "#000",
         shadowOffset: {
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
         width: '100%',
         borderBottomWidth: 1,
         borderColor: '#000',
-        marginVertical: 15
+        marginVertical: 5
     },
 })
 

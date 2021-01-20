@@ -23,7 +23,7 @@ function _Cricket({ route, navigation }) {
             console.log(Tname);
             firebase.firestore().collection('Tournaments').
                 doc(Tname).collection('Games').doc('Cricket')
-                .collection('Scores').where('status','==','Ongoing').get().then(querySnapShot => {
+                .collection('Scores').where('status','in', ['Ongoing', 'Finished']).get().then(querySnapShot => {
                     if (querySnapShot != null) {
                         querySnapShot.forEach(documentSnapshot => {
                             array.push({
@@ -53,6 +53,8 @@ function _Cricket({ route, navigation }) {
             })}}>
                 <Text style={styles.gameBtntext}>{data.Match_name}</Text>
                 <Text style={styles.levelText}>{data.Match_level}</Text>
+                <Text style={styles.success}>{data.fmessage}</Text>
+
             </TouchableOpacity>
         )
     }

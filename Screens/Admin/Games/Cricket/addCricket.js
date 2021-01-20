@@ -81,8 +81,8 @@ function addCricket({route,navigation}) {
                         onRequestClose={() => { setModalVisible(false) }}
                     >
 
-                        <View style={styles.modalContainer}>
-                            <View style={styles.modalView}>
+                        <View style={styles.modalContainer1}>
+                            <View style={styles.modalView1}>
                                 <View style={{ flexDirection: 'column', alignItems: 'center', width: 100, margin: 10 }}>
                                     <Icon name="check-circle" size={60} color='#2ed573' />
                                     <Text style={styles.modalText}>Done</Text>

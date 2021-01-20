@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, TouchableOpacity, Modal, View, Image, TextInput } from 'react-native';
+import { Text, TouchableOpacity, Modal, View, Image, TextInput, ScrollView } from 'react-native';
 
 import { RTCPeerConnection, RTCView, mediaDevices, RTCIceCandidate, RTCSessionDescription } from 'react-native-webrtc';
 import { db } from '../../../utilities/firebase';
@@ -22,6 +22,8 @@ export default function CallScreen({ setScreen, screens, roomId }) {
   const [isMuted, setIsMuted] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [roomName, setRoomName] = useState('');
+  const [notification, setNotification] = useState('');
+  const [notificationTitle, setNotificationTitle] = useState('');
 
   function onBackPress() {
     setEntered(false)
@@ -72,11 +74,19 @@ export default function CallScreen({ setScreen, screens, roomId }) {
   };
 
   const startCall = async () => {
+    const date = new Date();
+
+    db.collection('Notifications').doc('').set({
+      createdAt:date,
+      notification:notification,
+      title:notificationTitle
+    })
+    
     setStarted(true);
     db.collection('Id').doc('Id').set({
       id: 0
     })
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 20; i++) {
       const localPC = new RTCPeerConnection(configuration);
       localPC.addStream(localStream);
 
@@ -123,6 +133,8 @@ export default function CallScreen({ setScreen, screens, roomId }) {
       setCachedLocalPC(localPC);
     }
 
+
+
   };
 
 
@@ -164,9 +176,9 @@ export default function CallScreen({ setScreen, screens, roomId }) {
           <>
 
 
-              <View style={styles.rtcview}>
-                {localStream && <RTCView style={styles.rtc} streamURL={localStream && localStream.toURL()} mirror={true}/>}
-              </View>
+            <View style={styles.rtcview}>
+              {localStream && <RTCView style={styles.rtc} streamURL={localStream && localStream.toURL()} mirror={true} />}
+            </View>
 
             <View style={styles.liveBtnContainer}>
               {
@@ -208,17 +220,21 @@ export default function CallScreen({ setScreen, screens, roomId }) {
       >
         <View style={styles.modalContainer}>
           <View style={styles.modalView}>
-            <View style={{justifyContent:'center'}}>
-              <Text style={styles.modalText}>Create Room</Text>
-            </View>
-            <View>
-              <TextInput placeholder='room name' style={styles.textInput} onChangeText={(val)=>{setRoomName(val)}}/>
-            </View>
-            <View style={{display:'flex',alignItems:'flex-end',justifyContent:'center'}}>
-              <TouchableOpacity onPress={()=>enterLive()}>
-                <Image source={require('../../../Images/go.png')} style={{height:30,width:30}}/>
-              </TouchableOpacity>
-            </View>
+            <ScrollView>
+              <View style={{ justifyContent: 'center' }}>
+                <Text style={styles.modalText}>Create Room</Text>
+              </View>
+              <View style={{ justifyContent: 'center' }}>
+                <TextInput placeholder='room name' style={styles.textInput} onChangeText={(val) => { setRoomName(val) }} />
+                <TextInput placeholder='Notification title' style={styles.textInput} onChangeText={(val) => { setNotificationTitle(val) }} />
+                <TextInput multiline placeholder='Notification' style={styles.textInput} onChangeText={(val) => { setNotification(val) }} />
+              </View>
+              <View style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'center' }}>
+                <TouchableOpacity onPress={() => enterLive()} style={{ marginTop:30 }}>
+                  <Image source={require('../../../Images/go.png')} style={{ height: 30, width: 30 }} />
+                </TouchableOpacity>
+              </View>
+            </ScrollView>
           </View>
 
         </View>

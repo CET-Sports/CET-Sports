@@ -1,11 +1,11 @@
-import React, { useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { TextInput, TouchableOpacity, View, Text, Image, Modal } from 'react-native';
 import { firebase } from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import styles from './styles';
 import { colors } from '../../../../Colors/colors';
 
-function updateCricket({ route }) {
+function updateCricket({ route,navigation }) {
 
     const { mName } = route.params
     const { lName } = route.params
@@ -219,15 +219,17 @@ function updateCricket({ route }) {
             })
     }
 
-    const endMatch = ()=>{
+    const endMatch = () => {
+        setPending('Finished');
+        navigation.navigate('Cricket');
         firebase.firestore().collection('Tournaments').doc(Tname).collection('Games').doc('Cricket')
-        .collection('Scores').doc(mName + " " + lName).update({
-            fmessage: fmessage
-        })
+            .collection('Scores').doc(mName + " " + lName).update({
+                fmessage: fmessage
+            })
         firebase.firestore().collection('Tournaments').doc(Tname).collection('Games').doc('Cricket')
-        .collection('Scores').doc(mName + " " + lName).update({
-            status: 'Finished'
-        })
+            .collection('Scores').doc(mName + " " + lName).update({
+                status: 'Finished'
+            })
 
         setModalVisible(false);
     }
@@ -272,70 +274,76 @@ function updateCricket({ route }) {
 
                                     </View>
                                     <Text style={styles.gmeMsg}>{msg}</Text>
-                                    <View style={styles.scoreCalc}>
-                                        <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                                            <TouchableOpacity onPress={() => { upRun1(1) }}>
-                                                <View>
-                                                    <Image source={require('../../../../Icons/one.png')} style={styles.score} />
-                                                </View>
-                                            </TouchableOpacity>
-                                            <TouchableOpacity onPress={() => { upRun1(2) }}>
-                                                <View>
-                                                    <Image source={require('../../../../Icons/two.png')} style={styles.score} />
-                                                </View>
-                                            </TouchableOpacity>
-                                            <TouchableOpacity onPress={() => { upRun1(4) }}>
-                                                <View>
-                                                    <Image source={require('../../../../Icons/four.png')} style={styles.score} />
-                                                </View>
-                                            </TouchableOpacity>
-                                            <TouchableOpacity onPress={() => { upRun1(6) }}>
-                                                <View>
-                                                    <Image source={require('../../../../Icons/six.png')} style={styles.score} />
-                                                </View>
-                                            </TouchableOpacity>
-                                        </View>
-                                        <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 20 }}>
-                                            <View style={{ margin: 15 }}>
-                                                <Text style={styles.hdrTxt}>OUT</Text>
-                                                <View style={styles.updateBtnContainer}>
-                                                    <TouchableOpacity onPress={() => { upOut1('minus') }} style={styles.minus}>
-                                                        <Text style={styles.txt}>-</Text>
+                                    {
+                                        pending === 'Ongoing' ?
+                                            <View style={styles.scoreCalc}>
+                                                <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                                                    <TouchableOpacity onPress={() => { upRun1(1) }}>
+                                                        <View>
+                                                            <Image source={require('../../../../Icons/one.png')} style={styles.score} />
+                                                        </View>
                                                     </TouchableOpacity>
-                                                    <TouchableOpacity onPress={() => { upOut1('plus') }} style={styles.plus}>
-                                                        <Text style={styles.txt}>+</Text>
+                                                    <TouchableOpacity onPress={() => { upRun1(2) }}>
+                                                        <View>
+                                                            <Image source={require('../../../../Icons/two.png')} style={styles.score} />
+                                                        </View>
+                                                    </TouchableOpacity>
+                                                    <TouchableOpacity onPress={() => { upRun1(4) }}>
+                                                        <View>
+                                                            <Image source={require('../../../../Icons/four.png')} style={styles.score} />
+                                                        </View>
+                                                    </TouchableOpacity>
+                                                    <TouchableOpacity onPress={() => { upRun1(6) }}>
+                                                        <View>
+                                                            <Image source={require('../../../../Icons/six.png')} style={styles.score} />
+                                                        </View>
                                                     </TouchableOpacity>
                                                 </View>
-                                            </View>
-                                            <View style={{ margin: 15 }}>
-                                                <Text style={styles.hdrTxt}>RUNS</Text>
-                                                <View style={styles.updateBtnContainer}>
-                                                    <TouchableOpacity onPress={() => { upRun1(-1) }} style={styles.minus}>
-                                                        <Text style={styles.txt}>-</Text>
-                                                    </TouchableOpacity>
-                                                    <TouchableOpacity onPress={() => { upRun1(1) }} style={styles.plus}>
-                                                        <Text style={styles.txt}>+</Text>
-                                                    </TouchableOpacity>
-                                                </View>
-                                            </View>
+                                                <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 20 }}>
+                                                    <View style={{ margin: 15 }}>
+                                                        <Text style={styles.hdrTxt}>OUT</Text>
+                                                        <View style={styles.updateBtnContainer}>
+                                                            <TouchableOpacity onPress={() => { upOut1('minus') }} style={styles.minus}>
+                                                                <Text style={styles.txt}>-</Text>
+                                                            </TouchableOpacity>
+                                                            <TouchableOpacity onPress={() => { upOut1('plus') }} style={styles.plus}>
+                                                                <Text style={styles.txt}>+</Text>
+                                                            </TouchableOpacity>
+                                                        </View>
+                                                    </View>
+                                                    <View style={{ margin: 15 }}>
+                                                        <Text style={styles.hdrTxt}>RUNS</Text>
+                                                        <View style={styles.updateBtnContainer}>
+                                                            <TouchableOpacity onPress={() => { upRun1(-1) }} style={styles.minus}>
+                                                                <Text style={styles.txt}>-</Text>
+                                                            </TouchableOpacity>
+                                                            <TouchableOpacity onPress={() => { upRun1(1) }} style={styles.plus}>
+                                                                <Text style={styles.txt}>+</Text>
+                                                            </TouchableOpacity>
+                                                        </View>
+                                                    </View>
 
-                                            <View style={{ margin: 15 }}>
-                                                <Text style={styles.hdrTxt}>BALLS</Text>
-                                                <View style={styles.updateBtnContainer}>
-                                                    <TouchableOpacity onPress={() => { upBall1('minus') }} style={styles.minus}>
-                                                        <Text style={styles.txt}>-</Text>
-                                                    </TouchableOpacity>
-                                                    <TouchableOpacity onPress={() => { upBall1('plus') }} style={styles.plus}>
-                                                        <Text style={styles.txt}>+</Text>
-                                                    </TouchableOpacity>
+                                                    <View style={{ margin: 15 }}>
+                                                        <Text style={styles.hdrTxt}>BALLS</Text>
+                                                        <View style={styles.updateBtnContainer}>
+                                                            <TouchableOpacity onPress={() => { upBall1('minus') }} style={styles.minus}>
+                                                                <Text style={styles.txt}>-</Text>
+                                                            </TouchableOpacity>
+                                                            <TouchableOpacity onPress={() => { upBall1('plus') }} style={styles.plus}>
+                                                                <Text style={styles.txt}>+</Text>
+                                                            </TouchableOpacity>
+                                                        </View>
+                                                    </View>
                                                 </View>
-                                            </View>
-                                        </View>
-                                        {/* <TouchableOpacity style={styles.endBtn}>
-                                <Text style={{ fontFamily: 'OpenSans-SemiBold', color: '#fff' }}>End Match</Text>
-                            </TouchableOpacity> */}
+                                                {/* <TouchableOpacity style={styles.endBtn}>
+                                                <Text style={{ fontFamily: 'OpenSans-SemiBold', color: '#fff' }}>End Match</Text>
+                                                </TouchableOpacity> */}
 
-                                    </View>
+                                            </View> :
+                                            null
+
+                                    }
+
                                 </View>
 
 
@@ -364,118 +372,130 @@ function updateCricket({ route }) {
 
                                     </View>
                                     <Text style={styles.gmeMsg}>{msg}</Text>
-                                    <View style={styles.scoreCalc}>
-                                        <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                                            <TouchableOpacity onPress={() => { upRun2(1) }}>
-                                                <View>
-                                                    <Image source={require('../../../../Icons/one.png')} style={styles.score} />
+                                    {
+                                        pending === 'Ongoing' ?
+                                            <View style={styles.scoreCalc}>
+                                                <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                                                    <TouchableOpacity onPress={() => { upRun2(1) }}>
+                                                        <View>
+                                                            <Image source={require('../../../../Icons/one.png')} style={styles.score} />
+                                                        </View>
+                                                    </TouchableOpacity>
+                                                    <TouchableOpacity onPress={() => { upRun2(2) }}>
+                                                        <View>
+                                                            <Image source={require('../../../../Icons/two.png')} style={styles.score} />
+                                                        </View>
+                                                    </TouchableOpacity>
+                                                    <TouchableOpacity onPress={() => { upRun2(4) }}>
+                                                        <View>
+                                                            <Image source={require('../../../../Icons/four.png')} style={styles.score} />
+                                                        </View>
+                                                    </TouchableOpacity>
+                                                    <TouchableOpacity onPress={() => { upRun2(6) }}>
+                                                        <View>
+                                                            <Image source={require('../../../../Icons/six.png')} style={styles.score} />
+                                                        </View>
+                                                    </TouchableOpacity>
                                                 </View>
-                                            </TouchableOpacity>
-                                            <TouchableOpacity onPress={() => { upRun2(2) }}>
-                                                <View>
-                                                    <Image source={require('../../../../Icons/two.png')} style={styles.score} />
-                                                </View>
-                                            </TouchableOpacity>
-                                            <TouchableOpacity onPress={() => { upRun2(4) }}>
-                                                <View>
-                                                    <Image source={require('../../../../Icons/four.png')} style={styles.score} />
-                                                </View>
-                                            </TouchableOpacity>
-                                            <TouchableOpacity onPress={() => { upRun2(6) }}>
-                                                <View>
-                                                    <Image source={require('../../../../Icons/six.png')} style={styles.score} />
-                                                </View>
-                                            </TouchableOpacity>
-                                        </View>
 
 
 
-                                        <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 20 }}>
-                                            <View style={{ margin: 15 }}>
-                                                <Text style={styles.hdrTxt}>OUT</Text>
-                                                <View style={styles.updateBtnContainer}>
-                                                    <TouchableOpacity onPress={() => { upOut2('minus') }} style={styles.minus}>
-                                                        <Text style={styles.txt}>-</Text>
-                                                    </TouchableOpacity>
-                                                    <TouchableOpacity onPress={() => { upOut2('plus') }} style={styles.plus}>
-                                                        <Text style={styles.txt}>+</Text>
-                                                    </TouchableOpacity>
-                                                </View>
-                                            </View>
-                                            <View style={{ margin: 15 }}>
-                                                <Text style={styles.hdrTxt}>RUNS</Text>
-                                                <View style={styles.updateBtnContainer}>
-                                                    <TouchableOpacity onPress={() => { upRun2(-1) }} style={styles.minus}>
-                                                        <Text style={styles.txt}>-</Text>
-                                                    </TouchableOpacity>
-                                                    <TouchableOpacity onPress={() => { upRun2(1) }} style={styles.plus}>
-                                                        <Text style={styles.txt}>+</Text>
-                                                    </TouchableOpacity>
-                                                </View>
-                                            </View>
+                                                <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 20 }}>
+                                                    <View style={{ margin: 15 }}>
+                                                        <Text style={styles.hdrTxt}>OUT</Text>
+                                                        <View style={styles.updateBtnContainer}>
+                                                            <TouchableOpacity onPress={() => { upOut2('minus') }} style={styles.minus}>
+                                                                <Text style={styles.txt}>-</Text>
+                                                            </TouchableOpacity>
+                                                            <TouchableOpacity onPress={() => { upOut2('plus') }} style={styles.plus}>
+                                                                <Text style={styles.txt}>+</Text>
+                                                            </TouchableOpacity>
+                                                        </View>
+                                                    </View>
+                                                    <View style={{ margin: 15 }}>
+                                                        <Text style={styles.hdrTxt}>RUNS</Text>
+                                                        <View style={styles.updateBtnContainer}>
+                                                            <TouchableOpacity onPress={() => { upRun2(-1) }} style={styles.minus}>
+                                                                <Text style={styles.txt}>-</Text>
+                                                            </TouchableOpacity>
+                                                            <TouchableOpacity onPress={() => { upRun2(1) }} style={styles.plus}>
+                                                                <Text style={styles.txt}>+</Text>
+                                                            </TouchableOpacity>
+                                                        </View>
+                                                    </View>
 
-                                            <View style={{ margin: 15 }}>
-                                                <Text style={styles.hdrTxt}>BALLS</Text>
-                                                <View style={styles.updateBtnContainer}>
-                                                    <TouchableOpacity onPress={() => { upBall2('minus') }} style={styles.minus}>
-                                                        <Text style={styles.txt}>-</Text>
-                                                    </TouchableOpacity>
-                                                    <TouchableOpacity onPress={() => { upBall2('plus') }} style={styles.plus}>
-                                                        <Text style={styles.txt}>+</Text>
-                                                    </TouchableOpacity>
+                                                    <View style={{ margin: 15 }}>
+                                                        <Text style={styles.hdrTxt}>BALLS</Text>
+                                                        <View style={styles.updateBtnContainer}>
+                                                            <TouchableOpacity onPress={() => { upBall2('minus') }} style={styles.minus}>
+                                                                <Text style={styles.txt}>-</Text>
+                                                            </TouchableOpacity>
+                                                            <TouchableOpacity onPress={() => { upBall2('plus') }} style={styles.plus}>
+                                                                <Text style={styles.txt}>+</Text>
+                                                            </TouchableOpacity>
+                                                        </View>
+                                                    </View>
                                                 </View>
-                                            </View>
-                                        </View>
-                                        {/* <TouchableOpacity style={styles.endBtn}>
-                                <Text style={{ fontFamily: 'OpenSans-SemiBold', color: '#fff' }}>End Match</Text>
-                            </TouchableOpacity> */}
+                                                {/* <TouchableOpacity style={styles.endBtn}>
+                                                    <Text style={{ fontFamily: 'OpenSans-SemiBold', color: '#fff' }}>End Match</Text>
+                                                </TouchableOpacity> */}
 
-                                    </View>
+                                            </View> :
+                                            null
+                                    }
+
                                 </View>
                         }
+                        {
+                            pending === 'Ongoing' ?
+                                <View style={{ padding: 30, backgroundColor: '#fff' }}>
+                                    <TouchableOpacity style={styles.endBtn} onPress={() => { setModalVisible(true) }}>
+                                        <Text style={styles.btnText}>
+                                            End Match
+                                        </Text>
+                                    </TouchableOpacity>
+
+                                </View> :
+                                null
+                        }
+
+
                     </>
             }
 
-            <View style={{ padding: 30, backgroundColor: '#fff' }}>
-                <TouchableOpacity style={styles.endBtn} onPress={()=>{setModalVisible(true)}}>
-                    <Text style={styles.btnText}>
-                        End Match
-                    </Text>
-                </TouchableOpacity>
 
-            </View>
 
             <Modal
-                    animationType="slide"
-                    transparent={true}
-                    visible={modalVisible}
-                    onRequestClose={() => { setModalVisible(false) }}
-                >
-                    <View style={styles.modalContainer}>
-                        <View style={styles.modalView}>
-                            <View style={styles.headerContainer}>
-                                <Text style={styles.nameText}>Final Message</Text>
-                            </View>
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => { setModalVisible(false) }}
+            >
+                <View style={styles.modalContainer}>
+                    <View style={styles.modalView}>
+                        <View style={styles.headerContainer}>
+                            <Text style={styles.nameText}>Final Message</Text>
+                        </View>
 
-                            <TextInput
-                                placeholder="Name"
-                                autoFocus={true}
-                                placeholderTextColor='#8395a7'
-                                onChangeText={(value) => setFmessage(value)}
-                                style={styles.textInput} />
+                        <TextInput
+                            placeholder="Message"
+                            autoFocus={true}
+                            placeholderTextColor='#8395a7'
+                            onChangeText={(value) => setFmessage(value)}
+                            style={styles.textInput} />
 
 
-                            <View style={styles.buttonsContainer}>
-                                <TouchableOpacity onPress={() => setModalVisible(false)} style={styles.Button}>
-                                    <Text style={styles._btnText}>CANCEL</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity onPress={() => endMatch()} style={styles.Button}>
-                                    <Text style={styles._btnText}>SAVE</Text>
-                                </TouchableOpacity>
-                            </View>
+                        <View style={styles.buttonsContainer}>
+                            <TouchableOpacity onPress={() => setModalVisible(false)} style={styles.Button}>
+                                <Text style={styles._btnText}>CANCEL</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() => endMatch()} style={styles.Button}>
+                                <Text style={styles._btnText}>SAVE</Text>
+                            </TouchableOpacity>
                         </View>
                     </View>
-                </Modal>
+                </View>
+            </Modal>
 
         </>
     );
