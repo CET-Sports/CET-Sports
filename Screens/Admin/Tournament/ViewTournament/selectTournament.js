@@ -8,16 +8,35 @@ function selectTournament(props) {
     const [dataSource, setDataSource] = useState([]);
 
 
-    useEffect(() => { }, [])
+    useEffect(() => {
+
+        
+        firebase.firestore().collection('Team').onSnapshot(querySnapshot => {
+            const data = [];
+            querySnapshot.forEach(documentSnapshot => {
+                //console.log(documentSnapshot.data())
+                data.push({
+                    ...documentSnapshot.data()
+                })
+                setDataSource(data)
+            })
+
+        })
+
+
+ 
+     }, [])
+
+
 
 
     function Item({ data }) {
         return (
             <View>
                 <Text>
-                    TOURNAMENT NAME :
+                    TOURNAMENT NAME :{data.Tname}
                 </Text>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => { navigation.navigate('selectEvents', { Dname: data.Tname }) }} >
                     <Text>ENTER</Text>
                 </TouchableOpacity>
             </View>
