@@ -7,13 +7,24 @@ import { colors } from '../../../Colors/colors';
 import AsyncStorage from '@react-native-community/async-storage';
 import { firebase } from '@react-native-firebase/app';
 import firestore from '@react-native-firebase/firestore';
+import { useEffect } from 'react';
 
 function Calender(props) {
+
+    useEffect(() => {
+        firebase.firestore().collection('Bookings').doc(selectDate).collection('slots').where('slot', '==', '18:00 - 19:00').get().then(querySnapshot => {
+            querySnapshot.forEach(documentSnapShot => {
+                console.log('here')
+                console.log(documentSnapShot.data());
+            })
+        })
+    }, [])
 
     const [date, setDate] = useState(new Date(1598051730000));
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
     const [desc, setDesc] = useState('');
+    const [name, setName] = useState('');
     const [selectDate, setSelectDate] = useState(null);
     const [nameError, setNameError] = useState('');
     const [dateError, setDateError] = useState('');
@@ -21,6 +32,7 @@ function Calender(props) {
     const [cordName, setCordName] = useState('');
     const [dept, setDept] = useState('');
     const [slot, setSlot] = useState('');
+    const [booked, setBooked] = useState(false);
 
     const onChange = (event, selectedDate) => {
         const currentDate = selectedDate || date;
@@ -70,30 +82,67 @@ function Calender(props) {
         { slot: 7, time: '19:00 - 20:00' }
     ]
 
-    const check = ()=>{
-        firebase.firestore().collection('Bookings').doc(selectDate).collection('slots').doc('').set({
-            slot:slot
+    const check = () => {
+        setBooked(false);
+        firebase.firestore().collection('Bookings').doc(selectDate).onSnapshot(documentSnapShot => {
+            console.log(documentSnapShot.data())
+            if (documentSnapShot.data() != undefined) {
+                if (documentSnapShot.data().status === 'Booking started') {
+
+                    firebase.firestore().collection('Bookings').doc(selectDate).collection('slots').where('slot', '==', slot).get().then(querySnapshot => {
+                        querySnapshot.forEach(documentSnapShot => {
+                            if (documentSnapShot.data().slot != null) {
+                                setBooked(true);
+                                alert('Alredy booked..!')
+                            }
+                            console.log(documentSnapShot.data().slot);
+                        })
+                    })
+                }
+                else {
+                    setBooked(false);
+                }
+            }
+
         })
+        // firebase.firestore().collection('Bookings').doc(selectDate).set({
+        //     status:'Booking started'
+        // })
+        // firebase.firestore().collection('Bookings').doc(selectDate).collection('slots').doc('').set({
+        //     slot:slot,
+        //     event:name,
+        //     cordName:cordName,
+        //     dept:dept,
+        //     desc:desc
+        // })
+
     }
+
+    const book = () => {
+
+
+    }
+
 
     function Item({ data }) {
         const [selected, setSelected] = useState(false);
         return (
-            <TouchableOpacity style={styles.flatItem} onPress={()=>{
+            <TouchableOpacity style={styles.flatItem} onPress={() => {
                 {
                     selected === data.slot + true ?
-                    setSelected(data.slot + false):
-                    setSelected(data.slot + true)
+                        setSelected(data.slot + false) :
+                        setSelected(data.slot + true);
+                    setSlot(data.time);
                 }
-                
-                
-                }}>
+
+
+            }}>
                 {
-                    selected === data.slot + true ? 
-                    <Text style={{...styles.flatTxt,color:'#4cd137'}}>{data.time}</Text>:
-                    <Text style={styles.flatTxt}>{data.time}</Text>
+                    selected === data.slot + true ?
+                        <Text style={{ ...styles.flatTxt, color: '#4cd137' }}>{data.time}</Text> :
+                        <Text style={styles.flatTxt}>{data.time}</Text>
                 }
-                
+
             </TouchableOpacity>
 
         )
@@ -173,9 +222,16 @@ function Calender(props) {
                         contentContainerStyle={{ backgroundColor: '#DDF2FD', alignItems: 'center' }}
                     />
                 </View>
-                    <TouchableOpacity style={styles.btn} onPress={()=>{check()}}>
-                        <Text style={styles.txt}>Check Availability</Text>
-                    </TouchableOpacity>
+                <TouchableOpacity style={styles.btn} onPress={() => { check() }}>
+                    <Text style={styles.txt}>Check</Text>
+                </TouchableOpacity>
+
+
+
+
+
+
+
             </View>
 
 
