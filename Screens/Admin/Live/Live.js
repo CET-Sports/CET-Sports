@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, TouchableOpacity, Button, View, Image } from 'react-native';
+import { Text, TouchableOpacity, Modal, View, Image, TextInput, ScrollView } from 'react-native';
 
 import { RTCPeerConnection, RTCView, mediaDevices, RTCIceCandidate, RTCSessionDescription } from 'react-native-webrtc';
 import { db } from '../../../utilities/firebase';
@@ -15,8 +15,18 @@ const configuration = {
 };
 
 export default function CallScreen({ setScreen, screens, roomId }) {
+  const [localStream, setLocalStream] = useState();
+  const [cachedLocalPC, setCachedLocalPC] = useState();
+  const [started, setStarted] = useState(false);
+  const [entered, setEntered] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [roomName, setRoomName] = useState('');
+  const [notification, setNotification] = useState('');
+  const [notificationTitle, setNotificationTitle] = useState('');
 
   function onBackPress() {
+    setEntered(false)
     if (cachedLocalPC) {
       cachedLocalPC.removeStream(localStream);
       cachedLocalPC.close();
@@ -28,16 +38,12 @@ export default function CallScreen({ setScreen, screens, roomId }) {
       id: -1
     })
     for (let i = 0; i < 10; i++) {
-      db.collection('rooms').doc('id' + i).delete()
+      db.collection('rooms').doc('id' + i + roomName).delete()
     }
     // cleanup
   }
 
-  const [localStream, setLocalStream] = useState();
-  const [cachedLocalPC, setCachedLocalPC] = useState();
-  const [started, setStarted] = useState(false);
 
-  const [isMuted, setIsMuted] = useState(false);
 
   useEffect(() => {
     startLocalStream();
@@ -68,15 +74,23 @@ export default function CallScreen({ setScreen, screens, roomId }) {
   };
 
   const startCall = async () => {
+    const date = new Date();
+
+    db.collection('Notifications').doc('').set({
+      createdAt:date,
+      notification:notification,
+      title:notificationTitle
+    })
+    
     setStarted(true);
     db.collection('Id').doc('Id').set({
-      id:0
+      id: 0
     })
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 20; i++) {
       const localPC = new RTCPeerConnection(configuration);
       localPC.addStream(localStream);
 
-      const roomRef = await db.collection('rooms').doc('id' + i);
+      const roomRef = await db.collection('rooms').doc('id' + i + roomName);
       const callerCandidatesCollection = roomRef.collection('callerCandidates');
       localPC.onicecandidate = e => {
         if (!e.candidate) {
@@ -119,6 +133,8 @@ export default function CallScreen({ setScreen, screens, roomId }) {
       setCachedLocalPC(localPC);
     }
 
+
+
   };
 
 
@@ -138,6 +154,12 @@ export default function CallScreen({ setScreen, screens, roomId }) {
     });
   };
 
+  const enterLive = () => {
+    setModalVisible(false);
+    setEntered(true);
+    startCall();
+  }
+
 
   return (
     <View style={{ backgroundColor: '#fff', flex: 1 }}>
@@ -149,39 +171,74 @@ export default function CallScreen({ setScreen, screens, roomId }) {
           <Button title={`${isMuted ? 'Unmute' : 'Mute'} stream`} onPress={toggleMute} />
         </View>
       )} */}
+      {
+        entered ?
+          <>
 
-      <View style={{ display: 'flex', flex: 1, padding: 10 }} >
-        <View style={styles.rtcview}>
-          {localStream && <RTCView style={styles.rtc} streamURL={localStream && localStream.toURL()} />}
+
+            <View style={styles.rtcview}>
+              {localStream && <RTCView style={styles.rtc} streamURL={localStream && localStream.toURL()} mirror={true} />}
+            </View>
+
+            <View style={styles.liveBtnContainer}>
+              {
+                isMuted ?
+                  <TouchableOpacity style={styles.rounded} onPress={toggleMute}>
+                    <Image source={require('../../../Images/unmute.png')} style={{ height: 30, width: 30 }} />
+                  </TouchableOpacity> :
+                  <TouchableOpacity style={styles.rounded} onPress={toggleMute}>
+                    <Image source={require('../../../Images/mute.png')} style={{ height: 30, width: 30 }} />
+                  </TouchableOpacity>
+              }
+              {
+                started ?
+                  <TouchableOpacity style={styles.rounded} onPress={onBackPress}>
+                    <Image source={require('../../../Images/stop.png')} style={{ height: 40, width: 40 }} />
+                  </TouchableOpacity> :
+                  <TouchableOpacity style={styles.rounded} onPress={() => startCall()}>
+                    <Image source={require('../../../Images/video.png')} style={{ height: 30, width: 30 }} />
+                  </TouchableOpacity>
+              }
+              <TouchableOpacity style={styles.rounded} onPress={switchCamera}>
+                <Image source={require('../../../Images/switch.png')} style={{ height: 30, width: 30 }} />
+              </TouchableOpacity>
+            </View>
+          </> :
+          <View style={styles.container}>
+            <Image source={require('../../../Images/live.png')} style={styles.img} />
+            <TouchableOpacity style={styles.btn} onPress={() => { setModalVisible(true) }}>
+              <Text style={styles.txt}>Go Live</Text>
+            </TouchableOpacity>
+          </View>
+      }
+
+      <Modal
+        animationType="none"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => { setModalVisible(false) }}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalView}>
+            <ScrollView>
+              <View style={{ justifyContent: 'center' }}>
+                <Text style={styles.modalText}>Create Room</Text>
+              </View>
+              <View style={{ justifyContent: 'center' }}>
+                <TextInput placeholder='room name' style={styles.textInput} onChangeText={(val) => { setRoomName(val) }} />
+                <TextInput placeholder='Notification title' style={styles.textInput} onChangeText={(val) => { setNotificationTitle(val) }} />
+                <TextInput multiline placeholder='Notification' style={styles.textInput} onChangeText={(val) => { setNotification(val) }} />
+              </View>
+              <View style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'center' }}>
+                <TouchableOpacity onPress={() => enterLive()} style={{ marginTop:30 }}>
+                  <Image source={require('../../../Images/go.png')} style={{ height: 30, width: 30 }} />
+                </TouchableOpacity>
+              </View>
+            </ScrollView>
+          </View>
+
         </View>
-      </View>
-      <View style={styles.liveBtnContainer}>
-        {
-          isMuted ?
-            <TouchableOpacity style={styles.rounded} onPress={toggleMute}>
-              <Image source={require('../../../Images/unmute.png')} style={{ height: 30, width: 30 }} />
-            </TouchableOpacity> :
-            <TouchableOpacity style={styles.rounded} onPress={toggleMute}>
-              <Image source={require('../../../Images/mute.png')} style={{ height: 30, width: 30 }} />
-            </TouchableOpacity>
-
-        }
-        {
-          started ?
-            <TouchableOpacity style={styles.rounded} onPress={onBackPress}>
-              <Image source={require('../../../Images/stop.png')} style={{ height: 40, width: 40 }} />
-            </TouchableOpacity> :
-            <TouchableOpacity style={styles.rounded} onPress={() => startCall()}>
-              <Image source={require('../../../Images/video.png')} style={{ height: 30, width: 30 }} />
-            </TouchableOpacity>
-        }
-        <TouchableOpacity style={styles.rounded} onPress={switchCamera}>
-          <Image source={require('../../../Images/switch.png')} style={{ height: 30, width: 30 }} />
-        </TouchableOpacity>
-
-
-      </View>
-
+      </Modal>
     </View>
   )
 }

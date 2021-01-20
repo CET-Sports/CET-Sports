@@ -197,13 +197,13 @@ const styles = StyleSheet.create({
         fontFamily: 'OpenSans-SemiBold',
         fontSize: 18
     },
-    modalContainer: {
+    modalContainer1: {
         flex: 1,
         backgroundColor: 'rgba(52,52,52,0.5)',
         justifyContent: 'center',
         alignItems: 'center'
     },
-    modalView: {
+    modalView1: {
         backgroundColor: '#fff',
         marginHorizontal: 20,
         borderRadius: 14,

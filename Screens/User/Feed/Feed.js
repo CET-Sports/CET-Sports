@@ -79,7 +79,7 @@ function Feed({ navigation }) {
 
                     </View>
                     <Text style={styles.title}>{data.Title}</Text>
-                    <Text style={styles.date} numberOfLines={6}>{moment(data.CreatedAt.toDate()).format('DD-MM-YYYY')}</Text>
+                    <Text style={styles.date} numberOfLines={1}>{moment(data.CreatedAt.toDate()).format('DD-MM-YYYY')}</Text>
                     <Text style={styles.content} numberOfLines={6}>{data.Content}</Text>
 
                     <View style={styles.divider} />
@@ -122,7 +122,6 @@ function Feed({ navigation }) {
                 transparent={false}
                 visible={modalVisible}
                 statusBarTranslucent={true}
-                backdropTransitionOutTiming={0}
                 onRequestClose={() => { setModalVisible(false) }}
             >
                 <StatusBar backgroundColor='#ffffff' barStyle="dark-content" />
@@ -135,7 +134,7 @@ function Feed({ navigation }) {
                         <AutoHeightImage source={{ uri: selectData.ImageUrl }} width={windowWidth} style={{ marginBottom: 5 }}
                         />
                         <Text style={styles.title}>{selectData.Title}</Text>
-                        <Text style={styles.date}>{selectDate}</Text>
+                        <Text numberOfLines={1} style={styles.date}>{selectDate}</Text>
                         <Text style={styles.content}>{selectData.Content}</Text>
                     </ScrollView>
                 </View>

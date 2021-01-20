@@ -43,6 +43,12 @@ const styles = StyleSheet.create({
         fontSize: 16,
         marginTop: 10
     },
+    success:{
+        letterSpacing: 2,
+        color: '#4cd137',
+        fontSize: 16,
+        marginTop: 10
+    },
     pending: {
         color: '#ff3838',
         fontFamily: 'OpenSans-SemiBold',

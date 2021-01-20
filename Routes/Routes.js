@@ -55,6 +55,11 @@ import groundBooking from '../Screens/User/Booking/groundBooking';
 import regisTeam from '../Screens/User/Tournament/regisTeam';
 import viewTournament from '../Screens/User/Tournament/viewTournament';
 import viewEvents from '../Screens/User/Tournament/viewEvents';
+import Notifications from '../Screens/User/Notifications/Notifications';
+
+import { firebase } from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
+import NotificationsAdmin from '../Screens/Admin/Notifications/NotificationsAdmin';
 
 
 const Drawer = createDrawerNavigator();
@@ -77,6 +82,9 @@ const InviteStack = createStackNavigator();
 const UserScoresStack = createStackNavigator();
 
 const TournamentUserStack = createStackNavigator();
+
+const NotificationStack = createStackNavigator();
+const NotificationAdminStack = createStackNavigator();
 
 
 //user 
@@ -307,6 +315,34 @@ const ScoreStackScreen = ({ navigation }) => (
 )
 
 
+const NotificationStackScreen = ({ navigation }) => (
+    <NotificationStack.Navigator
+        screenOptions={{
+            headerStyle: {
+                elevation: 0,
+                backgroundColor: colors.primaryColor
+            },
+            headerLeft: () => (
+                <TouchableOpacity onPress={() => { navigation.openDrawer() }} style={{ alignItems: 'center', justifyContent: 'center' }}>
+                    <AntDesign name="menuunfold" size={23} color={'#fff'} style={{ marginLeft: 10 }} />
+                </TouchableOpacity>
+            )
+        }}
+
+    >
+        <NotificationStack.Screen
+            name="Notifications"
+            component={Notifications}
+            options={{
+                headerStatusBarHeight: 0,
+                headerTintColor: '#fff'
+            }}
+        />
+
+    </NotificationStack.Navigator>
+)
+
+
 
 const TabScreen = () => (
     <Tabs.Navigator
@@ -341,6 +377,15 @@ const TabScreen = () => (
             options={{
                 tabBarIcon: ({ color }) => (
                     <Icon name='scoreboard-outline' color={color} size={23} style={{}} />
+                )
+            }}
+        />
+        <Tabs.Screen
+            name="Notifications"
+            component={NotificationStackScreen}
+            options={{
+                tabBarIcon: ({ color }) => (
+                    <Icon name='bell-outline' color={color} size={26} style={{}} />
                 )
             }}
         />
@@ -586,7 +631,32 @@ const ClubAdminStackScreen = ({ navigation }) => (
     </ClubAdminStack.Navigator>
 
 )
+const NotificationAdminStackScreen = ({ navigation }) => (
+    <NotificationAdminStack.Navigator
+        screenOptions={{
+            headerStyle: {
+                elevation: 0,
+                backgroundColor: colors.primaryColor
+            },
+            headerLeft: () => (
+                <TouchableOpacity onPress={() => { navigation.openDrawer() }} style={{ alignItems: 'center', justifyContent: 'center' }}>
+                    <AntDesign name="menuunfold" size={23} color={'#fff'} style={{ marginLeft: 10 }} />
+                </TouchableOpacity>
+            )
+        }}
 
+    >
+        <NotificationAdminStack.Screen
+            name="Notifications"
+            component={NotificationsAdmin}
+            options={{
+                headerStatusBarHeight: 0,
+                headerTintColor: '#fff'
+            }}
+        />
+
+    </NotificationAdminStack.Navigator>
+)
 const TabScreenAdmin = () => (
     <Tabs.Navigator
         initialRouteName='Home'
@@ -623,6 +693,15 @@ const TabScreenAdmin = () => (
                 )
             }}
         />
+        <Tabs.Screen
+            name="Notifications"
+            component={NotificationAdminStackScreen}
+            options={{
+                tabBarIcon: ({ color }) => (
+                    <Icon name='bell-outline' color={color} size={26} style={{}} />
+                )
+            }}
+        />
 
         {/* <Tabs.Screen
             name="Invite"
@@ -637,13 +716,14 @@ const TabScreenAdmin = () => (
 )
 // admin end
 
-function Routes(props) {
+function Routes() {
 
 
 
     const [userToken, setUserToken] = useState(null);
     const [isAdmin, setIsAdmin] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [count, setCount] = useState(0);
 
 
     useEffect(() => {
@@ -651,7 +731,9 @@ function Routes(props) {
         readUser();
         setTimeout(() => {
             setLoading(false);
-        }, 2500)
+        }, 2500);
+
+
     }, [])
 
     getData = async (key) => {
