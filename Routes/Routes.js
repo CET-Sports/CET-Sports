@@ -93,6 +93,8 @@ const TournamentAdminStack = createStackNavigator();
 const NotificationStack = createStackNavigator();
 const NotificationAdminStack = createStackNavigator();
 
+const ApplyStack = createStackNavigator();
+
 
 //user----------------------------------------------------------------------------------------
 

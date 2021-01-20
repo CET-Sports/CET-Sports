@@ -48,7 +48,7 @@ export default function Apply() {
     const date = new Date();
 
 
-    firebase.firestore().collection('Tournaments').onSnapshot(querySnapshot => {
+    firebase.firestore().collection('Sports').onSnapshot(querySnapshot => {
 
       const array = [];
       firebase.firestore().collection('Sports').where('due', '>=', date).get().then(querySnapShot => {
@@ -87,14 +87,6 @@ export default function Apply() {
 
 
 
-
-
-    firebase.firestore().collection('Apply').where('sprt', '==', data1).where('phone', '==', phone).onSnapshot(querySnapshot => {
-
-      if (!querySnapshot.empty) {
-        console.log("Not Empty")
-      }
-      else {
         firebase.firestore().collection('Apply').doc().set({
           name: name,
           sem: sem,
@@ -104,10 +96,10 @@ export default function Apply() {
           sprt: data1,
           status: 'pending'
         })
-      }
+      
 
 
-    });
+    
 
     setModalVisible(true);
 
