@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import { firebase } from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
+import { colors } from '../../../Colors/colors';
 
 
 // const { game } = route.params;
@@ -156,7 +157,7 @@ function clubDetails({ route }) {
 
                         <TouchableOpacity style={styles.button} onPress={() => add()}
                         >
-                            <Text style={styles.txt}>Join</Text>
+                            <Text style={{...styles.txt,color:colors.primaryColor}}>Join</Text>
                         </TouchableOpacity>
 
                 }
