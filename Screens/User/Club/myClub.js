@@ -16,7 +16,7 @@ function myClub(props) {
 
       .then(response => {
 
-        firebase.firestore().collection('clubMembers').where('phone', '==', response.phone).onSnapshot(querySnapshot => {
+        firebase.firestore().collection('clubMembers').where('phone', '==', response.phone).where('status','==','Approved').onSnapshot(querySnapshot => {
           const data = [];
           querySnapshot.forEach(documentSnapshot => {
             console.log('documentSnapshot.data()')
