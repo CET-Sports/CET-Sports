@@ -378,6 +378,33 @@ const BookinStackScreen = ({ navigation }) => (
     </BookingStack.Navigator>
 )
 
+const ApplyStackScreen = ({ navigation }) => (
+    <ApplyStack.Navigator
+        screenOptions={{
+            headerStyle: {
+                elevation: 0,
+                backgroundColor: colors.primaryColor
+            },
+            headerLeft: () => (
+                <TouchableOpacity onPress={() => { navigation.openDrawer() }} style={{ alignItems: 'center', justifyContent: 'center' }}>
+                    <AntDesign name="menuunfold" size={23} color={'#fff'} style={{ marginLeft: 10 }} />
+                </TouchableOpacity>
+            )
+        }}
+
+    >
+        <ApplyStack.Screen
+            name="Apply"
+            component={Apply}
+            options={{
+                headerStatusBarHeight: 0,
+                headerTintColor: '#fff'
+            }}
+        />
+
+    </ApplyStack.Navigator>
+)
+
 
 
 const TabScreen = () => (
@@ -892,7 +919,7 @@ function Routes() {
 
                                     <Drawer.Screen
                                         name="Apply"
-                                        component={Apply}
+                                        component={ApplyStackScreen}
                                     />
                                     <Drawer.Screen
                                         name="Club_Main"
