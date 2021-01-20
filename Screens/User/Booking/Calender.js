@@ -10,6 +10,8 @@ function Calender(props) {
     const [date, setDate] = useState(new Date(1598051730000));
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
+    const [desc, setDesc] = useState('');
+
     const [selectDate, setSelectDate] = useState(null);
     const [nameError, setNameError] = useState('');
     const [dateError, setDateError] = useState('');
@@ -68,21 +70,21 @@ function Calender(props) {
     function Item({ data }) {
         const [selected, setSelected] = useState(false);
         return (
-            <TouchableOpacity style={styles.flatItem} onPress={()=>{
+            <TouchableOpacity style={styles.flatItem} onPress={() => {
                 {
                     selected === data.slot + true ?
-                    setSelected(data.slot + false):
-                    setSelected(data.slot + true)
+                        setSelected(data.slot + false) :
+                        setSelected(data.slot + true)
                 }
-                
-                
-                }}>
+
+
+            }}>
                 {
-                    selected === data.slot + true ? 
-                    <Text style={{...styles.flatTxt,color:'#4cd137'}}>{data.time}</Text>:
-                    <Text style={styles.flatTxt}>{data.time}</Text>
+                    selected === data.slot + true ?
+                        <Text style={{ ...styles.flatTxt, color: '#4cd137' }}>{data.time}</Text> :
+                        <Text style={styles.flatTxt}>{data.time}</Text>
                 }
-                
+
             </TouchableOpacity>
 
         )
@@ -162,9 +164,9 @@ function Calender(props) {
                         contentContainerStyle={{ backgroundColor: '#DDF2FD', alignItems: 'center' }}
                     />
                 </View>
-                    <TouchableOpacity style={styles.btn}>
-                        <Text style={styles.txt}>Check Availability</Text>
-                    </TouchableOpacity>
+                <TouchableOpacity style={styles.btn}>
+                    <Text style={styles.txt}>Check Availability</Text>
+                </TouchableOpacity>
             </View>
 
 
