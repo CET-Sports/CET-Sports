@@ -24,9 +24,10 @@ function selectTournament({ route, navigation }) {
                 })
             }
         })
+        setGame(data.Game)
 
     }, [])
-    setGame(data.Game)
+
 
 
     function Item({ data }) {
