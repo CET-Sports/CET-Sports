@@ -49,9 +49,7 @@ console.log("gender:"+gender)
 console.log("due"+date)
   
 
-  const query = firebase.firestore().collection('Sports').where('due', '>=',date).where('gender','==' ,gender);
-
-     query.onSnapshot(querySnapShot => {
+  firebase.firestore().collection('Sports').where('due', '>=',date).get().then(querySnapShot => {
         const array = [];
         if (querySnapShot != null) {
           console.log(querySnapShot.size);

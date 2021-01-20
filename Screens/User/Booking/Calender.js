@@ -85,6 +85,7 @@ function Calender(props) {
     const check = () => {
         setBooked(false);
         firebase.firestore().collection('Bookings').doc(selectDate).onSnapshot(documentSnapShot => {
+            
             console.log(documentSnapShot.data())
             if (documentSnapShot.data() != undefined) {
                 if (documentSnapShot.data().status === 'Booking started') {
