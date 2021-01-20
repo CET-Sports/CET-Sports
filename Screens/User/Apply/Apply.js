@@ -20,6 +20,9 @@ export default function Apply() {
   const [size,setSize] = useState(1);
   const [user,setUser]=useState('');
   const [modalVisible, setModalVisible] = useState(false);
+  const [flag, setFlag] = useState(false)
+
+
 
   // const { game } = route.params;
   useEffect(() => {
@@ -45,15 +48,15 @@ export default function Apply() {
     const date = new Date();
 
 
-console.log("gender:"+gender)
-console.log("due"+date)
-  
-
+    firebase.firestore().collection('Tournaments').onSnapshot(querySnapshot=>{
+     
+      const array = [];
   const query = firebase.firestore().collection('Sports').where('due', '>=',date).where('gender','==' ,gender);
 
-     query.onSnapshot(querySnapShot => {
-        const array = [];
+     query.get().then(querySnapShot => {
+       
         if (querySnapShot != null) {
+          setFlag(true)
           console.log(querySnapShot.size);
           setSize(querySnapShot.size);
           querySnapShot.forEach(documentSnapShot => {
@@ -65,6 +68,7 @@ console.log("due"+date)
             });
         }
       })
+    })
   }, [])
 
   
@@ -134,7 +138,10 @@ console.log("due"+date)
         
 
 {
+  
+
   modalVisible ?
+  
 
       <Modal
           animationType="fade"
