@@ -3,21 +3,42 @@ import { FlatList, Text, TouchableOpacity, View } from 'react-native';
 import { firebase } from '@react-native-firebase/app';
 import firestore from '@react-native-firebase/firestore';
 
-function selectTournament(props) {
+function selectTournament({ route, navigation }) {
+
+    //const { game } = route.params;
+    const { Dname } = route.params;
+
 
     const [dataSource, setDataSource] = useState([]);
 
 
-    useEffect(() => { }, [])
+    useEffect(() => {
+
+        firebase.firestore().collection('Team').doc(Dname).collection('phone').onSnapshot(querySnapShot => {
+            const array = [];
+            if (querySnapShot != null) {
+                querySnapShot.forEach(documentSnapShot => {
+                    array.push({
+                        ...documentSnapShot.data()
+                    });
+                    setDataSource(array);
+                })
+            }
+        })
+
+
+    }, [])
+
+
 
 
     function Item({ data }) {
         return (
             <View>
                 <Text>
-                    TEAM NAME :
+                    TEAM NAME : {data.teamName}
                 </Text>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => { navigation.navigate('teamMembers', { Dname: Dname, Tname: data.teamName }) }}>
                     <Text>VIEW MEMBERS</Text>
                 </TouchableOpacity>
             </View>

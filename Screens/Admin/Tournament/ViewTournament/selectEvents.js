@@ -8,7 +8,7 @@ function selectTournament({ route, navigation }) {
     const { Dname } = route.params;
 
     const [dataSource, setDataSource] = useState([]);
-    const [game, setGame] = useState('Cricket');
+    //const [game, setGame] = useState('Cricket');
 
 
     // useEffect(() => {
@@ -60,7 +60,7 @@ function selectTournament({ route, navigation }) {
             <Text>
                 EVENT NAME : CRICKET
             </Text>
-            <TouchableOpacity onPress={() => { navigation.navigate('viewTeams', { game: game }) }}>
+            <TouchableOpacity onPress={() => { navigation.navigate('viewTeams', { Dname: Dname }) }}>
                 <Text>ENTER</Text>
             </TouchableOpacity>
             <Text>
