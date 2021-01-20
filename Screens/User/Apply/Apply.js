@@ -54,7 +54,7 @@ export default function Apply() {
       firebase.firestore().collection('Sports').where('due', '>=', date).get().then(querySnapShot => {
 
         if (querySnapShot != null) {
-          setFlag(true)
+         
           console.log(querySnapShot.size);
           setSize(querySnapShot.size);
           querySnapShot.forEach(documentSnapShot => {
@@ -86,6 +86,15 @@ export default function Apply() {
   function push(data1) {
 
 
+    firebase.firestore().collection('Apply').onSnapshot(querySnapshot => {
+    firebase.firestore().collection('Apply').where('sprt','==',data1).where('phone','==',phone).get().then(querySnapshot => {
+
+      if(!querySnapshot.empty)
+      {
+         console.log("Not Empty")
+      }
+      else
+      {
 
         firebase.firestore().collection('Apply').doc().set({
           name: name,
@@ -96,7 +105,9 @@ export default function Apply() {
           sprt: data1,
           status: 'pending'
         })
-      
+      }
+    })
+  })
 
 
     
