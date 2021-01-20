@@ -3,7 +3,7 @@ import { FlatList, Text, TouchableOpacity, View } from 'react-native';
 import { firebase } from '@react-native-firebase/app';
 import firestore from '@react-native-firebase/firestore';
 
-function selectTournament(props) {
+function selectTournament({navigation}) {
 
     const [dataSource, setDataSource] = useState([]);
 
